@@ -1637,6 +1637,10 @@ public final class Factory {
         return new Grammar(x, g);
     }
 
+    public static Constraint testing(IntVar[] x, CFG g) {
+        return new IncreasingValue(x, g);
+    }
+
     /**
      * Returns an among constraint.
      * This relation is enforced by the {@link Among} constraint

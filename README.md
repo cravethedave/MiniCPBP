@@ -117,7 +117,7 @@ The output of build process ends with lines like this, which indicates a success
 
 ## Running MiniCPBP
 
-Let's firts test the built code:
+Let's first test the built code:
 
 ```
 $ java -jar target/minicpbp-1.0.jar
