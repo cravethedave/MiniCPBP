@@ -37,7 +37,7 @@ public class TestGrammar {
         try {
             CFG g = new CFG(filePath);
 
-            for 
+            
 
             int wordLength = molecule.length();
             Solver cp = makeSolver(false);
