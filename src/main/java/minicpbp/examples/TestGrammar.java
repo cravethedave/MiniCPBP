@@ -22,13 +22,13 @@ public class TestGrammar {
     public static void main(String[] args) {
         // new_code("data/moleculeCNF_v3.txt");
 
-        comparator(
-            "data/moleculeCNF_v1.txt",
-            "data/moleculeCNF_v5.txt",
-            "big_data/ZINC250k.txt",
-            0,
-            24000
-        );
+        // comparator(
+        //     "data/moleculeCNF_v1.txt",
+        //     "data/moleculeCNF_v5.txt",
+        //     "big_data/ZINC250k.txt",
+        //     0,
+        //     24000
+        // );
 
         // tester("data/moleculeCNF_v5.txt", "C(CCCCCC1)C1C", 5);
     }
@@ -197,8 +197,10 @@ public class TestGrammar {
         CFG g = new CFG(reader);
         int wordLength = 5;
 
-        Solver cp = makeSolver(false);
+        Solver cp = makeSolver();
         IntVar[] w = makeIntVarArray(cp, wordLength, 0, g.terminalCount()-1);
+        for (int i = 0; i < wordLength; i++)
+            w[i].setName("w["+i+"]");
 
         cp.post(grammar(w,g));
 
@@ -208,18 +210,23 @@ public class TestGrammar {
         // double fraction = 0.01;
         // IntVar[] branchingVars = cp.sample(fraction,w);
 
+        cp.fixPoint();
+        cp.setTraceBPFlag(true);
+        cp.vanillaBP(3);
+
         // DFSearch dfs = makeDfs(cp, firstFail(branchingVars));
-        DFSearch dfs = makeDfs(cp, firstFail(w));
-
-
+        // DFSearch dfs = makeDfs(cp, firstFail(w));
+        /*
+        DFSearch dfs = makeDfs(cp, maxMarginal(w));
+        cp.setTraceSearchFlag(true);
         dfs.onSolution(() -> {
             for (int i = 0; i < wordLength; i++) {
                 System.out.print(w[i].min());
             }
             System.out.println();
         });
-
         dfs.solve();
+         */
     }
 
     private static void comparator(

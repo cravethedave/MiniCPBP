@@ -86,7 +86,7 @@ public class MiniCP implements Solver {
     private boolean tuneDamping = true;
 
     // for weighing constraints
-    private double minArity;
+    private int minArity;
 
     // metric to decide whether or not to update beliefs at a search tree node
     private StateInt sumDomainSizes;
@@ -120,6 +120,11 @@ public class MiniCP implements Solver {
     @Override
     public StateStack<IntVar> getVariables() {
         return variables;
+    }
+
+    @Override
+    public StateStack<Constraint> getConstraints() {
+        return constraints;
     }
 
     @Override
@@ -209,7 +214,7 @@ public class MiniCP implements Solver {
 
     @Override
     public void computeMinArity() {
-        this.minArity = Double.MAX_VALUE;
+        this.minArity = Integer.MAX_VALUE;
         Iterator<Constraint> iterator = constraints.iterator();
         Constraint c;
         while (iterator.hasNext()) {
@@ -220,14 +225,14 @@ public class MiniCP implements Solver {
        iterator = constraints.iterator();
         while (iterator.hasNext()) {
             c = iterator.next();
-            double w = 1.0 + (c.arity() - this.minArity)/ ((double) constraints.size());
+            double w = 1.0 + ((double) (c.arity() - this.minArity))/ ((double) constraints.size());
             c.setWeight(w);
         }
 
     }
 
     @Override
-    public double minArity() {
+    public int minArity() {
         return this.minArity;
     }
 
@@ -518,6 +523,26 @@ public class MiniCP implements Solver {
         while (iterator.hasNext()) {
             iterator.next().normalizeMarginals();
         }
+    }
+
+    /**
+     * Computes a global loss function from the constraints.
+     * Currently it sums the losses from each constraint.
+     */
+    public double globalLossFct() {
+        Iterator<Constraint> iteratorC = constraints.iterator();
+        while (iteratorC.hasNext()) {
+            iteratorC.next().setAuxVarsMarginalsWCounting();
+        }
+        double loss = 0;
+        Constraint c;
+        iteratorC = constraints.iterator();
+        while (iteratorC.hasNext()) {
+            c = iteratorC.next();
+            c.receiveMessagesWCounting();
+            loss -= Math.log(beliefRep.rep2std(c.weightedCounting()));
+        }
+        return loss;
     }
 
     /**

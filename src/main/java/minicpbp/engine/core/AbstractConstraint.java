@@ -26,7 +26,7 @@ import minicpbp.util.Belief;
 import minicpbp.util.exception.NotImplementedException;
 
 /**
- * Abstract class the most of the constraints
+ * Abstract class most of the constraints
  * should extend.
  */
 public abstract class AbstractConstraint implements Constraint {
@@ -45,12 +45,13 @@ public abstract class AbstractConstraint implements Constraint {
     private double weight; // an optional nonnegative weight applied to the constraint's local belief
     protected Belief beliefRep;
     private int[] ofs;
-    private IntVar[] vars; // all the variables in the scope of the constraint
+    protected IntVar[] vars; // all the variables in the scope of the constraint
     private int maxDomainSize;
     protected int[] domainValues; // an array large enough to hold any domain of vars
     protected double[] beliefValues; // an auxiliary array as large as domainValues
     private boolean exactWCounting = false;
     private boolean updateBeliefWarningPrinted = false;
+    private boolean weightedCountingWarningPrinted = false;
 
     private int failureCount;
 
@@ -91,8 +92,16 @@ public abstract class AbstractConstraint implements Constraint {
         failureCount = 0;
     }
 
-    public double arity() {
-        return (double) vars.length;
+    public int arity() {
+        return vars.length;
+    }
+
+    public int dynamicArity() {
+        int k = 0;
+        for (int i = 0; i < vars.length; i++) {
+            if (!vars[i].isBound()) k++;
+        }
+        return k;
     }
 
     /*public double getWeight() {
@@ -101,9 +110,9 @@ public abstract class AbstractConstraint implements Constraint {
 				return 1.0;
 			case ARITY:
 				// assumes all model variables have already been declared/registered
-				return 1.0 + ((double) vars.length - cp.minArity())/ ((double) cp.getVariables().size()); 
+				return 1.0 + ((double) vars.length - (double) cp.minArity())/ ((double) cp.getVariables().size());
 			case ANTI:
-                return 1.0 - ((double) vars.length - cp.minArity()) / ((double) cp.getVariables().size());
+                return 1.0 - ((double) vars.length - (double) cp.minArity()) / ((double) cp.getVariables().size());
 			default:
 				throw new NotImplementedException();
 			}
@@ -118,15 +127,13 @@ public abstract class AbstractConstraint implements Constraint {
 		return failureCount;
 	}
 
-    public void post() {
-    }
+    public void post() {}
 
     public Solver getSolver() {
         return cp;
     }
 
-    public void propagate() {
-    }
+    public void propagate() {}
 
     public void setScheduled(boolean scheduled) {
         this.scheduled = scheduled;
@@ -310,6 +317,44 @@ public abstract class AbstractConstraint implements Constraint {
                 localBelief[i][j].setValue(beliefRep.one()); // will be normalized
             }
         }
+    }
+
+    /**
+     * Collects messages (outside beliefs) from the variables in its scope.
+     * Used to compute a loss function via weighted counting
+     */
+    public void receiveMessagesWCounting() {
+        for (int i = 0; i < vars.length; i++) {
+            int s = vars[i].fillArray(domainValues);
+            for (int j = 0; j < s; j++) {
+                int val = domainValues[j];
+                setOutsideBelief(i, val, vars[i].sendMessage(val, beliefRep.one()));
+            }
+        }
+    }
+
+    /**
+     * Optionally computes and sets the marginals of auxiliary variables created in the constraint's implementation.
+     * To be optionally defined in the actual constraint.
+     * <p>
+     * Default behaviour: does nothing
+     */
+    public void setAuxVarsMarginalsWCounting() {}
+
+    /**
+     * Computes and returns the weighted count of solutions (i.e. weighted model counting) given the outside beliefs.
+     * To be defined in the actual constraint.
+     * !!!IMPORTANT NOTE!!!: the computation may rely on the fact that variables have all their beliefs initialized to beliefRep.one() upon creation (in StateSparseWeightedSet)
+     * <p>
+     * Default behaviour: returns beliefRep.one() (tautology constraint)
+     */
+    public double weightedCounting() {
+        if (!weightedCountingWarningPrinted) {
+            if (getName() != null) // do not print warning for unnamed constraint
+                System.out.println("c Warning: method weightedCounting not implemented yet for " + getName() + " constraint. Returning beliefRep.one() instead.");
+            weightedCountingWarningPrinted = true;
+        }
+        return beliefRep.one();
     }
 
     @Override

@@ -101,18 +101,39 @@ public interface Constraint {
      * w > 1 amplifies deviations from the uniform belief;
      * w < 1 dampens deviations from the uniform belief.
      */
-    public void setWeight(double w);
+    void setWeight(double w);
 
     /**
      * Returns the constraint's weight
      */
-    public double weight();
+    double weight();
 
     /**
-     * @return the constraint's weight
+     * @return the constraint's arity
      */
-    public double arity();
+    int arity();
+    /**
+     * @return the constraint's dynamic arity, i.e. the number of unbound variables in its scope
+     */
+    int dynamicArity();
 
-    public int getFailureCount();
-    public void incrementFailureCount();
+    int getFailureCount();
+    void incrementFailureCount();
+
+    /**
+     * Collects messages (outside beliefs) from the variables in its scope.
+     * Used to compute a loss function via weighted counting
+     */
+    void receiveMessagesWCounting();
+
+    /**
+     * Optionally computes and sets the marginals of auxiliary variables created in the constraint's implementation.
+     */
+    void setAuxVarsMarginalsWCounting();
+
+    /**
+     * Computes and returns the weighted count of solutions (i.e. weighted model counting) given the outside beliefs.
+     * !!!IMPORTANT NOTE!!!: the computation may rely on the fact that variables have all their beliefs initialized to beliefRep.one() upon creation (in StateSparseWeightedSet)
+     */
+    double weightedCounting();
 }

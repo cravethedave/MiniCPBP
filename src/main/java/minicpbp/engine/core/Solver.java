@@ -178,6 +178,13 @@ public interface Solver {
     StateStack<IntVar> getVariables();
 
     /**
+     * Returns the constraints registered in the solver.
+     *
+     * @return the constraints
+     */
+    StateStack<Constraint> getConstraints();
+
+    /**
      * Returns the random number generator for the solver.
      *
      * @return random number generator
@@ -265,11 +272,17 @@ public interface Solver {
     /**
      * @return the minimal arity among all contraints
      */
-    double minArity();
+    int minArity();
 
     /**
-     * Makes MiniCP compute the minimal arity among all contraints
+     * Makes MiniCP compute the minimal arity among all constraints
      */
     void computeMinArity();
-}
+
+    /**
+     * Computes a global loss function from the constraints.
+     */
+    double globalLossFct();
+
+ }
 

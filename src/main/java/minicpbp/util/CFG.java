@@ -27,29 +27,41 @@ import java.util.Vector;
 
 import minicpbp.util.io.InputReader;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Context-Free Grammar for Grammar constraint
  * (code adapted from that of Claude-Guy Quimper)
  *
- * Grammar is read in the following order: terminalCount, nonTerminalCount, productionCount, ...
- * ... for each production: left, length, right symbols
+ * Grammar is read in the following order: terminalCount, nonTerminalCount, length1productionCount, length2productionCount...
+ * ... for each length-1 production: left, right symbol; for each length-2 production: left, right symbols
  */
-// TODO: Consider splitting productions into length-1 and length-2
 
 public class CFG {
-
-    private int productionCount;
     private Production[] productions;
+    private int productionCount;
+
+    private Production[] length1productions, length2productions;
+    private int length1productionCount, length2productionCount;
+	private Set<Production>[] lhs1prod, lhs2prod; // productions indexed by left-hand-side
+	private Set<Production>[] rhs2prod; // productions indexed by 1st nonterminal on right-hand-side
+
     private int terminalCount; // Any integer c s.t. 0 <= c < terminalCount is a terminal
     private int nonTerminalCount; // Start symbol is terminalCount
 	public HashMap<Integer, String> tokenDecoder;
     public HashMap<String, Integer> tokenEncoder;
 
     public CFG(String filePath) throws FileNotFoundException, IOException {
+        old_maker(filePath);
+    }
+
+    private void old_maker(String filePath) throws FileNotFoundException, IOException {
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         HashMap<String, Vector<String[]>> grammar = new HashMap<>();
         
         if (!reader.ready()) {
+            reader.close();
             throw new IOException();
         }
         
@@ -131,20 +143,147 @@ public class CFG {
         }
     }
 
-    public CFG(InputReader reader) {
-        terminalCount = reader.getInt();
-        nonTerminalCount = reader.getInt();
-        productionCount = reader.getInt();
-        productions = new Production[productionCount];
-        for(int i=0; i<productionCount; i++) {
-            productions[i] = new Production();
-            productions[i].left = reader.getInt();
-            productions[i].length = reader.getInt();
-            productions[i].right = new int[productions[i].length];
-            for (int j=0; j<productions[i].length; j++) {
-                productions[i].right[j] = reader.getInt();
+    private void new_maker(String filePath) throws FileNotFoundException, IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        HashMap<String, Vector<String[]>> grammar = new HashMap<>();
+        
+        if (!reader.ready()) {
+            reader.close();
+            throw new IOException();
+        }
+        
+        // Sets up the starting symbol
+        String line = reader.readLine();
+        String[] production = line.split(" -> ");
+        String left = production[0];
+        String startSymbol = left;
+        String[] rightTokens = production[1].split(" ");
+        grammar.putIfAbsent(left, new Vector<>());
+        grammar.get(left).add(rightTokens);
+
+        // Reads until done
+        while(reader.ready()) {
+            line = reader.readLine();
+            production = line.split(" -> ");
+            left = production[0];
+            rightTokens = production[1].split(" ");
+            grammar.putIfAbsent(left, new Vector<>());
+            grammar.get(left).add(rightTokens);
+        }
+        reader.close();
+
+        // Creates the terminals and nonTerminals sets
+        Set<String> nonTerminals = new HashSet<>();
+        Set<String> terminals = new HashSet<>();
+        productionCount = 0;
+        for(String key : grammar.keySet()) {
+            nonTerminals.add(key);
+            for(String[] tokens : grammar.get(key)) {
+                productionCount++;
+                for (String token : tokens) {
+                    (grammar.keySet().contains(token) ? nonTerminals : terminals).add(token);
+                }
             }
         }
+
+        // Creates the tokenEncoder and Decoder
+        terminalCount = terminals.size();
+        nonTerminalCount = nonTerminals.size();
+        tokenEncoder = new HashMap<>();
+        tokenDecoder = new HashMap<>();
+        // Terminals go first, from 0 to terminals.size()
+        for(String token : terminals) {
+            tokenEncoder.put(token, tokenEncoder.size());
+            tokenDecoder.put(tokenDecoder.size(), token);
+        }
+        // Puts the start symbol at the start of the nonTerminals
+        tokenEncoder.put(startSymbol, tokenEncoder.size());
+        tokenDecoder.put(tokenDecoder.size(), startSymbol);
+        // Adds the rest of the nonTerminals
+        for(String token : nonTerminals) {
+            if (!tokenEncoder.containsKey(token)) {
+                tokenEncoder.put(token, tokenEncoder.size());
+                tokenDecoder.put(tokenDecoder.size(), token);
+            }
+        }
+
+        // Encodes the productions so they use the numbers
+        productions = new Production[productionCount];
+        int processedProductions = 0;
+        for(String key : grammar.keySet()) {
+            for(String[] tokens : grammar.get(key)) {
+                Production prod = new Production();
+                prod.left = tokenEncoder.get(key);
+                prod.length = tokens.length;
+                prod.right = new int[prod.length];
+                for (int i = 0; i < prod.length; i++) {
+                    prod.right[i] = tokenEncoder.get(tokens[i]);
+                }
+                productions[processedProductions] = prod;
+                processedProductions++;
+            }
+        }
+
+
+		lhs1prod = new Set[nonTerminalCount];
+		lhs2prod = new Set[nonTerminalCount];
+		rhs2prod = new Set[nonTerminalCount];
+		for (int i = 0; i < nonTerminalCount; i++) {
+			lhs1prod[i] = new HashSet<Production>();
+			lhs2prod[i] = new HashSet<Production>();
+			rhs2prod[i] = new HashSet<Production>();
+		}
+
+        Vector<Production> dynamicLen1Prods = new Vector<>();
+        Vector<Production> dynamicLen2Prods = new Vector<>();
+        for (Production prod : productions) {
+            if (prod.right.length == 2) {
+                dynamicLen2Prods.add(prod);
+                lhs2prod[prod.left - terminalCount].add(prod);
+                rhs2prod[prod.right[0] - terminalCount].add(prod);
+            } else {
+                dynamicLen1Prods.add(prod);
+                lhs1prod[prod.left - terminalCount].add(prod);
+            }
+        }
+
+        // Removes nonTerminals from Encoder
+        for (String nonTerminal : nonTerminals) {
+            tokenEncoder.remove(nonTerminal);
+        }
+    }
+
+    public CFG(InputReader reader) {
+	    terminalCount = reader.getInt();
+	    nonTerminalCount = reader.getInt();
+	    length1productionCount = reader.getInt();
+		length2productionCount = reader.getInt();
+	    length1productions = new Production[length1productionCount];
+		length2productions = new Production[length2productionCount];
+		lhs1prod = new Set[nonTerminalCount];
+		lhs2prod = new Set[nonTerminalCount];
+		rhs2prod = new Set[nonTerminalCount];
+		for (int i = 0; i < nonTerminalCount; i++) {
+			lhs1prod[i] = new HashSet<Production>();
+			lhs2prod[i] = new HashSet<Production>();
+			rhs2prod[i] = new HashSet<Production>();
+		}
+		for(int i=0; i<length1productionCount; i++) {
+			length1productions[i] = new Production();
+			length1productions[i].left = reader.getInt();
+			length1productions[i].right = new int[1];
+			length1productions[i].right[0] = reader.getInt();
+			lhs1prod[length1productions[i].left - terminalCount].add(length1productions[i]);
+		}
+		for(int i=0; i<length2productionCount; i++) {
+			length2productions[i] = new Production();
+			length2productions[i].left = reader.getInt();
+			length2productions[i].right = new int[2];
+			length2productions[i].right[0] = reader.getInt();
+			length2productions[i].right[1] = reader.getInt();
+			lhs2prod[length2productions[i].left - terminalCount].add(length2productions[i]);
+			rhs2prod[length2productions[i].right[0] - terminalCount].add(length2productions[i]);
+		}
     }
 
     public int terminalCount() {
@@ -153,11 +292,26 @@ public class CFG {
     public int nonTerminalCount() {
     return nonTerminalCount;
     }
-    public int productionCount() {
-    return productionCount;
-    }
-    public Production[] productions() { return productions; }
     
+    public int productionCount() {
+        return productionCount;
+    }
+
+    public int length1productionCount() {
+	    return length1productionCount;
+    }
+
+    public Production[] length1productions() { return length1productions; }
+
+	public int length2productionCount() {
+		return length2productionCount;
+	}
+	public Production[] length2productions() { return length2productions; }
+
+	public Set<Production>[] lhs1prod() { return lhs1prod; }
+	public Set<Production>[] lhs2prod() { return lhs2prod; }
+	public Set<Production>[] rhs2prod() { return rhs2prod; }
+
 }
 
 
