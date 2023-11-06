@@ -62,6 +62,7 @@ public class CFG {
         grammar.putIfAbsent(left, new Vector<>());
         grammar.get(left).add(rightTokens);
 
+        // Reads until done
         while(reader.ready()) {
             line = reader.readLine();
             production = line.split(" -> ");
@@ -72,6 +73,7 @@ public class CFG {
         }
         reader.close();
 
+        // Creates the terminals and nonTerminals sets
         Set<String> nonTerminals = new HashSet<>();
         Set<String> terminals = new HashSet<>();
         productionCount = 0;
@@ -85,17 +87,20 @@ public class CFG {
             }
         }
 
+        // Creates the tokenEncoder and Decoder
         terminalCount = terminals.size();
         nonTerminalCount = nonTerminals.size();
         tokenEncoder = new HashMap<>();
         tokenDecoder = new HashMap<>();
+        // Terminals go first, from 0 to terminals.size()
         for(String token : terminals) {
             tokenEncoder.put(token, tokenEncoder.size());
             tokenDecoder.put(tokenDecoder.size(), token);
         }
-        // puts the start symbol at the right number
+        // Puts the start symbol at the start of the nonTerminals
         tokenEncoder.put(startSymbol, tokenEncoder.size());
         tokenDecoder.put(tokenDecoder.size(), startSymbol);
+        // Adds the rest of the nonTerminals
         for(String token : nonTerminals) {
             if (!tokenEncoder.containsKey(token)) {
                 tokenEncoder.put(token, tokenEncoder.size());
@@ -103,6 +108,7 @@ public class CFG {
             }
         }
 
+        // Encodes the productions so they use the numbers
         productions = new Production[productionCount];
         int processedProductions = 0;
         for(String key : grammar.keySet()) {
@@ -117,6 +123,11 @@ public class CFG {
                 productions[processedProductions] = prod;
                 processedProductions++;
             }
+        }
+
+        // Removes nonTerminals from Encoder
+        for (String nonTerminal : nonTerminals) {
+            tokenEncoder.remove(nonTerminal);
         }
     }
 
