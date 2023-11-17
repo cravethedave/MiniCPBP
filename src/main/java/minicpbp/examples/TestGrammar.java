@@ -2,6 +2,7 @@ package minicpbp.examples;
 
 import minicpbp.engine.core.IntVar;
 import minicpbp.engine.core.Solver;
+import minicpbp.engine.core.Solver.PropaMode;
 import minicpbp.search.DFSearch;
 import minicpbp.search.SearchStatistics;
 import minicpbp.util.CFG;
@@ -20,17 +21,19 @@ import java.util.Vector;
 
 public class TestGrammar {
     public static void main(String[] args) {
-        // new_code("data/moleculeCNF_v3.txt");
+        new_code("data/moleculeCNF_v6.txt");
 
         // comparator(
         //     "data/moleculeCNF_v1.txt",
-        //     "data/moleculeCNF_v5.txt",
+        //     "data/moleculeCNF_v6.txt",
         //     "big_data/ZINC250k.txt",
-        //     0,
-        //     24000
+        //     3000,
+        //     4000
         // );
 
         // tester("data/moleculeCNF_v5.txt", "C(CCCCCC1)C1C", 5);
+
+        // bp("data/ambiguousCNF.txt");
     }
 
     private static void tester(String filePath, String molecule, int decal) {
@@ -123,13 +126,13 @@ public class TestGrammar {
     private static void new_code(String filePath) {
         try {
             CFG g = new CFG(filePath);
-            int wordLength = 25;
+            int wordLength = 15;
             Solver cp = makeSolver(false);
             IntVar[] w = makeIntVarArray(cp, wordLength, 0, g.terminalCount()-1);
 
             cp.post(grammar(w,g));
 
-            int startingNb = 4;
+            int startingNb = 1;
             int endNb = 19;
             int nbCount = endNb - startingNb + 1;
             int[] values = new int[nbCount];
@@ -163,6 +166,7 @@ public class TestGrammar {
                 cp.post(among(w, values[i], numberOccurrences));
             }
 
+            w[1].assign(g.tokenEncoder.get("1"));
             // w[i].assign forces to a value
 
             //#region Sampling
@@ -175,7 +179,8 @@ public class TestGrammar {
             //randvarrandval
             // DFSearch dfs = makeDfs(cp, lexico(branchingVars));
             //#endregion
-            DFSearch dfs = makeDfs(cp, randomVarRandomVal(w));
+            cp.setMode(PropaMode.SBP);
+            DFSearch dfs = makeDfs(cp, firstFail(w));
             
             dfs.onSolution(() -> {
                 String word = "";
@@ -185,17 +190,37 @@ public class TestGrammar {
                 System.out.println(word);
             });
 
-            SearchStatistics stats = dfs.solve(stat -> stat.numberOfSolutions() >= 10);
-            System.out.println(stats.numberOfSolutions());
+            // SearchStatistics stats = dfs.solve(stat -> stat.numberOfSolutions() >= 10);
+            // System.out.println(stats.numberOfSolutions());
+            cp.fixPoint();
+            // cp.setTraceBPFlag(true);
+            cp.vanillaBP(1);
+
+            int counter = 1;
+            for (IntVar iter : w) {
+                System.out.println(String.format("Position %d", counter));
+                for (int i = iter.min(); i <= iter.max(); i++) {
+                    if (iter.contains(i)) {
+                        System.out.println(String.format("%s %f", g.tokenDecoder.get(i), iter.marginal(i)));
+                    }
+                }
+                counter++;
+            }
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-    private static void old() {
-        InputReader reader = new InputReader("data/testing_old.txt");
-        CFG g = new CFG(reader);
-        int wordLength = 5;
+    private static void bp(String filePath) {
+        CFG g;
+        // InputReader reader = new InputReader("data/simpleCFG2.txt");
+        // CFG g2 = new CFG(reader);
+        try {
+            g = new CFG(filePath);
+        } catch (Exception e) {
+            return;
+        }
+        int wordLength = 4;
 
         Solver cp = makeSolver();
         IntVar[] w = makeIntVarArray(cp, wordLength, 0, g.terminalCount()-1);
@@ -204,29 +229,9 @@ public class TestGrammar {
 
         cp.post(grammar(w,g));
 
-        // cp.post(lessOrEqual(w[1],w[4])); // some other arbitrary constraint
-        
-        // sampling a "fraction" of the solutions
-        // double fraction = 0.01;
-        // IntVar[] branchingVars = cp.sample(fraction,w);
-
         cp.fixPoint();
         cp.setTraceBPFlag(true);
         cp.vanillaBP(3);
-
-        // DFSearch dfs = makeDfs(cp, firstFail(branchingVars));
-        // DFSearch dfs = makeDfs(cp, firstFail(w));
-        /*
-        DFSearch dfs = makeDfs(cp, maxMarginal(w));
-        cp.setTraceSearchFlag(true);
-        dfs.onSolution(() -> {
-            for (int i = 0; i < wordLength; i++) {
-                System.out.print(w[i].min());
-            }
-            System.out.println();
-        });
-        dfs.solve();
-         */
     }
 
     private static void comparator(
