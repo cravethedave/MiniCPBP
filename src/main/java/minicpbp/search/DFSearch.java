@@ -245,6 +245,17 @@ public class DFSearch extends Search{
 
     /**
      * Effectively start a depth first search with restarts
+     * looking for every solution.
+     *
+     * @return an object with the statistics on the search
+     */
+    public SearchStatistics solveRestarts(int nbFailCutoff, double restartFactor) {
+        SearchStatistics statistics = new SearchStatistics();
+        return solveRestarts(statistics, stats -> false, nbFailCutoff, restartFactor);
+    }
+
+    /**
+     * Effectively start a depth first search with restarts
      * with a given predicate called at each node
      * to stop the search when it becomes true.
      *
