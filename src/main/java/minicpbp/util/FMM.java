@@ -1,14 +1,17 @@
 package minicpbp.util;
 
 public class FMM {
-    private int n, m, p;
+    private int n, m, p, r, k1, k2;
     private int resultMatrixSize, matrixASize, matrixBSize;
     private int[][][] tensors;
 
-    public FMM(int n, int m, int p) {
+    public FMM(int n, int m, int p, int r, int k1, int k2) {
         this.n = n;
         this.m = m;
         this.p = p;
+        this.r = r;
+        this.k1 = k1;
+        this.k2 = k2;
 
         resultMatrixSize = n*p;
         matrixASize = n*m;
@@ -22,7 +25,7 @@ public class FMM {
 
         for (int c = 0; c < resultMatrixSize; c++) {
             // Which row of A is being multiplied to create this value
-            int rowA = c / n; // between 0 and n-1
+            int rowA = c / p; // between 0 and n-1
             // Which column of B is being multiplied to create this value
             int columnB = c % p; // between 0 and p-1
 
@@ -56,6 +59,18 @@ public class FMM {
 
     public int getP() {
         return p;
+    }
+
+    public int getR() {
+        return r;
+    }
+
+    public int getK1() {
+        return k1;
+    }
+
+    public int getK2() {
+        return k2;
     }
 
     public int getASize() {
