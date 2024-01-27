@@ -49,6 +49,10 @@ public class FMM {
         }
     }
 
+    public void printValues() {
+        System.out.println(String.format("%dx%dx%d r %d k1 %d k2 %d", n,m,p,r,k1,k2));
+    }
+    
     public int getN() {
         return n;
     }

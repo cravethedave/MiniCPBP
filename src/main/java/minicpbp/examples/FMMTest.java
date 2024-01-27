@@ -4,12 +4,8 @@ import static minicpbp.cp.BranchingScheme.*;
 import static minicpbp.cp.Factory.*;
 
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicIntegerArray;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicLongArray;
 
-import minicpbp.engine.core.BoolVar;
 import minicpbp.engine.core.IntVar;
 import minicpbp.engine.core.Solver;
 import minicpbp.engine.core.Solver.PropaMode;
@@ -21,18 +17,21 @@ import minicpbp.util.FMMThread;
 public class FMMTest {
     public static volatile boolean foundResult = false;
 
-    /** Contains in order: nbFinishedThreads, totalTime, totalFailures, totalNodes */
-    public static AtomicLongArray threadStats = new AtomicLongArray(new long[]{0,0,0,0});
+    /** Contains in order: nbFinishedThreads, totalTime, totalFailures, totalNodes, minTime, maxTime */
+    public static AtomicLongArray threadStats = new AtomicLongArray(new long[]{0,0,0,0,Integer.MAX_VALUE, Integer.MIN_VALUE});
     static int failures = 0;
 
     public static void main(String[] args) {
         // K1 UB = nm+mp
         // K2 [M,R]
-        FMM fmm = new FMM(1,2,5,10,8,6);
+        FMM fmm = new FMM(1,2,3,6,2,2); // R = 6, k1 = 2, k2 = 2
+        // FMM fmm = new FMM(1,2,4,8,3,4); // R = 8, k1 = 3, k2 = 4
+        // FMM fmm = new FMM(1,2,5,10,5,4); // R = 10, k1 = 5, k2 = 4 (3 works but slow)
+        fmm.printValues();
         fmm.printTensors();
 
         // parallel_runner(fmm, 10, 1000);
-        // sequential_runner(fmm, 10, 1000);
+        // sequential_runner(fmm, 15, 1000);
         solve(fmm, 1000);
     }
 
@@ -99,12 +98,7 @@ public class FMMTest {
         }
         //#endregion
 
-        // bind1x2x3Solution(U,V,W);
-        // findAndPrintTensors(U,V,W);
-        // FMMThread.printMatrix(U, A, R);
-        // FMMThread.printMatrix(V, B, R);
-        // FMMThread.printMatrix(W, C, R);
-
+        bind1x2x3Solution(U, V, W);
 
         //#region Absolute Matrices useful later
         IntVar[][] absU = new IntVar[A][R];
@@ -135,16 +129,24 @@ public class FMMTest {
         baseModelConstraints(cp,U,V,W,fmm);
 
 
-        // permutationSymmetryConstraints(cp,U,V,W);
+        // permutationSymmetryConstraints(cp,U,V,W); // Eliminates valid solutions
 
 
         signSymmetryConstraints(cp,U,V,W);
 
 
-        validInequalityConstraints(cp,absU,absV,absW,fmm);
+        validInequalityConstraints(cp,absU,absV,absW, W,fmm);
 
 
-        sparseMatrixConstraints(cp,absU,absV,absW,fmm);
+        // sparseMatrixConstraints(cp,absU,absV,absW,fmm); // Eliminates valid solutions
+
+
+        // bind1x2x3Solution(U,V,W);
+        // cp.propagateSolver();
+        // findAndPrintTensors(U,V,W);
+        // printMatrix(U, A, R);
+        // printMatrix(V, B, R);
+        // printMatrix(W, C, R);
 
 
         //#region Flatten Variables
@@ -177,8 +179,11 @@ public class FMMTest {
 
         //#region Search
         cp.setMode(PropaMode.SBP);
-        DFSearch dfs = makeDfs(cp, maxMarginalRandomTieBreak(searchIntVars));
-        // DFSearch dfs = makeDfs(cp, domWdeg(searchIntVars));
+        // DFSearch dfs = makeDfs(cp, maxMarginalRandomTieBreak(searchIntVars));
+        // DFSearch dfs = makeDfs(cp, minEntropyBiasedWheelSelectVal(searchIntVars));
+        // DFSearch dfs = makeDfs(cp, minEntropyRandomTieBreak(searchIntVars));
+        DFSearch dfs = makeDfs(cp, domWdeg(searchIntVars));
+        // DFSearch dfs = makeDfs(cp, randomVarRandomVal(searchIntVars));
         dfs.onSolution(() -> {
             String message = "New Solution\n";
             message += matrixStringBuilder(U, A, R);
@@ -186,21 +191,27 @@ public class FMMTest {
             message += matrixStringBuilder(W, C, R);
             System.out.println(message);
         });
-        dfs.onFailure(() -> {
-            failures++;
-            if (failures % 5000 == 0)
-                System.out.println(String.format("%d", failures));
-        });
+        // dfs.onFailure(() -> {
+        //     failures++;
+        //     if (failures % 5000 == 0)
+        //         System.out.println(String.format("%d", failures));
+        // });
         SearchStatistics stats = new SearchStatistics();
-        stats = dfs.solveRestarts(s -> s.numberOfSolutions() == 1, limit, 1.5);
-        // stats = dfs.solve(s -> s.numberOfSolutions() == 1);
-        long nbFinishedThreads = threadStats.addAndGet(0, 1);
-        long avgTime = threadStats.addAndGet(1, stats.timeElapsed()) / nbFinishedThreads;
-        long avgFailures = threadStats.addAndGet(2, stats.numberOfFailures()) / nbFinishedThreads;
-        long avgNodes = threadStats.addAndGet(3, stats.numberOfNodes()) / nbFinishedThreads;
-        System.out.println(String.format("Average time after %d threads: %d", nbFinishedThreads, avgTime));
-        System.out.println(String.format("Average failures after %d threads: %d", nbFinishedThreads, avgFailures));
-        System.out.println(String.format("Average nodes after %d threads: %d", nbFinishedThreads, avgNodes));
+        stats = dfs.solveRestarts(s -> {
+            return s.numberOfSolutions() == 1 || s.timeElapsed() >= 7200000;
+        }, limit, 1.5);
+
+        // long nbFinishedThreads = threadStats.addAndGet(0, 1);
+        // long avgTime = threadStats.addAndGet(1, stats.timeElapsed()) / nbFinishedThreads;
+        // long avgFailures = threadStats.addAndGet(2, stats.numberOfFailures()) / nbFinishedThreads;
+        // long avgNodes = threadStats.addAndGet(3, stats.numberOfNodes()) / nbFinishedThreads;
+        // if (stats.timeElapsed() < threadStats.get(4)) threadStats.set(4, stats.timeElapsed());
+        // if (stats.timeElapsed() > threadStats.get(5)) threadStats.set(5, stats.timeElapsed());
+        // System.out.println(String.format("Average time after %d threads: %d", nbFinishedThreads, avgTime));
+        // System.out.println(String.format("Average failures after %d threads: %d", nbFinishedThreads, avgFailures));
+        // System.out.println(String.format("Average nodes after %d threads: %d", nbFinishedThreads, avgNodes));
+        // System.out.println(String.format("Min time after %d threads: %d", nbFinishedThreads, threadStats.get(4)));
+        // System.out.println(String.format("Max time after %d threads: %d", nbFinishedThreads, threadStats.get(5)));
         //#endregion
     }
 
@@ -274,11 +285,13 @@ public class FMMTest {
                 augmentedColumn[A + b] = V[b][r];
             }
 
-            BoolVar[] isLessVar = new BoolVar[A + B];
-            for (int i = 0; i < A + B; i++) {
-                isLessVar[i] = isLess(previousAugmentedColumn[i], augmentedColumn[i]);
-            }
-            cp.post(or(isLessVar));
+            cp.post(lexLess(previousAugmentedColumn, augmentedColumn));
+
+            // BoolVar[] isLessVar = new BoolVar[A + B];
+            // for (int i = 0; i < A + B; i++) {
+            //     isLessVar[i] = isLess(previousAugmentedColumn[i], augmentedColumn[i]);
+            // }
+            // cp.post(or(isLessVar));
             previousAugmentedColumn = augmentedColumn;
         }
     }
@@ -343,6 +356,7 @@ public class FMMTest {
         IntVar[][] absU, 
         IntVar[][] absV, 
         IntVar[][] absW,
+        IntVar[][] W,
         FMM fmm
     ) {
         int A = absU.length;
@@ -357,7 +371,7 @@ public class FMMTest {
             for (int c = 0; c < C; c++) {
                 absColW[c] = absW[c][r];
             }
-            // cp.post(lessOrEqual(oneValueVar, sum(absColW))); // Causing issues
+            cp.post(lessOrEqual(oneValueVar, sum(absColW))); // Causing issues
         }
 
         // Absolute sum of each row of W must be at least m
@@ -366,6 +380,16 @@ public class FMMTest {
         }
 
         // c terms must differ in at least two m terms
+        // Slows down solutions a lot
+        // IntVar[] absDifference = new IntVar[R];
+        // for (int c = 0; c < C; c++) {
+        //     for (int i = c + 1; i < C; i++) {
+        //         for (int r = 0; r < R; r++) {
+        //             absDifference[r] = abs(sum(W[c][r], mul(W[i][r], -1)));
+        //         }
+        //         cp.post(lessOrEqual(makeIntVar(cp, 2, 2), sum(absDifference)));
+        //     }
+        // }
 
         // Each row of U must have at least one non-zero term
         for (int a = 0; a < A; a++) {
