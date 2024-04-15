@@ -6,37 +6,183 @@ import minicpbp.engine.core.Solver.PropaMode;
 import minicpbp.search.DFSearch;
 import minicpbp.search.SearchStatistics;
 import minicpbp.util.CFG;
-import minicpbp.util.Production;
-import minicpbp.util.io.InputReader;
 
 import static minicpbp.cp.BranchingScheme.*;
 import static minicpbp.cp.Factory.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.Vector;
 
 public class TestGrammar {
     public static void main(String[] args) {
-        new_code("data/moleculeCNF_v6.txt");
-
-        // comparator(
-        //     "data/moleculeCNF_v1.txt",
-        //     "data/moleculeCNF_v6.txt",
-        //     "big_data/ZINC250k.txt",
-        //     3000,
-        //     4000
-        // );
-
-        // tester("data/moleculeCNF_v5.txt", "C(CCCCCC1)C1C", 5);
-
-        // bp("data/ambiguousCNF.txt");
+        generateMolecules(
+            "data/moleculeCNF_v6.txt",
+            "domWdeg",
+            2996,
+            3000,
+            35,
+            65,
+            2
+        );
+        // testMoleculeValidity("data/moleculeCNF_v6.txt", args[0], 0);
+        // bulkMolVal("data/moleculeCNF_v6.txt", "../py_master_utils/molecules/MOSES.txt");
     }
 
-    private static void tester(String filePath, String molecule, int decal) {
+    private static void bulkMolVal(String grammarPath, String moleculePath) {
+        Vector<Vector<String>> molecules = new Vector<>();
+        try {
+            File moleculeFile = new File(moleculePath);
+            Scanner reader = new Scanner(moleculeFile);
+            while (reader.hasNextLine()) {
+                molecules.add(tokenize(reader.nextLine()));
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        }
+
+        //#region Constraints setup
+        // CFG
+        CFG g = null;
+        try {
+            g = new CFG(grammarPath);
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        } catch (IOException e) {
+            System.out.println("IOException");
+        }
+
+        // Cycle counting
+        int startingNb = 1;
+        int endNb = 19;
+        int nbCount = endNb - startingNb + 1;
+        int[] values = new int[nbCount];
+        for (int i = startingNb; i < startingNb + nbCount; i++) {
+            String key = i < 10 ? Integer.toString(i) : '%' + Integer.toString(i);
+            values[i-startingNb] = g.tokenEncoder.get(key);
+        }
+
+        int n = g.terminalCount();
+        int[][] A = new int[nbCount][n];
+        for (int i = 0; i < nbCount; i++) {
+            // Default loop
+            for (int j = 0; j < n; j++) {
+                A[i][j] = i;
+            }
+            // Disallow all numbers above the one associated to the current state
+            for (int j = i + 1; j < values.length; j++) {
+                A[i][values[j]] = -1;
+            }
+            // Create the transitions to go up a state, except for the last state
+            if (i != A.length - 1) {
+                A[i][values[i]] = i + 1;
+            }
+        }
+        //#endregion
+
+        System.out.println("[INFO] Done setup");
+
+        int processed = 0;
+        float failures = 0.0f;
+        for (Vector<String> tokens : molecules) {
+            if (processed % 1000 == 0) {
+                System.out.println("[INFO] Failed " + failures + " of the " + processed + " processed");
+            }
+            processed++;
+            int wordLength = tokens.size();
+            Solver cp = makeSolver(false);
+            IntVar[] w = makeIntVarArray(cp, wordLength, 0, g.terminalCount()-1);
+            for (int i = 0; i < wordLength; i++) {
+                w[i].setName("w_" + i);
+            }
+            boolean valid = true;
+            for (int i = 0; i < tokens.size(); i++) {
+                if (!g.tokenEncoder.containsKey(tokens.get(i))) {
+                    valid = false;
+                    System.out.println("[WARN] Grammar does not contain " + tokens.get(i));
+                    failures++;
+                    break;
+                }
+                Integer token = g.tokenEncoder.get(tokens.get(i));
+                w[i].assign(token);
+            }
+
+            if (!valid) continue;
+
+            //#region Constraints setting
+            try {
+                cp.post(grammar(w,g));
+            } catch (Exception e) {
+                valid = false;
+                failures++;
+                // System.out.println("Failed during grammar constraint");
+            }
+            
+            if (!valid) continue;
+
+            try {
+                cp.post(regular(w, A));
+            } catch (Exception e) {
+                valid = false;
+                failures++;
+                // System.out.println("Failed during regular constraint");
+            }
+            
+            if (!valid) continue;
+    
+            for (int i = 0; i < values.length; i++) {
+                IntVar numberOccurrences = makeIntVar(cp, 0, 2);
+                numberOccurrences.remove(1);
+                try {
+                    cp.post(among(w, values[i], numberOccurrences));
+                } catch (Exception e) {
+                    valid = false;
+                    failures++;
+                    break;
+                    // System.out.println("Failed during parity constraint");
+                }
+            }
+            //#endregion
+        }
+        
+        System.out.println("[INFO] Failed " + failures + " out of " + molecules.size() + ". " + failures/molecules.size() * 100 + "% success rate.");
+        System.out.println(Math.round(failures));
+    }
+
+    private static Vector<String> tokenize(String molecule) {
+        char[] moleculeChars = molecule.toCharArray();
+        Vector<String> tokens = new Vector<>();
+        for (int i = 0; i < moleculeChars.length; i++) {
+            if (moleculeChars[i] == '%') {
+                tokens.add(String.format("%%c%c", moleculeChars[i+1], moleculeChars[i+2]));
+                i += 2; // Skips the next two chars
+                continue;
+            } else if (i != moleculeChars.length - 1 && moleculeChars[i] == 'C' && moleculeChars[i+1] == 'l') {
+                tokens.add("Cl");
+                i += 1;
+                continue;
+            } else if (i != moleculeChars.length - 1 && moleculeChars[i] == 'B' && moleculeChars[i+1] == 'r') {
+                tokens.add("Br");
+                i += 1;
+                continue;
+            } else if (i != moleculeChars.length - 1 && moleculeChars[i] == 'H' && moleculeChars[i+1] == '3') {
+                tokens.add("H3");
+                i += 1;
+                continue;
+            }
+            tokens.add(String.format("%c", moleculeChars[i]));
+        }
+        return tokens;
+    }
+
+    private static void testMoleculeValidity(String filePath, String molecule, int decal) {
         try {
             CFG g = new CFG(filePath);
 
@@ -64,21 +210,26 @@ public class TestGrammar {
             }
 
             int wordLength = tokens.size();
-            System.out.println(String.format("%d atoms", wordLength - decal));
             Solver cp = makeSolver(false);
             IntVar[] w = makeIntVarArray(cp, wordLength, 0, g.terminalCount()-1);
+            for (int i = 0; i < wordLength; i++) {
+                w[i].setName("w_" + i);
+            }
             for (int i = 0; i < tokens.size(); i++) {
                 Integer token = g.tokenEncoder.get(tokens.get(i));
                 w[i].assign(token);
             }
 
+            //#region Grammar constraint
             try {
                 cp.post(grammar(w,g));
             } catch (Exception e) {
                 System.out.println("Failed during grammar constraint");
                 throw e;
             }
+            //#endregion
 
+            //#region Cycle counting constraint
             int startingNb = 1;
             int endNb = 19;
             int nbCount = endNb - startingNb + 1;
@@ -104,20 +255,250 @@ public class TestGrammar {
                     A[i][values[i]] = i + 1;
                 }
             }
+            
             try {
                 cp.post(regular(w, A));
             } catch (Exception e) {
                 System.out.println("Failed during regular constraint");
                 throw e;
             }
+            //#endregion
 
+            //#region Cycle parity constraint
+            for (int i = 0; i < values.length; i++) {
+                IntVar numberOccurrences = makeIntVar(cp, 0, 2);
+                numberOccurrences.remove(1);
+                try {
+                    cp.post(among(w, values[i], numberOccurrences));
+                } catch (Exception e) {
+                    System.out.println("Failed during parity constraint");
+                    throw e;
+                }
+            }
+            //#endregion
+
+            //#region Carbon percentage
+            // int[] carbonAtoms = new int[2];
+            // carbonAtoms[0] = g.tokenEncoder.get("C");
+            // carbonAtoms[1] = g.tokenEncoder.get("c");
+            // int lowerBound = Math.round(wordLength * 0.35f);
+            // int upperBound = Math.round(wordLength * 0.65f);
+            // IntVar carbonRange = makeIntVar(cp, lowerBound, upperBound);
+            // try {
+            //     cp.post(among(w,carbonAtoms,carbonRange));
+            // } catch (Exception e) {
+            //     System.out.println("Failed during carbon constraint");
+            //     throw e;
+            // }
+            //#endregion
+
+            //#region Molecular weight constraint
+            // IntVar weightTarget = makeIntVar(cp, 2996, 3000);
+            // weightTarget.setName("Weight target");
+            // IntVar[] tokenWeights = makeIntVarArray(cp, wordLength, 0, 1259);
+            // for (int i = 0; i < wordLength; i++) {
+            //     tokenWeights[i].setName("weight_" + i);
+            // }
+            // int[] tokenToWeight = new int[g.terminalCount()];
+            // for (int i = 0; i < g.terminalCount(); i++) {
+            //     String token = g.tokenDecoder.get(i).toLowerCase();
+            //     if (g.tokenWeight.containsKey(token)) {
+            //         tokenToWeight[i] = g.tokenWeight.get(token);
+            //     } else {
+            //         tokenToWeight[i] = 0;
+            //     }
+            // }
+            // for (int i = 0; i < wordLength; i++) {
+            //     cp.post(element(tokenToWeight, w[i], tokenWeights[i]));
+            // }
+            // try {
+            //     cp.post(sum(tokenWeights, weightTarget));
+            // } catch (Exception e) {
+            //     System.out.println("Failed during weight constraint");
+            //     throw e;
+            // }
+            //#endregion
+
+            System.out.println("[SUCCESS] " + molecule);
+        } catch (Exception e) {
+            System.out.println("[FAIL] " + molecule);
+        }
+    }
+
+    private static void generateMolecules(
+        String filePath,
+        String method,
+        int minWeight,
+        int maxWeight,
+        int minCarbon,
+        int maxCarbon,
+        int nCycles
+    ) {
+        try {
+            //#region Base initialization
+            Solver cp = makeSolver(false);
+            int wordLength = 20;
+            //#endregion
+            
+            //#region Grammar constraint
+            CFG g = new CFG(filePath);
+            IntVar[] w = makeIntVarArray(cp, wordLength, 0, g.terminalCount()-1);
+            for (int i = 0; i < wordLength; i++) {
+                w[i].setName("w_" + i);
+            }
+            cp.post(grammar(w,g));
+            //#endregion
+
+            //#region Cycle counting constraint
+            int startingNb = 1;
+            int endNb = 19;
+            int nbCount = endNb - startingNb + 1;
+            int[] values = new int[nbCount];
+            for (int i = startingNb; i < startingNb + nbCount; i++) {
+                String key = i < 10 ? Integer.toString(i) : '%' + Integer.toString(i);
+                values[i-startingNb] = g.tokenEncoder.get(key);
+            }
+
+            int n = g.terminalCount();
+            int[][] A = new int[nbCount][n];
+            for (int i = 0; i < nbCount; i++) {
+                // Default loop
+                for (int j = 0; j < n; j++) {
+                    A[i][j] = i;
+                }
+                // Disallow all numbers above the one associated to the current state
+                for (int j = i + 1; j < values.length; j++) {
+                    A[i][values[j]] = -1;
+                }
+                // Create the transitions to go up a state, except for the last state
+                if (i != A.length - 1) {
+                    A[i][values[i]] = i + 1;
+                }
+            }
+            // cp.post(regular(w, A, 0, Arrays.asList(new Integer[] {4,5,6,7,8,9})));
+            cp.post(regular(w, A));
+            //#endregion
+
+            //#region Cycle parity constraint
             for (int i = 0; i < values.length; i++) {
                 IntVar numberOccurrences = makeIntVar(cp, 0, 2);
                 numberOccurrences.remove(1);
                 cp.post(among(w, values[i], numberOccurrences));
             }
+            //#endregion
 
-            System.out.println("Molecule is recognized");
+            //#region Molecular weight constraint
+            IntVar weightTarget = makeIntVar(cp, minWeight, maxWeight);
+            weightTarget.setName("Weight target");
+            IntVar[] tokenWeights = makeIntVarArray(cp, wordLength, 0, 1259);
+            for (int i = 0; i < wordLength; i++) {
+                tokenWeights[i].setName("weight_" + i);
+            }
+            int[] tokenToWeight = new int[g.terminalCount()];
+            for (int i = 0; i < g.terminalCount(); i++) {
+                String token = g.tokenDecoder.get(i).toLowerCase();
+                if (g.tokenWeight.containsKey(token)) {
+                    tokenToWeight[i] = g.tokenWeight.get(token);
+                } else {
+                    tokenToWeight[i] = 0;
+                }
+            }
+            for (int i = 0; i < wordLength; i++) {
+                cp.post(element(tokenToWeight, w[i], tokenWeights[i]));
+            }
+            // cp.post(sum(tokenWeights, weightTarget));
+            //#endregion
+
+            //#region Carbon percentage
+            int[] carbonAtoms = new int[2];
+            carbonAtoms[0] = g.tokenEncoder.get("C");
+            carbonAtoms[1] = g.tokenEncoder.get("c");
+            int lowerBound = Math.round(wordLength * (minCarbon / 100.0f));
+            int upperBound = Math.round(wordLength * (maxCarbon / 100.0f));
+            IntVar carbonRange = makeIntVar(cp, lowerBound, upperBound);
+            cp.post(among(w,carbonAtoms,carbonRange));
+            //#endregion
+
+            // C1OC1 C2OC2C3CC3S=CI
+            // w[0].assign(g.tokenEncoder.get("C"));
+            // w[1].assign(g.tokenEncoder.get("1"));
+            // w[2].assign(g.tokenEncoder.get("O"));
+            // w[3].assign(g.tokenEncoder.get("C"));
+            // w[4].assign(g.tokenEncoder.get("1"));
+            // w[5].assign(g.tokenEncoder.get("C"));
+            // w[6].assign(g.tokenEncoder.get("2"));
+            // w[7].assign(g.tokenEncoder.get("C"));
+            // w[8].assign(g.tokenEncoder.get("2"));
+            // w[9].assign(g.tokenEncoder.get("C"));
+            // w[10].assign(g.tokenEncoder.get("3"));
+            // w[11].assign(g.tokenEncoder.get("C"));
+            // w[12].assign(g.tokenEncoder.get("C"));
+            // w[13].assign(g.tokenEncoder.get("S"));
+            // w[14].assign(g.tokenEncoder.get("O"));
+            // w[15].assign(g.tokenEncoder.get("="));
+            // w[16].assign(g.tokenEncoder.get("O"));
+            // w[17].assign(g.tokenEncoder.get("C"));
+            // w[18].assign(g.tokenEncoder.get("I"));
+            // w[19].assign(g.tokenEncoder.get("_"));
+
+            cp.post(among(w, g.tokenEncoder.get(Integer.toString(nCycles)), makeIntVar(cp, 2,2)));
+
+            //#region Solve
+            // Sampling, replace w by branching vars if wanted
+            // double fraction = 0.005;
+            // IntVar[] branchingVars = cp.sample(fraction,w);
+
+            DFSearch dfs;
+            switch (method) {
+                case "minEntropy":
+                    cp.setMode(PropaMode.SBP);
+                    dfs = makeDfs(cp, minEntropy(w));
+                    break;
+                case "maxMarginal":
+                    cp.setMode(PropaMode.SBP);
+                    dfs = makeDfs(cp, maxMarginal(w));
+                    break;
+                case "rnd":
+                    cp.setMode(PropaMode.SP);
+                    dfs = makeDfs(cp, randomVarRandomVal(w));
+                    break;
+                default:
+                    cp.setMode(PropaMode.SP);
+                    dfs = makeDfs(cp, domWdeg(w));
+                    break;
+            }
+            // cp.setTraceSearchFlag(true);
+            // cp.setTraceBPFlag(true);
+            // DFSearch dfs = makeDfs(cp, maxMarginal(w));
+            
+            dfs.onSolution(() -> {
+                String word = "";
+                int sumWeight = 0;
+                for (int i = 0; i < wordLength; i++) {
+                    word += g.tokenDecoder.get(w[i].min());
+                    sumWeight += tokenWeights[i].min();
+                }
+                System.out.println(word + " weight of " + sumWeight);
+            });
+
+            //stat -> stat.numberOfSolutions() >= 10
+            SearchStatistics stats = dfs.solve(stat -> stat.numberOfSolutions() == 1);
+            System.out.println(stats);
+            //#endregion
+
+            // This shows the marginals for each token
+            // cp.fixPoint();
+            // cp.vanillaBP(1);
+            // int counter = 1;
+            // for (IntVar iter : w) {
+            //     System.out.println(String.format("Position %d", counter));
+            //     for (int i = iter.min(); i <= iter.max(); i++) {
+            //         if (iter.contains(i)) {
+            //             System.out.println(String.format("%s %f", g.tokenDecoder.get(i), iter.marginal(i)));
+            //         }
+            //     }
+            //     counter++;
+            // }
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -166,9 +547,6 @@ public class TestGrammar {
                 cp.post(among(w, values[i], numberOccurrences));
             }
 
-            w[1].assign(g.tokenEncoder.get("1"));
-            // w[i].assign forces to a value
-
             //#region Sampling
             // cp.post(lessOrEqual(w[1],w[4])); // some other arbitrary constraint
             
@@ -190,22 +568,22 @@ public class TestGrammar {
                 System.out.println(word);
             });
 
-            // SearchStatistics stats = dfs.solve(stat -> stat.numberOfSolutions() >= 10);
-            // System.out.println(stats.numberOfSolutions());
-            cp.fixPoint();
+            SearchStatistics stats = dfs.solve(stat -> stat.numberOfSolutions() >= 10);
+            System.out.println(stats.numberOfSolutions());
+            // cp.fixPoint();
             // cp.setTraceBPFlag(true);
-            cp.vanillaBP(1);
+            // cp.vanillaBP(1);
 
-            int counter = 1;
-            for (IntVar iter : w) {
-                System.out.println(String.format("Position %d", counter));
-                for (int i = iter.min(); i <= iter.max(); i++) {
-                    if (iter.contains(i)) {
-                        System.out.println(String.format("%s %f", g.tokenDecoder.get(i), iter.marginal(i)));
-                    }
-                }
-                counter++;
-            }
+            // int counter = 1;
+            // for (IntVar iter : w) {
+            //     System.out.println(String.format("Position %d", counter));
+            //     for (int i = iter.min(); i <= iter.max(); i++) {
+            //         if (iter.contains(i)) {
+            //             System.out.println(String.format("%s %f", g.tokenDecoder.get(i), iter.marginal(i)));
+            //         }
+            //     }
+            //     counter++;
+            // }
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -234,7 +612,7 @@ public class TestGrammar {
         cp.vanillaBP(3);
     }
 
-    private static void comparator(
+    private static void grammarComparator(
         String oldGrammarPath,
         String newGrammarPath,
         String dataSetPath,

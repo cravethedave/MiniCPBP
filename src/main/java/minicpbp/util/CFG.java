@@ -52,6 +52,25 @@ public class CFG {
 	public HashMap<Integer, String> tokenDecoder;
     public HashMap<String, Integer> tokenEncoder;
 
+    // TODO add numbers which remove weight
+    public HashMap<String, Integer> tokenWeight = new HashMap<String, Integer>() {{
+        put("C", 140);
+        put("c", 130);
+        put("N", 150);
+        put("n", 140);
+        put("O", 160);
+        put("o", 160);
+        put("S", 321);
+        put("s", 321);
+        put("F", 180);
+        put("Cl", 345);
+        put("Br", 789);
+        put("I", 1259);
+        put("=", -20);
+        put("#", -40);
+        put("+", 10);
+    }};
+
     public CFG(String filePath) throws FileNotFoundException, IOException {
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         HashMap<String, Vector<String[]>> grammar = new HashMap<>();
