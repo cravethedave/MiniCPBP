@@ -30,8 +30,7 @@ for method in methods:
         subprocess.Popen([
             "/bin/sh",
             "-c",
-            "sbatch",
-            name
+            f"sbatch {name}"
         ])
 
 # print(arguments)
