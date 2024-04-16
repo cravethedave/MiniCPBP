@@ -24,12 +24,13 @@ public class TestGrammar {
     public static void main(String[] args) {
         generateMolecules(
             "data/moleculeCNF_v6.txt",
-            "domWdeg",
-            2996,
-            3000,
-            35,
-            65,
-            2
+            args[0],
+            Integer.valueOf(args[1]),
+            Integer.valueOf(args[2]),
+            Integer.valueOf(args[3]),
+            Integer.valueOf(args[4]),
+            Integer.valueOf(args[5]),
+            Integer.valueOf(args[6])
         );
         // testMoleculeValidity("data/moleculeCNF_v6.txt", args[0], 0);
         // bulkMolVal("data/moleculeCNF_v6.txt", "../py_master_utils/molecules/MOSES.txt");
@@ -332,7 +333,8 @@ public class TestGrammar {
         int maxWeight,
         int minCarbon,
         int maxCarbon,
-        int nCycles
+        int nCycles,
+        int nBranches
     ) {
         try {
             //#region Base initialization
@@ -406,7 +408,7 @@ public class TestGrammar {
             for (int i = 0; i < wordLength; i++) {
                 cp.post(element(tokenToWeight, w[i], tokenWeights[i]));
             }
-            // cp.post(sum(tokenWeights, weightTarget));
+            cp.post(sum(tokenWeights, weightTarget));
             //#endregion
 
             //#region Carbon percentage
@@ -441,7 +443,14 @@ public class TestGrammar {
             // w[18].assign(g.tokenEncoder.get("I"));
             // w[19].assign(g.tokenEncoder.get("_"));
 
-            cp.post(among(w, g.tokenEncoder.get(Integer.toString(nCycles)), makeIntVar(cp, 2,2)));
+            if (nCycles == 0) {
+                cp.post(among(w, g.tokenEncoder.get("1"), makeIntVar(cp, 0,0)));
+            } else if (nCycles > 0) {
+                cp.post(among(w, g.tokenEncoder.get(Integer.toString(nCycles)), makeIntVar(cp, 2,2)));
+            }
+            if (nBranches >= 0) {
+                cp.post(among(w, g.tokenEncoder.get("("), makeIntVar(cp, nBranches, nBranches)));
+            }
 
             //#region Solve
             // Sampling, replace w by branching vars if wanted
@@ -482,6 +491,7 @@ public class TestGrammar {
             });
 
             //stat -> stat.numberOfSolutions() >= 10
+            System.out.println("[INFO] Now solving");
             SearchStatistics stats = dfs.solve(stat -> stat.numberOfSolutions() == 1);
             System.out.println(stats);
             //#endregion
