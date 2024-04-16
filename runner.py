@@ -11,7 +11,7 @@ test_cases = [
 ]
 
 methods = ["domWdeg", "maxMarginal", "minEntropy", "rnd"]
-shbang = "#!/bin/bash\n"
+base_line = "#!/bin/bash\nmodule load maven\nmvn compile\n"
 base_command = "mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -Dexec.args="
 
 for method in methods:
@@ -19,7 +19,7 @@ for method in methods:
         arguments = f"{method} {' '.join(test)}"
         info_print = f"echo {arguments}\n"
         command = f"{base_command}'{arguments}'"
-        file_content = shbang+info_print+command
+        file_content = base_line+info_print+command
         
         name = f"job_{method}_{index}.sh"
         with open(name, 'w') as f:

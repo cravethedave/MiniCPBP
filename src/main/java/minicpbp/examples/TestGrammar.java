@@ -476,7 +476,7 @@ public class TestGrammar {
                     dfs = makeDfs(cp, domWdeg(w));
                     break;
             }
-            // cp.setTraceSearchFlag(true);
+            cp.setTraceSearchFlag(false);
             // cp.setTraceBPFlag(true);
             // DFSearch dfs = makeDfs(cp, maxMarginal(w));
             
