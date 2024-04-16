@@ -12,7 +12,7 @@ test_cases = [
 
 methods = ["domWdeg", "maxMarginal", "minEntropy", "rnd"]
 base_line = "#!/bin/bash\nmodule load maven\nmvn compile -q\n"
-base_command = "mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -Dexec.args="
+base_command = "mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -q -Dexec.args="
 
 for method in methods:
     for index, test in enumerate(test_cases):
