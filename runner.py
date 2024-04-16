@@ -11,7 +11,7 @@ test_cases = [
 ]
 
 methods = ["domWdeg", "maxMarginal", "minEntropy", "rnd"]
-base_line = "#!/bin/bash\nmodule load maven\nmvn compile\n"
+base_line = "#!/bin/bash\nmodule load maven\nmvn compile -q\n"
 base_command = "mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -Dexec.args="
 
 for method in methods:
