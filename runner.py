@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import subprocess
+import time
 
 
 # minWt, maxWt, minC, maxC, #cycles, #branches
@@ -32,13 +33,6 @@ for method in methods:
             "-c",
             f"sbatch {name}"
         ])
+        time.sleep(1) # prevents overloading compute canada
 
-# print(arguments)
-# p = subprocess.Popen([
-#     "/bin/sh",
-#     "-c",
-#     f"mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -Dexec.args='{arguments}'"
-# ],)
-
-# p.wait()
-# p.kill()
+print("Done queueing jobs. Have a nice day!")
