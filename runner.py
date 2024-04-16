@@ -24,9 +24,15 @@ for method in methods:
         name = f"job_{method}_{index}.sh"
         with open(name, 'w') as f:
             f.write(file_content)
+            f.close()
         
         subprocess.call(["chmod", "+x", name])
-        subprocess.call([f"sbatch {name}"])
+        subprocess.Popen([
+            "/bin/sh",
+            "-c",
+            "sbatch",
+            name
+        ])
 
 # print(arguments)
 # p = subprocess.Popen([
