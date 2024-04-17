@@ -54,5 +54,5 @@ test_cases = [
 
 methods = ["domWdeg", "maxMarginal", "minEntropy", "rnd"]
 
-# compute_canada_runner(methods, test_cases)
-home_runner(methods[1], test_cases[-1])
+compute_canada_runner(methods, test_cases)
+# home_runner(methods[1], test_cases[-1])
