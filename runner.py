@@ -52,7 +52,7 @@ def cc_random_runner(test_cases):
                 "-c",
                 f"sbatch --output=slout_{identifier}.txt --time=8:00:00 {name}"
             ])
-            time.sleep(1) # prevents overloading compute canada
+            time.sleep(3) # prevents overloading compute canada
     print("Done queueing random jobs.")
 
 def home_runner(method, test):
@@ -85,3 +85,4 @@ methods = ["domWdeg", "maxMarginal", "minEntropy"]
 # cc_heuristic_runner(methods, test_cases)
 cc_random_runner(test_cases)
 # home_runner(methods[1], test_cases[-1])
+print("Have a nice day!")
