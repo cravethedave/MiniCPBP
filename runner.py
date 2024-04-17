@@ -2,7 +2,7 @@
 import subprocess
 import time
 
-def cc_heuristic_runner(methods, test_cases, diff=''):
+def cc_heuristic_runner(methods, test_cases, size=20, diff=''):
     base_line = "#!/bin/bash\nexport JAVA_OPTS='-Xmx4g'\nmodule load maven\nmvn compile -q\n"
     base_command = "mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -q -Dexec.args="
 
@@ -29,7 +29,7 @@ def cc_heuristic_runner(methods, test_cases, diff=''):
             
     print("Done queueing heuristic jobs. Starting random ones")
 
-def cc_random_runner(test_cases, diff=''):
+def cc_random_runner(test_cases, size=20, diff=''):
     base_line = "#!/bin/bash\nexport JAVA_OPTS='-Xmx4g'\nmodule load maven\nmvn compile -q\n"
     base_command = "mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -q -Dexec.args="
     method = 'rnd'
@@ -82,7 +82,7 @@ test_cases = [
 # Keep random at the end
 methods = ["domWdeg", "maxMarginal", "minEntropy"]
 
-cc_heuristic_runner(methods, test_cases, diff='_30')
-cc_random_runner(test_cases, diff='_30')
+# cc_heuristic_runner(methods, test_cases, size=20, diff='')
+cc_random_runner(test_cases, size=20, diff='')
 # home_runner(methods[1], test_cases[-1])
 print("Have a nice day!")

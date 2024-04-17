@@ -24,13 +24,14 @@ public class TestGrammar {
     public static void main(String[] args) {
         generateMolecules(
             "data/moleculeCNF_v6.txt",
-            args[0],
-            Integer.valueOf(args[1]),
+            Integer.valueOf(args[0]),
+            args[1],
             Integer.valueOf(args[2]),
             Integer.valueOf(args[3]),
             Integer.valueOf(args[4]),
             Integer.valueOf(args[5]),
-            Integer.valueOf(args[6])
+            Integer.valueOf(args[6]),
+            Integer.valueOf(args[7])
         );
         // testMoleculeValidity("data/moleculeCNF_v6.txt", args[0], 0);
         // bulkMolVal("data/moleculeCNF_v6.txt", "../py_master_utils/molecules/MOSES.txt");
@@ -328,6 +329,7 @@ public class TestGrammar {
 
     private static void generateMolecules(
         String filePath,
+        int wordLength,
         String method,
         int minWeight,
         int maxWeight,
@@ -339,7 +341,6 @@ public class TestGrammar {
         try {
             //#region Base initialization
             Solver cp = makeSolver(false);
-            int wordLength = 30;
             //#endregion
             
             //#region Grammar constraint
