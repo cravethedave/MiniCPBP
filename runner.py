@@ -2,7 +2,7 @@
 import subprocess
 import time
 
-def cc_heuristic_runner(methods, test_cases):
+def cc_heuristic_runner(methods, test_cases, diff=''):
     base_line = "#!/bin/bash\nexport JAVA_OPTS='-Xmx4g'\nmodule load maven\nmvn compile -q\n"
     base_command = "mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -q -Dexec.args="
 
@@ -13,7 +13,7 @@ def cc_heuristic_runner(methods, test_cases):
             command = f"{base_command}'{arguments}'"
             file_content = base_line+info_print+command
             
-            identifier = f"{method}_{index}"
+            identifier = f"{method}_{index}{diff}"
             name = f"job_{identifier}.sh"
             with open(name, 'w') as f:
                 f.write(file_content)
@@ -29,7 +29,7 @@ def cc_heuristic_runner(methods, test_cases):
             
     print("Done queueing heuristic jobs. Starting random ones")
 
-def cc_random_runner(test_cases):
+def cc_random_runner(test_cases, diff=''):
     base_line = "#!/bin/bash\nexport JAVA_OPTS='-Xmx4g'\nmodule load maven\nmvn compile -q\n"
     base_command = "mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -q -Dexec.args="
     method = 'rnd'
@@ -40,7 +40,7 @@ def cc_random_runner(test_cases):
         file_content = base_line+info_print+command
         
         for i in range(11):
-            identifier = f"{method}_{index}_{i}"
+            identifier = f"{method}_{index}_{i}{diff}"
             name = f"job_{identifier}.sh"
             with open(name, 'w') as f:
                 f.write(file_content)
@@ -82,7 +82,7 @@ test_cases = [
 # Keep random at the end
 methods = ["domWdeg", "maxMarginal", "minEntropy"]
 
-# cc_heuristic_runner(methods, test_cases)
-cc_random_runner(test_cases)
+cc_heuristic_runner(methods, test_cases, diff='_30')
+cc_random_runner(test_cases, diff='_30')
 # home_runner(methods[1], test_cases[-1])
 print("Have a nice day!")

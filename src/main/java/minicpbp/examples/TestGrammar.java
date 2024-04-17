@@ -339,7 +339,7 @@ public class TestGrammar {
         try {
             //#region Base initialization
             Solver cp = makeSolver(false);
-            int wordLength = 20;
+            int wordLength = 30;
             //#endregion
             
             //#region Grammar constraint
