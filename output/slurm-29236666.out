@@ -1,0 +1,12 @@
+Picked up JAVA_TOOL_OPTIONS: -Xmx2g
+maxMarginal 2996 3000 35 65 2 0
+Picked up JAVA_TOOL_OPTIONS: -Xmx2g
+[INFO] Now solving
+ICSCSSSc1ccoc1C2SS2_ weight of 2996
+
+	#choice: 194269
+	#fail: 97126
+	execution time (ms): 893571
+	#sols : 1
+	completed : false
+

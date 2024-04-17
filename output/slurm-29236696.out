@@ -1,0 +1,12 @@
+Picked up JAVA_TOOL_OPTIONS: -Xmx2g
+minEntropy 2996 3000 0 100 1 3
+Picked up JAVA_TOOL_OPTIONS: -Xmx2g
+[INFO] Now solving
+SSSSC(S)(SN1SOS1)(F) weight of 2998
+
+	#choice: 3204104
+	#fail: 1602042
+	execution time (ms): 10930316
+	#sols : 1
+	completed : false
+

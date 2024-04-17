@@ -2,7 +2,7 @@
 import subprocess
 import time
 
-def compute_canada_runner(methods, test_cases):
+def cc_heuristic_runner(methods, test_cases):
     base_line = "#!/bin/bash\nexport JAVA_OPTS='-Xmx4g'\nmodule load maven\nmvn compile -q\n"
     base_command = "mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -q -Dexec.args="
 
@@ -13,7 +13,8 @@ def compute_canada_runner(methods, test_cases):
             command = f"{base_command}'{arguments}'"
             file_content = base_line+info_print+command
             
-            name = f"job_{method}_{index}.sh"
+            identifier = f"{method}_{index}"
+            name = f"job_{identifier}.sh"
             with open(name, 'w') as f:
                 f.write(file_content)
                 f.close()
@@ -22,11 +23,37 @@ def compute_canada_runner(methods, test_cases):
             subprocess.Popen([
                 "/bin/sh",
                 "-c",
-                f"sbatch --time=8:00:00 {name}"
+                f"sbatch --output=slout_{identifier}.txt --time=8:00:00 {name}"
             ])
             time.sleep(1) # prevents overloading compute canada
+            
+    print("Done queueing heuristic jobs. Starting random ones")
 
-    print("Done queueing jobs. Have a nice day!")
+def cc_random_runner(test_cases):
+    base_line = "#!/bin/bash\nexport JAVA_OPTS='-Xmx4g'\nmodule load maven\nmvn compile -q\n"
+    base_command = "mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -q -Dexec.args="
+    method = 'rnd'
+    for index, test in enumerate(test_cases):
+        arguments = f"{method} {' '.join(test)}"
+        info_print = f"echo {arguments}\n"
+        command = f"{base_command}'{arguments}'"
+        file_content = base_line+info_print+command
+        
+        for i in range(11):
+            identifier = f"{method}_{index}_{i}"
+            name = f"job_{identifier}.sh"
+            with open(name, 'w') as f:
+                f.write(file_content)
+                f.close()
+            
+            subprocess.call(["chmod", "+x", name])
+            subprocess.Popen([
+                "/bin/sh",
+                "-c",
+                f"sbatch --output=slout_{identifier}.txt --time=8:00:00 {name}"
+            ])
+            time.sleep(1) # prevents overloading compute canada
+    print("Done queueing random jobs.")
 
 def home_runner(method, test):
     base_command = "mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -q -Dexec.args="
@@ -52,7 +79,9 @@ test_cases = [
     ["2996","3000","35","65","3","-1"],
 ]
 
-methods = ["domWdeg", "maxMarginal", "minEntropy", "rnd"]
+# Keep random at the end
+methods = ["domWdeg", "maxMarginal", "minEntropy"]
 
-compute_canada_runner(methods, test_cases)
+# cc_heuristic_runner(methods, test_cases)
+cc_random_runner(test_cases)
 # home_runner(methods[1], test_cases[-1])
