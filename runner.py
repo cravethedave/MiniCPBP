@@ -82,7 +82,7 @@ test_cases = [
 # Keep random at the end
 methods = ["domWdeg", "maxMarginal", "minEntropy"]
 
-# cc_heuristic_runner(methods, test_cases, size=20, diff='')
-cc_random_runner(test_cases, size=20, diff='')
+cc_heuristic_runner(methods, test_cases, size=30, diff='_30')
+cc_random_runner(test_cases, size=30, diff='_30')
 # home_runner(methods[1], test_cases[-1])
 print("Have a nice day!")
