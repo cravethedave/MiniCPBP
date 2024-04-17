@@ -1,5 +1,0 @@
-Picked up JAVA_TOOL_OPTIONS: -Xmx2g
-rnd 2996 3000 35 65 3 -1
-Picked up JAVA_TOOL_OPTIONS: -Xmx2g
-[INFO] Now solving
-slurmstepd: error: *** JOB 29236717 ON cdr2026 CANCELLED AT 2024-04-17T03:02:51 DUE TO TIME LIMIT ***
