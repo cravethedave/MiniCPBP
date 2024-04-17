@@ -3,7 +3,7 @@ import subprocess
 import time
 
 def compute_canada_runner(methods, test_cases):
-    base_line = "#!/bin/bash\nmodule load maven\nmvn compile -q\n"
+    base_line = "#!/bin/bash\nexport JAVA_OPTS='-Xmx4g'\nmodule load maven\nmvn compile -q\n"
     base_command = "mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -q -Dexec.args="
 
     for method in methods:
