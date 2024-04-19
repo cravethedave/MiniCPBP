@@ -6,6 +6,7 @@ import minicpbp.engine.core.Solver.PropaMode;
 import minicpbp.search.DFSearch;
 import minicpbp.search.SearchStatistics;
 import minicpbp.util.CFG;
+import minicpbp.util.Procedure;
 
 import static minicpbp.cp.BranchingScheme.*;
 import static minicpbp.cp.Factory.*;
@@ -459,6 +460,7 @@ public class TestGrammar {
             // IntVar[] branchingVars = cp.sample(fraction,w);
 
             DFSearch dfs;
+            
             switch (method) {
                 case "minEntropy":
                     cp.setMode(PropaMode.SBP);
@@ -472,15 +474,18 @@ public class TestGrammar {
                     cp.setMode(PropaMode.SP);
                     dfs = makeDfs(cp, randomVarRandomVal(w));
                     break;
+                case "impact":
+                case "impactRestart":
+                    cp.setMode(PropaMode.SBP);
+                    dfs = makeDfs(cp, impactBasedSearch(w));
+                    break;
+                case "domWdegRestart":
                 default:
                     cp.setMode(PropaMode.SP);
                     dfs = makeDfs(cp, domWdeg(w));
-                    break;
             }
+
             cp.setTraceSearchFlag(false);
-            // cp.setTraceBPFlag(true);
-            // DFSearch dfs = makeDfs(cp, maxMarginal(w));
-            
             dfs.onSolution(() -> {
                 String word = "";
                 int sumWeight = 0;
@@ -491,9 +496,17 @@ public class TestGrammar {
                 System.out.println(word + " weight of " + sumWeight);
             });
 
-            //stat -> stat.numberOfSolutions() >= 10
             System.out.println("[INFO] Now solving");
-            SearchStatistics stats = dfs.solve(stat -> stat.numberOfSolutions() == 1);
+
+            SearchStatistics stats;
+            switch (method) {
+                case "impactRestart":
+                case "domWdegRestart":
+                    stats = dfs.solveRestarts(stat -> stat.numberOfSolutions() == 1);
+                    break;
+                default:
+                    stats = dfs.solve(stat -> stat.numberOfSolutions() == 1);
+            }
             System.out.println(stats);
             //#endregion
 

@@ -2,7 +2,7 @@
 import subprocess
 import time
 
-BASE_LINE = "#!/bin/bash\nexport JAVA_TOOL_OPTIONS='-Xmx3g'\nmodule load maven\nmvn compile -q\n"
+BASE_LINE = "#!/bin/bash\nmodule load maven\nexport JAVA_TOOL_OPTIONS=-Xmx3g\nmvn compile -q\n"
 BASE_COMMAND = "mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -q -Dexec.args="
 
 def cc_heuristic_runner(methods, test_cases, size=20, diff=''):
@@ -76,9 +76,10 @@ test_cases = [
     ["2996","3000","35","65","3","-1"],
 ]
 
-methods = ["domWdeg", "maxMarginal", "minEntropy"]
+# methods = ["domWdeg", "maxMarginal", "minEntropy"]
+methods = ["domWdegRestart", "impact", "impactRestart"]
 
-# cc_heuristic_runner(methods, test_cases, size=30, diff='_30')
+cc_heuristic_runner(methods, test_cases, size=20, diff='')
 cc_random_runner(test_cases, size=20, diff='')
 # home_runner(methods[1], test_cases[-1])
 print("Have a nice day!")
