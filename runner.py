@@ -76,8 +76,14 @@ test_cases = [
     ["2996","3000","35","65","3","-1"],
 ]
 
-# methods = ["domWdeg", "maxMarginal", "minEntropy"]
-methods = ["domWdegRestart", "impact", "impactRestart"]
+methods = [
+    # "domWdeg",
+    "domWdegRestart",
+    # "maxMarginal",
+    # "minEntropy",
+    "impact",
+    "impactRestart"
+]
 
 cc_heuristic_runner(methods, test_cases, size=20, diff='')
 cc_random_runner(test_cases, size=20, diff='')
