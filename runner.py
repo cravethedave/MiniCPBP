@@ -2,7 +2,7 @@
 import subprocess
 import time
 
-BASE_LINE = "#!/bin/bash\nmodule load maven\nexport JAVA_TOOL_OPTIONS=-Xmx3g\nmvn compile -q\n"
+BASE_LINE = "#!/bin/bash\nmodule load maven\nexport JAVA_TOOL_OPTIONS=-Xmx3g\n"
 BASE_COMMAND = "mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -q -Dexec.args="
 
 def cc_heuristic_runner(methods, test_cases, size=20, diff=''):
@@ -66,13 +66,13 @@ def home_runner(method, test, size=20):
     p.kill()
 
 def run_failed(test_cases):
-    for test in test_cases:
+    for i,test in enumerate(test_cases):
         arguments = ' '.join(test)
         info_print = f"echo {arguments}\n"
         command = f"{BASE_COMMAND}'{arguments}'"
         file_content = BASE_LINE+info_print+command
         
-        identifier = '_'.join(test)
+        identifier = f"{'_'.join(test)}_{i}"
         name = f"job_{identifier}.sh"
         with open(name, 'w') as f:
             f.write(file_content)
