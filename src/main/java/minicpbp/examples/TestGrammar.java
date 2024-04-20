@@ -466,6 +466,7 @@ public class TestGrammar {
                     cp.setMode(PropaMode.SBP);
                     dfs = makeDfs(cp, minEntropy(w));
                     break;
+                case "maxMarginalRestart":
                 case "maxMarginal":
                     cp.setMode(PropaMode.SBP);
                     dfs = makeDfs(cp, maxMarginal(w));
@@ -500,6 +501,7 @@ public class TestGrammar {
 
             SearchStatistics stats;
             switch (method) {
+                case "maxMarginalRestart":
                 case "impactRestart":
                 case "domWdegRestart":
                     stats = dfs.solveRestarts(stat -> stat.numberOfSolutions() == 1);

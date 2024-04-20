@@ -65,6 +65,28 @@ def home_runner(method, test, size=20):
     p.wait()
     p.kill()
 
+def run_failed(test_cases):
+    for test in test_cases:
+        arguments = ' '.join(test)
+        info_print = f"echo {arguments}\n"
+        command = f"{BASE_COMMAND}'{arguments}'"
+        file_content = BASE_LINE+info_print+command
+        
+        identifier = '_'.join(test)
+        name = f"job_{identifier}.sh"
+        with open(name, 'w') as f:
+            f.write(file_content)
+            f.close()
+        
+        subprocess.call(["chmod", "+x", name])
+        subprocess.Popen([
+            "/bin/sh",
+            "-c",
+            f"sbatch --output=slout_{identifier}.txt --time=8:00:00 {name}"
+        ])
+        time.sleep(1) # prevents overloading compute canada
+    print("Done queueing failed jobs.")
+
 # minWt, maxWt, minC, maxC, #cycles, #branches
 # Results are domWdeg and maxMarginal ??m??s - ??????, ??.??s - ?????
 test_cases = [
@@ -78,14 +100,45 @@ test_cases = [
 
 methods = [
     # "domWdeg",
-    "domWdegRestart",
+    # "domWdegRestart",
     # "maxMarginal",
     # "minEntropy",
-    "impact",
-    "impactRestart"
+    # "impact",
+    # "impactRestart",
+    "maxMarginalRestart"
 ]
 
-cc_heuristic_runner(methods, test_cases, size=20, diff='')
-cc_random_runner(test_cases, size=20, diff='')
+failed = [
+    ["20","impact","2996","3000","35","65","2","-1"],
+    ["20","impact","2996","3000","35","65","1","2"],
+    ["20","impact","2996","3000","0","100","1","3"],
+    ["20","impact","2996","3000","35","65","3","-1"],
+    ["30","domWdeg","2996","3000","35","65","2","-1"],
+    ["30","domWdeg","2996","3000","35","65","1","2"],
+    ["30","maxMarginal","2950","3050","0","100","1","3"],
+    ["30","impact","2996","3000","35","65","2","0"],
+    ["30","impact","2996","3000","35","65","2","-1"],
+    ["30","impact","2996","3000","35","65","1","2"],
+    ["30","impact","2996","3000","35","65","3","-1"],
+    ["30","impactRestart","2996","3000","35","65","3","-1"],
+    ["20","rnd","2996","3000","0","100","1","3"],
+    ["30","rnd","2950","3050","0","100","1","3"],
+    ["30","rnd","2950","3050","0","100","1","3"],
+    ["30","rnd","2950","3050","0","100","1","3"],
+    ["30","rnd","2950","3050","0","100","1","3"],
+    ["30","rnd","2950","3050","0","100","1","3"],
+    ["30","rnd","2950","3050","0","100","1","3"],
+    ["30","rnd","2950","3050","0","100","1","3"],
+    ["30","rnd","2996","3000","0","100","1","3"],
+    ["30","rnd","2996","3000","0","100","1","3"],
+    ["30","rnd","2996","3000","0","100","1","3"],
+    ["30","rnd","2996","3000","0","100","1","3"],
+    ["30","rnd","2996","3000","35","65","3","-1"],
+]
+
+cc_heuristic_runner(methods, test_cases, size=20)
+cc_heuristic_runner(methods, test_cases, size=30)
+# cc_random_runner(test_cases, size=20, diff='')
+run_failed(failed)
 # home_runner(methods[1], test_cases[-1])
 print("Have a nice day!")
