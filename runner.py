@@ -82,7 +82,7 @@ def run_failed(test_cases):
         subprocess.Popen([
             "/bin/sh",
             "-c",
-            f"sbatch --output=slout_{identifier}.txt --time=8:00:00 {name}"
+            f"sbatch --mem=1G --output=slout_{identifier}.txt --time=8:00:00 {name}"
         ])
         time.sleep(1) # prevents overloading compute canada
     print("Done queueing failed jobs.")
@@ -113,31 +113,15 @@ failed = [
     ["20","impact","2996","3000","35","65","1","2"],
     ["20","impact","2996","3000","0","100","1","3"],
     ["20","impact","2996","3000","35","65","3","-1"],
-    ["30","domWdeg","2996","3000","35","65","2","-1"],
-    ["30","domWdeg","2996","3000","35","65","1","2"],
-    ["30","maxMarginal","2950","3050","0","100","1","3"],
     ["30","impact","2996","3000","35","65","2","0"],
     ["30","impact","2996","3000","35","65","2","-1"],
     ["30","impact","2996","3000","35","65","1","2"],
     ["30","impact","2996","3000","35","65","3","-1"],
     ["30","impactRestart","2996","3000","35","65","3","-1"],
-    ["20","rnd","2996","3000","0","100","1","3"],
-    ["30","rnd","2950","3050","0","100","1","3"],
-    ["30","rnd","2950","3050","0","100","1","3"],
-    ["30","rnd","2950","3050","0","100","1","3"],
-    ["30","rnd","2950","3050","0","100","1","3"],
-    ["30","rnd","2950","3050","0","100","1","3"],
-    ["30","rnd","2950","3050","0","100","1","3"],
-    ["30","rnd","2950","3050","0","100","1","3"],
-    ["30","rnd","2996","3000","0","100","1","3"],
-    ["30","rnd","2996","3000","0","100","1","3"],
-    ["30","rnd","2996","3000","0","100","1","3"],
-    ["30","rnd","2996","3000","0","100","1","3"],
-    ["30","rnd","2996","3000","35","65","3","-1"],
 ]
 
-cc_heuristic_runner(methods, test_cases, size=20)
-cc_heuristic_runner(methods, test_cases, size=30)
+# cc_heuristic_runner(methods, test_cases, size=20)
+# cc_heuristic_runner(methods, test_cases, size=30)
 # cc_random_runner(test_cases, size=20, diff='')
 run_failed(failed)
 # home_runner(methods[1], test_cases[-1])
