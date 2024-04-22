@@ -472,7 +472,18 @@ public class TestGrammar {
                     cp.setMode(PropaMode.SBP);
                     dfs = makeDfs(cp, minEntropy(w));
                     break;
+                case "minEntropyBiasedWheel":
+                    cp.setMode(PropaMode.SBP);
+                    dfs = makeDfs(cp, minEntropyBiasedWheelSelectVal(w));
+                    break;
                 case "maxMarginalRestart":
+                    cp.setMode(PropaMode.SBP);
+                    dfs = makeDfs(cp, maxMarginalRandomTieBreak(w));
+                    break;
+                case "maxMarginalStrength":
+                    cp.setMode(PropaMode.SBP);
+                    dfs = makeDfs(cp, maxMarginalStrength(w));
+                    break;
                 case "maxMarginal":
                     cp.setMode(PropaMode.SBP);
                     dfs = makeDfs(cp, maxMarginal(w));
@@ -480,6 +491,10 @@ public class TestGrammar {
                 case "rnd":
                     cp.setMode(PropaMode.SP);
                     dfs = makeDfs(cp, randomVarRandomVal(w));
+                    break;
+                case "dom/random":
+                    cp.setMode(PropaMode.SP);
+                    dfs = makeDfs(cp, firstFailRandomVal(w));
                     break;
                 case "impact":
                 case "impactRestart":
@@ -507,6 +522,7 @@ public class TestGrammar {
 
             SearchStatistics stats;
             switch (method) {
+                case "minEntropyBiasedWheel":
                 case "maxMarginalRestart":
                 case "impactRestart":
                 case "domWdegRestart":
