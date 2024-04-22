@@ -492,7 +492,7 @@ public class TestGrammar {
                     cp.setMode(PropaMode.SP);
                     dfs = makeDfs(cp, randomVarRandomVal(w));
                     break;
-                case "dom/random":
+                case "dom-random":
                     cp.setMode(PropaMode.SP);
                     dfs = makeDfs(cp, firstFailRandomVal(w));
                     break;

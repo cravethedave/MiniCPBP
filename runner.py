@@ -115,10 +115,10 @@ methods = [
 
 failed = []
 
-cc_heuristic_runner(methods, test_cases, size=20)
-cc_heuristic_runner(methods, test_cases, size=30)
-cc_random_runner(test_cases, method='dom/random', size=20, diff='')
-cc_random_runner(test_cases, method='dom/random', size=30, diff='')
+# cc_heuristic_runner(methods, test_cases, size=20)
+# cc_heuristic_runner(methods, test_cases, size=30)
+cc_random_runner(test_cases, method='dom-random', size=20, diff='')
+cc_random_runner(test_cases, method='dom-random', size=30, diff='')
 # run_failed(failed)
 # home_runner(methods[1], test_cases[-1])
 print("Have a nice day!")
