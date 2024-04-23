@@ -24,25 +24,25 @@ import java.util.Vector;
 
 public class TestGrammar {
     public static void main(String[] args) {
-        // generateMolecules(
-        //     "data/moleculeCNF_v6.txt",
-        //     Integer.valueOf(args[0]),
-        //     args[1],
-        //     Integer.valueOf(args[2]),
-        //     Integer.valueOf(args[3]),
-        //     Integer.valueOf(args[4]),
-        //     Integer.valueOf(args[5]),
-        //     Integer.valueOf(args[6]),
-        //     Integer.valueOf(args[7])
-        // );
+        generateMolecules(
+            "data/moleculeCNF_v6.txt",
+            Integer.valueOf(args[0]),
+            args[1],
+            Integer.valueOf(args[2]),
+            Integer.valueOf(args[3]),
+            Integer.valueOf(args[4]),
+            Integer.valueOf(args[5]),
+            Integer.valueOf(args[6]),
+            Integer.valueOf(args[7])
+        );
         // testMoleculeValidity("data/moleculeCNF_v6.txt", args[0], 0);
         // bulkMolVal("data/moleculeCNF_v6.txt", "../py_master_utils/molecules/MOSES.txt");
         
-        try {
-            CFG g = new CFG("data/moleculeCNF_v6.txt");
-            System.out.println(g.terminalCount());
-            System.out.println(g.nonTerminalCount());
-        } catch (Exception e) {}
+        // try {
+        //     CFG g = new CFG("data/moleculeCNF_v6.txt");
+        //     System.out.println(g.terminalCount());
+        //     System.out.println(g.nonTerminalCount());
+        // } catch (Exception e) {}
     }
 
     private static void bulkMolVal(String grammarPath, String moleculePath) {
@@ -466,7 +466,7 @@ public class TestGrammar {
             // double fraction = 0.005;
             // IntVar[] branchingVars = cp.sample(fraction,w);
 
-            cp.setTraceSearchFlag(false);
+            cp.setTraceSearchFlag(true);
 
             if (method == "maxMarginalLDS") {
                 cp.setMode(PropaMode.SBP);
