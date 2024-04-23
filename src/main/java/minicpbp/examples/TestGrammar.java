@@ -4,6 +4,7 @@ import minicpbp.engine.core.IntVar;
 import minicpbp.engine.core.Solver;
 import minicpbp.engine.core.Solver.PropaMode;
 import minicpbp.search.DFSearch;
+import minicpbp.search.LDSearch;
 import minicpbp.search.SearchStatistics;
 import minicpbp.util.CFG;
 import minicpbp.util.Procedure;
@@ -465,8 +466,26 @@ public class TestGrammar {
             // double fraction = 0.005;
             // IntVar[] branchingVars = cp.sample(fraction,w);
 
+            cp.setTraceSearchFlag(false);
+
+            if (method == "maxMarginalLDS") {
+                cp.setMode(PropaMode.SBP);
+                LDSearch lds = makeLds(cp, maxMarginal(w));
+                lds.onSolution(() -> {
+                    String word = "";
+                    int sumWeight = 0;
+                    for (int i = 0; i < wordLength; i++) {
+                        word += g.tokenDecoder.get(w[i].min());
+                        sumWeight += tokenWeights[i].min();
+                    }
+                    System.out.println(word + " weight of " + sumWeight);
+                });
+                System.out.println("[INFO] Now solving");
+                System.out.println(lds.solve(stat -> stat.numberOfSolutions() == 1));
+                return;
+            }
+
             DFSearch dfs;
-            
             switch (method) {
                 case "minEntropy":
                     cp.setMode(PropaMode.SBP);
@@ -507,7 +526,6 @@ public class TestGrammar {
                     dfs = makeDfs(cp, domWdeg(w));
             }
 
-            cp.setTraceSearchFlag(false);
             dfs.onSolution(() -> {
                 String word = "";
                 int sumWeight = 0;
