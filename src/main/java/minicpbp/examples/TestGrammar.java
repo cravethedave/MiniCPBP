@@ -401,7 +401,7 @@ public class TestGrammar {
             //#region Molecular weight constraint
             IntVar weightTarget = makeIntVar(cp, minWeight, maxWeight);
             weightTarget.setName("Weight target");
-            IntVar[] tokenWeights = makeIntVarArray(cp, wordLength, 0, 1259);
+            IntVar[] tokenWeights = makeIntVarArray(cp, wordLength, -40, 1259);
             for (int i = 0; i < wordLength; i++) {
                 tokenWeights[i].setName("weight_" + i);
             }
@@ -544,9 +544,11 @@ public class TestGrammar {
                 case "maxMarginalRestart":
                 case "impactRestart":
                 case "domWdegRestart":
+                    System.out.println("Restarts");
                     stats = dfs.solveRestarts(stat -> stat.numberOfSolutions() == 1);
                     break;
                 default:
+                    System.out.println("No restarts");
                     stats = dfs.solve(stat -> stat.numberOfSolutions() == 1);
             }
             System.out.println(stats);

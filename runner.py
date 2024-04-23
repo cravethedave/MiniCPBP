@@ -2,10 +2,10 @@
 import subprocess
 import time
 
-BASE_LINE = "#!/bin/bash\nmodule load maven\nexport JAVA_TOOL_OPTIONS=-Xmx2g\n"
+BASE_LINE = "#!/bin/bash\nmodule load maven\nexport JAVA_TOOL_OPTIONS=-Xmx1g\n"
 BASE_COMMAND = "mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -q -Dexec.args="
-TIME = '5:00:00'
-MEM = '2G'
+TIME = '1:00:00'
+MEM = '1G'
 
 def cc_heuristic_runner(methods, test_cases, size=20, diff=''):
     print("Starting heuristic jobs.")
