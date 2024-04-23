@@ -466,7 +466,7 @@ public class TestGrammar {
             // double fraction = 0.005;
             // IntVar[] branchingVars = cp.sample(fraction,w);
 
-            cp.setTraceSearchFlag(true);
+            cp.setTraceSearchFlag(false);
 
             if (method == "maxMarginalLDS") {
                 cp.setMode(PropaMode.SBP);

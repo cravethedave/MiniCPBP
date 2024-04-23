@@ -52,7 +52,6 @@ public class CFG {
 	public HashMap<Integer, String> tokenDecoder;
     public HashMap<String, Integer> tokenEncoder;
 
-    // TODO add numbers which remove weight
     public HashMap<String, Integer> tokenWeight = new HashMap<String, Integer>() {{
         put("C", 140);
         put("c", 130);
@@ -69,6 +68,25 @@ public class CFG {
         put("=", -20);
         put("#", -40);
         put("+", 10);
+        put("1", -10);
+        put("2", -10);
+        put("3", -10);
+        put("4", -10);
+        put("5", -10);
+        put("6", -10);
+        put("7", -10);
+        put("8", -10);
+        put("9", -10);
+        put("%10", -10);
+        put("%11", -10);
+        put("%12", -10);
+        put("%13", -10);
+        put("%14", -10);
+        put("%15", -10);
+        put("%16", -10);
+        put("%17", -10);
+        put("%18", -10);
+        put("%19", -10);
     }};
 
     public CFG(String filePath) throws FileNotFoundException, IOException {

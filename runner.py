@@ -2,10 +2,10 @@
 import subprocess
 import time
 
-BASE_LINE = "#!/bin/bash\nmodule load maven\nexport JAVA_TOOL_OPTIONS=-Xmx3g\n"
+BASE_LINE = "#!/bin/bash\nmodule load maven\nexport JAVA_TOOL_OPTIONS=-Xmx2g\n"
 BASE_COMMAND = "mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -q -Dexec.args="
 TIME = '5:00:00'
-MEM = '1024M'
+MEM = '2G'
 
 def cc_heuristic_runner(methods, test_cases, size=20, diff=''):
     print("Starting heuristic jobs.")
@@ -102,16 +102,16 @@ test_cases = [
 ]
 
 methods = [
-    # "domWdeg",
-    # "domWdegRestart",
-    # "maxMarginal",
-    # "minEntropy",
-    # "impact",
-    # "impactRestart",
+    "domWdeg",
+    "domWdegRestart",
+    "maxMarginal",
+    "minEntropy",
+    "impact",
+    "impactRestart",
     "maxMarginalRestart",
     "maxMarginalLDS",
-    # "minEntropyBiasedWheel",
-    # "maxMarginalStrength"
+    "minEntropyBiasedWheel",
+    "maxMarginalStrength"
 ]
 
 failed = []
@@ -121,5 +121,4 @@ cc_heuristic_runner(methods, test_cases, size=30)
 # cc_random_runner(test_cases, method='dom-random', size=20, diff='')
 # cc_random_runner(test_cases, method='dom-random', size=30, diff='')
 # run_failed(failed)
-# home_runner(methods[1], test_cases[-1])
 print("Have a nice day!")
