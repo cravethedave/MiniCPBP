@@ -67,8 +67,8 @@ public final class BranchingScheme {
     // TODO
     static int nbTied;
     // static final int precisionForTie = 10000; // 4 decimal places
-    static final int precisionForTie = 100; // 2 decimal places
-    // static final int precisionForTie = 10; // 1 decimal places
+    // static final int precisionForTie = 100; // 2 decimal places
+    static final int precisionForTie = 10; // 1 decimal places
 
     private BranchingScheme() {
         throw new UnsupportedOperationException();

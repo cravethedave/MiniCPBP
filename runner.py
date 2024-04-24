@@ -108,11 +108,11 @@ methods = [
     # "minEntropy",
     # "impact",
     # "impactRestart",
-    # "maxMarginalRestart",
-    "maxMarginalLDS",
+    "maxMarginalRestart",
+    # "maxMarginalLDS",
     # "minEntropyBiasedWheel",
     # "maxMarginalStrength",
-    "dom-random",
+    # "dom-random",
 ]
 
 failed = []
