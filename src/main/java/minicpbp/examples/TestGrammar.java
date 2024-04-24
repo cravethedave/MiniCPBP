@@ -421,13 +421,13 @@ public class TestGrammar {
             //#endregion
 
             //#region Carbon percentage
-            int[] carbonAtoms = new int[2];
-            carbonAtoms[0] = g.tokenEncoder.get("C");
-            carbonAtoms[1] = g.tokenEncoder.get("c");
-            int lowerBound = Math.floorDiv(wordLength * minCarbon, 100);
-            int upperBound = Math.floorDiv(wordLength * maxCarbon, 100);
-            IntVar carbonRange = makeIntVar(cp, lowerBound, upperBound);
-            cp.post(among(w,carbonAtoms,carbonRange));
+            // int[] carbonAtoms = new int[2];
+            // carbonAtoms[0] = g.tokenEncoder.get("C");
+            // carbonAtoms[1] = g.tokenEncoder.get("c");
+            // int lowerBound = Math.floorDiv(wordLength * minCarbon, 100);
+            // int upperBound = Math.floorDiv(wordLength * maxCarbon, 100);
+            // IntVar carbonRange = makeIntVar(cp, lowerBound, upperBound);
+            // cp.post(among(w,carbonAtoms,carbonRange));
             //#endregion
 
             // C1OC1 C2OC2C3CC3S=CI
@@ -456,6 +456,7 @@ public class TestGrammar {
                 cp.post(among(w, g.tokenEncoder.get("1"), makeIntVar(cp, 0,0)));
             } else if (nCycles > 0) {
                 cp.post(among(w, g.tokenEncoder.get(Integer.toString(nCycles)), makeIntVar(cp, 2,2)));
+                cp.post(among(w, g.tokenEncoder.get(Integer.toString(nCycles + 1)), makeIntVar(cp, 0,0)));
             }
             if (nBranches >= 0) {
                 cp.post(among(w, g.tokenEncoder.get("("), makeIntVar(cp, nBranches, nBranches)));
