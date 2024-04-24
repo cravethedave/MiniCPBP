@@ -102,16 +102,17 @@ test_cases = [
 ]
 
 methods = [
-    "domWdeg",
-    "domWdegRestart",
-    "maxMarginal",
-    "minEntropy",
-    "impact",
-    "impactRestart",
-    "maxMarginalRestart",
+    # "domWdeg",
+    # "domWdegRestart",
+    # "maxMarginal",
+    # "minEntropy",
+    # "impact",
+    # "impactRestart",
+    # "maxMarginalRestart",
     "maxMarginalLDS",
-    "minEntropyBiasedWheel",
-    "maxMarginalStrength"
+    # "minEntropyBiasedWheel",
+    # "maxMarginalStrength",
+    "dom-random",
 ]
 
 failed = []

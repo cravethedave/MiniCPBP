@@ -424,8 +424,8 @@ public class TestGrammar {
             int[] carbonAtoms = new int[2];
             carbonAtoms[0] = g.tokenEncoder.get("C");
             carbonAtoms[1] = g.tokenEncoder.get("c");
-            int lowerBound = Math.round(wordLength * (minCarbon / 100.0f));
-            int upperBound = Math.round(wordLength * (maxCarbon / 100.0f));
+            int lowerBound = Math.floorDiv(wordLength * minCarbon, 100);
+            int upperBound = Math.floorDiv(wordLength * maxCarbon, 100);
             IntVar carbonRange = makeIntVar(cp, lowerBound, upperBound);
             cp.post(among(w,carbonAtoms,carbonRange));
             //#endregion
@@ -467,8 +467,8 @@ public class TestGrammar {
             // IntVar[] branchingVars = cp.sample(fraction,w);
 
             cp.setTraceSearchFlag(false);
-
-            if (method == "maxMarginalLDS") {
+            
+            if (method.equals("maxMarginalLDS")) {
                 cp.setMode(PropaMode.SBP);
                 LDSearch lds = makeLds(cp, maxMarginal(w));
                 lds.onSolution(() -> {
