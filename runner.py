@@ -93,33 +93,37 @@ def run_failed(test_cases):
 # minWt, maxWt, minC, maxC, #cycles, #branches
 # Results are domWdeg and maxMarginal ??m??s - ??????, ??.??s - ?????
 test_cases = [
-    ["2996","3000","35","65","2","0"],
-    ["2996","3000","35","65","2","-1"],
-    ["2996","3000","35","65","1","2"],
-    ["2950","3050","0","100","1","3"],
-    ["2996","3000","0","100","1","3"],
+    # ["2996","3000","35","65","2","0"],
+    # ["2996","3000","35","65","2","-1"],
+    # ["2996","3000","35","65","1","2"],
+    # ["2950","3050","0","100","1","3"],
+    # ["2996","3000","0","100","1","3"],
+    ["4750","5000","35","65","2","0"],
+    ["4750","5000","35","65","2","-1"],
+    ["4750","5000","35","65","1","2"],
+    ["4750","5000","0","100","1","3"],
     # ["2996","3000","35","65","3","-1"],
 ]
 
 methods = [
-    # "domWdeg",
-    # "domWdegRestart",
-    # "maxMarginal",
-    # "minEntropy",
-    # "impact",
-    # "impactRestart",
+    "domWdeg",
+    "domWdegRestart",
+    "maxMarginal",
+    "minEntropy",
+    "impact",
+    "impactRestart",
     "maxMarginalRestart",
-    # "maxMarginalLDS",
-    # "minEntropyBiasedWheel",
-    # "maxMarginalStrength",
-    # "dom-random",
+    "maxMarginalLDS",
+    "minEntropyBiasedWheel",
+    "maxMarginalStrength",
+    "dom-random",
 ]
 
 failed = []
 
 cc_heuristic_runner(methods, test_cases, size=20)
 cc_heuristic_runner(methods, test_cases, size=30)
-# cc_random_runner(test_cases, method='dom-random', size=20, diff='')
-# cc_random_runner(test_cases, method='dom-random', size=30, diff='')
+cc_random_runner(test_cases, method='dom-random', size=20)
+cc_random_runner(test_cases, method='dom-random', size=30)
 # run_failed(failed)
 print("Have a nice day!")
