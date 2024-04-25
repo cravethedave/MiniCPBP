@@ -484,6 +484,21 @@ public class TestGrammar {
                 System.out.println("[INFO] Now solving");
                 System.out.println(lds.solve(stat -> stat.numberOfSolutions() == 1));
                 return;
+            } else if (method.equals("maxMarginalStrengthLDS")) {
+                cp.setMode(PropaMode.SBP);
+                LDSearch lds = makeLds(cp, maxMarginalStrength(w));
+                lds.onSolution(() -> {
+                    String word = "";
+                    int sumWeight = 0;
+                    for (int i = 0; i < wordLength; i++) {
+                        word += g.tokenDecoder.get(w[i].min());
+                        sumWeight += tokenWeights[i].min();
+                    }
+                    System.out.println(word + " weight of " + sumWeight);
+                });
+                System.out.println("[INFO] Now solving");
+                System.out.println(lds.solve(stat -> stat.numberOfSolutions() == 1));
+                return;
             }
 
             DFSearch dfs;

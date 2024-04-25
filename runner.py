@@ -111,22 +111,23 @@ test_cases = [
 ]
 
 methods = [
-    "domWdeg",
-    "domWdegRestart",
-    "maxMarginal",
-    "maxMarginalRestart",
-    "maxMarginalStrength",
-    "maxMarginalLDS",
-    "minEntropy",
-    "impact",
-    "impactRestart",
+    # "domWdeg",
+    # "domWdegRestart",
+    # "maxMarginal",
+    # "maxMarginalRestart",
+    # "maxMarginalStrength",
+    # "maxMarginalLDS",
+    # "minEntropy",
+    # "impact",
+    # "impactRestart",
+    "maxMarginalStrengthLDS"
     # "minEntropyBiasedWheel",
     # "dom-random",
 ]
 
 failed = []
 
-# cc_heuristic_runner(methods, test_cases, size=30)
+cc_heuristic_runner(methods, test_cases, size=30)
 cc_heuristic_runner(methods, test_cases, size=40)
 # cc_random_runner(test_cases, method='dom-random', size=20)
 # cc_random_runner(test_cases, method='dom-random', size=30)
