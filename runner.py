@@ -107,9 +107,15 @@ test_cases = [
     # ["4750","5000","0","100","3","1"],
     # ["4750","5000","0","100","3","2"],
     # ["4750","5000","0","100","3","3"],
-    ["4750","5000","0","100","5","-1"],
-    ["4750","5000","0","100","6","-1"],
-    # ["2996","3000","35","65","3","-1"],
+    ["4750","5000","0","100","2","2"],
+    ["4750","5000","0","100","2","3"],
+    ["4750","5000","0","100","2","4"],
+    ["4750","5000","0","100","3","2"],
+    ["4750","5000","0","100","3","3"],
+    ["4750","5000","0","100","3","4"],
+    ["4750","5000","0","100","4","2"],
+    ["4750","5000","0","100","4","3"],
+    ["4750","5000","0","100","4","4"],
 ]
 
 methods = [
@@ -123,15 +129,15 @@ methods = [
     "impact",
     "impactRestart",
     "maxMarginalStrengthLDS"
-    "minEntropyBiasedWheel",
-    "dom-random",
+    # "minEntropyBiasedWheel",
+    # "dom-random",
 ]
 
 failed = []
 
 cc_heuristic_runner(methods, test_cases, size=30)
 cc_heuristic_runner(methods, test_cases, size=40)
-# cc_random_runner(test_cases, method='dom-random', size=20)
-# cc_random_runner(test_cases, method='dom-random', size=30)
+cc_random_runner(test_cases, method='dom-random', size=30)
+cc_random_runner(test_cases, method='dom-random', size=40)
 # run_failed(failed)
 print("Have a nice day!")
