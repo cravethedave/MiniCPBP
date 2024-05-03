@@ -98,46 +98,37 @@ test_cases = [
     # ["2996","3000","35","65","1","2"],
     # ["2950","3050","0","100","1","3"],
     # ["2996","3000","0","100","1","3"],
-    # ["4750","5000","0","100","1","1"],
-    # ["4750","5000","0","100","1","2"],
-    # ["4750","5000","0","100","1","3"],
-    # ["4750","5000","0","100","2","1"],
-    # ["4750","5000","0","100","2","2"],
-    # ["4750","5000","0","100","2","3"],
-    # ["4750","5000","0","100","3","1"],
-    # ["4750","5000","0","100","3","2"],
-    # ["4750","5000","0","100","3","3"],
+    ["4750","5000","0","100","1","1"],
+    ["4750","5000","0","100","1","2"],
+    ["4750","5000","0","100","1","3"],
+    ["4750","5000","0","100","2","1"],
     ["4750","5000","0","100","2","2"],
     ["4750","5000","0","100","2","3"],
-    ["4750","5000","0","100","2","4"],
+    ["4750","5000","0","100","3","1"],
     ["4750","5000","0","100","3","2"],
     ["4750","5000","0","100","3","3"],
-    ["4750","5000","0","100","3","4"],
-    ["4750","5000","0","100","4","2"],
-    ["4750","5000","0","100","4","3"],
-    ["4750","5000","0","100","4","4"],
+    ["4750","5000","0","100","1","4"],
 ]
 
 methods = [
     "domWdeg",
     "domWdegRestart",
     "maxMarginal",
-    "maxMarginalRestart",
-    "maxMarginalStrength",
-    "maxMarginalLDS",
-    "minEntropy",
+    # "maxMarginalRestart",
+    # "maxMarginalStrength",
+    # "maxMarginalLDS",
     "impact",
     "impactRestart",
     "maxMarginalStrengthLDS"
-    # "minEntropyBiasedWheel",
-    # "dom-random",
+    "minEntropy",
+    "minEntropyBiasedWheel"
 ]
+
+cc_heuristic_runner(methods, test_cases, size=40)
+cc_random_runner(methods, method='dom-random', size=40)
 
 failed = []
 
-cc_heuristic_runner(methods, test_cases, size=30)
-cc_heuristic_runner(methods, test_cases, size=40)
-cc_random_runner(test_cases, method='dom-random', size=30)
-cc_random_runner(test_cases, method='dom-random', size=40)
+# cc_heuristic_runner(methods, test_cases, size=30)
 # run_failed(failed)
 print("Have a nice day!")

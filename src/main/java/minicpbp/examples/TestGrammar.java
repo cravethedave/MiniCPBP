@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -35,7 +36,8 @@ public class TestGrammar {
             Integer.valueOf(args[6]),
             Integer.valueOf(args[7])
         );
-        // testMoleculeValidity("data/moleculeCNF_v6.txt", args[0], 0);
+        
+        // testMoleculeValidity("data/moleculeCNF_v6.txt", "Cl[C@]c1sncc1Oc2occ(CSS)c2SN(NOCSSN=CC)OO", 0);
         // bulkMolVal("data/moleculeCNF_v6.txt", "../py_master_utils/molecules/MOSES.txt");
         
         // try {
@@ -303,34 +305,40 @@ public class TestGrammar {
             //#endregion
 
             //#region Molecular weight constraint
-            // IntVar weightTarget = makeIntVar(cp, 2996, 3000);
-            // weightTarget.setName("Weight target");
-            // IntVar[] tokenWeights = makeIntVarArray(cp, wordLength, 0, 1259);
-            // for (int i = 0; i < wordLength; i++) {
-            //     tokenWeights[i].setName("weight_" + i);
-            // }
-            // int[] tokenToWeight = new int[g.terminalCount()];
-            // for (int i = 0; i < g.terminalCount(); i++) {
-            //     String token = g.tokenDecoder.get(i).toLowerCase();
-            //     if (g.tokenWeight.containsKey(token)) {
-            //         tokenToWeight[i] = g.tokenWeight.get(token);
-            //     } else {
-            //         tokenToWeight[i] = 0;
-            //     }
-            // }
-            // for (int i = 0; i < wordLength; i++) {
-            //     cp.post(element(tokenToWeight, w[i], tokenWeights[i]));
-            // }
-            // try {
-            //     cp.post(sum(tokenWeights, weightTarget));
-            // } catch (Exception e) {
-            //     System.out.println("Failed during weight constraint");
-            //     throw e;
-            // }
+            IntVar weightTarget = makeIntVar(cp, 0, 6000);
+            weightTarget.setName("Weight target");
+            IntVar[] tokenWeights = makeIntVarArray(cp, wordLength, -40, 1259);
+            for (int i = 0; i < wordLength; i++) {
+                tokenWeights[i].setName("weight_" + i);
+            }
+            int[] tokenToWeight = new int[g.terminalCount()];
+            for (int i = 0; i < g.terminalCount(); i++) {
+                String token = g.tokenDecoder.get(i);
+                if (g.tokenWeight.containsKey(token)) {
+                    tokenToWeight[i] = g.tokenWeight.get(token);
+                } else {
+                    tokenToWeight[i] = 0;
+                }
+            }
+            for (int i = 0; i < wordLength; i++) {
+                cp.post(element(tokenToWeight, w[i], tokenWeights[i]));
+            }
+            int weight = 0;
+            for (IntVar iter : tokenWeights) {
+                weight += iter.min();
+            }
+            System.out.println(weight);
+            try {
+                cp.post(sum(tokenWeights, weightTarget));
+            } catch (Exception e) {
+                System.out.println("Failed during weight constraint");
+                throw e;
+            }
             //#endregion
 
             System.out.println("[SUCCESS] " + molecule);
         } catch (Exception e) {
+            System.out.println(e);
             System.out.println("[FAIL] " + molecule);
         }
     }
@@ -401,13 +409,15 @@ public class TestGrammar {
             //#region Molecular weight constraint
             IntVar weightTarget = makeIntVar(cp, minWeight, maxWeight);
             weightTarget.setName("Weight target");
-            IntVar[] tokenWeights = makeIntVarArray(cp, wordLength, -40, 1259);
+            int minAtomWeight = Collections.min(g.tokenWeight.values());
+            int maxAtomWeight = Collections.max(g.tokenWeight.values());
+            IntVar[] tokenWeights = makeIntVarArray(cp, wordLength, minAtomWeight, maxAtomWeight);
             for (int i = 0; i < wordLength; i++) {
                 tokenWeights[i].setName("weight_" + i);
             }
             int[] tokenToWeight = new int[g.terminalCount()];
             for (int i = 0; i < g.terminalCount(); i++) {
-                String token = g.tokenDecoder.get(i).toLowerCase();
+                String token = g.tokenDecoder.get(i);
                 if (g.tokenWeight.containsKey(token)) {
                     tokenToWeight[i] = g.tokenWeight.get(token);
                 } else {
