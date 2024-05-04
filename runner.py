@@ -119,9 +119,9 @@ methods = [
     # "maxMarginalLDS",
     "impact",
     "impactRestart",
-    "maxMarginalStrengthLDS"
+    "maxMarginalStrengthLDS",
     "minEntropy",
-    "minEntropyBiasedWheel"
+    "minEntropyBiasedWheel",
 ]
 
 cc_heuristic_runner(methods, test_cases, size=40)
