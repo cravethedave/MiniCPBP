@@ -8,6 +8,7 @@ import minicpbp.search.LDSearch;
 import minicpbp.search.SearchStatistics;
 import minicpbp.util.CFG;
 import minicpbp.util.Procedure;
+import minicpbp.util.exception.InconsistencyException;
 
 import static minicpbp.cp.BranchingScheme.*;
 import static minicpbp.cp.Factory.*;
@@ -37,7 +38,7 @@ public class TestGrammar {
             Integer.valueOf(args[7])
         );
         
-        // testMoleculeValidity("data/moleculeCNF_v6.txt", "Cl[C@]c1sncc1Oc2occ(CSS)c2SN(NOCSSN=CC)OO", 0);
+        // testMoleculeValidity("data/moleculeCNF_v6.txt", "C(CC", 0);
         // bulkMolVal("data/moleculeCNF_v6.txt", "../py_master_utils/molecules/MOSES.txt");
         
         // try {
@@ -196,6 +197,7 @@ public class TestGrammar {
 
     private static void testMoleculeValidity(String filePath, String molecule, int decal) {
         try {
+            //#region Setup
             CFG g = new CFG(filePath);
 
             char[] moleculeChars = molecule.toCharArray();
@@ -231,110 +233,28 @@ public class TestGrammar {
                 Integer token = g.tokenEncoder.get(tokens.get(i));
                 w[i].assign(token);
             }
+            //#endregion
 
-            //#region Grammar constraint
             try {
-                cp.post(grammar(w,g));
+                grammarConstraint(cp, w, g);
             } catch (Exception e) {
                 System.out.println("Failed during grammar constraint");
                 throw e;
             }
-            //#endregion
 
-            //#region Cycle counting constraint
-            int startingNb = 1;
-            int endNb = 19;
-            int nbCount = endNb - startingNb + 1;
-            int[] values = new int[nbCount];
-            for (int i = startingNb; i < startingNb + nbCount; i++) {
-                String key = i < 10 ? Integer.toString(i) : '%' + Integer.toString(i);
-                values[i-startingNb] = g.tokenEncoder.get(key);
-            }
-
-            int n = g.terminalCount();
-            int[][] A = new int[nbCount][n];
-            for (int i = 0; i < nbCount; i++) {
-                // Default loop
-                for (int j = 0; j < n; j++) {
-                    A[i][j] = i;
-                }
-                // Disallow all numbers above the one associated to the current state
-                for (int j = i + 1; j < values.length; j++) {
-                    A[i][values[j]] = -1;
-                }
-                // Create the transitions to go up a state, except for the last state
-                if (i != A.length - 1) {
-                    A[i][values[i]] = i + 1;
-                }
-            }
-            
             try {
-                cp.post(regular(w, A));
+                // cycleCountingConstraint(cp, w, g, 1, 19);
             } catch (Exception e) {
                 System.out.println("Failed during regular constraint");
                 throw e;
             }
-            //#endregion
 
-            //#region Cycle parity constraint
-            for (int i = 0; i < values.length; i++) {
-                IntVar numberOccurrences = makeIntVar(cp, 0, 2);
-                numberOccurrences.remove(1);
-                try {
-                    cp.post(among(w, values[i], numberOccurrences));
-                } catch (Exception e) {
-                    System.out.println("Failed during parity constraint");
-                    throw e;
-                }
-            }
-            //#endregion
-
-            //#region Carbon percentage
-            // int[] carbonAtoms = new int[2];
-            // carbonAtoms[0] = g.tokenEncoder.get("C");
-            // carbonAtoms[1] = g.tokenEncoder.get("c");
-            // int lowerBound = Math.round(wordLength * 0.35f);
-            // int upperBound = Math.round(wordLength * 0.65f);
-            // IntVar carbonRange = makeIntVar(cp, lowerBound, upperBound);
-            // try {
-            //     cp.post(among(w,carbonAtoms,carbonRange));
-            // } catch (Exception e) {
-            //     System.out.println("Failed during carbon constraint");
-            //     throw e;
-            // }
-            //#endregion
-
-            //#region Molecular weight constraint
-            IntVar weightTarget = makeIntVar(cp, 0, 6000);
-            weightTarget.setName("Weight target");
-            IntVar[] tokenWeights = makeIntVarArray(cp, wordLength, -40, 1259);
-            for (int i = 0; i < wordLength; i++) {
-                tokenWeights[i].setName("weight_" + i);
-            }
-            int[] tokenToWeight = new int[g.terminalCount()];
-            for (int i = 0; i < g.terminalCount(); i++) {
-                String token = g.tokenDecoder.get(i);
-                if (g.tokenWeight.containsKey(token)) {
-                    tokenToWeight[i] = g.tokenWeight.get(token);
-                } else {
-                    tokenToWeight[i] = 0;
-                }
-            }
-            for (int i = 0; i < wordLength; i++) {
-                cp.post(element(tokenToWeight, w[i], tokenWeights[i]));
-            }
-            int weight = 0;
-            for (IntVar iter : tokenWeights) {
-                weight += iter.min();
-            }
-            System.out.println(weight);
             try {
-                cp.post(sum(tokenWeights, weightTarget));
+                // cycleParityConstraint(cp, w, g, 1, 19);
             } catch (Exception e) {
-                System.out.println("Failed during weight constraint");
+                System.out.println("Failed during parity constraint");
                 throw e;
             }
-            //#endregion
 
             System.out.println("[SUCCESS] " + molecule);
         } catch (Exception e) {
@@ -357,78 +277,24 @@ public class TestGrammar {
         try {
             //#region Base initialization
             Solver cp = makeSolver(false);
-            //#endregion
-            
-            //#region Grammar constraint
             CFG g = new CFG(filePath);
             IntVar[] w = makeIntVarArray(cp, wordLength, 0, g.terminalCount()-1);
-            for (int i = 0; i < wordLength; i++) {
-                w[i].setName("w_" + i);
-            }
-            cp.post(grammar(w,g));
-            //#endregion
-
-            //#region Cycle counting constraint
-            int startingNb = 1;
-            int endNb = 19;
-            int nbCount = endNb - startingNb + 1;
-            int[] values = new int[nbCount];
-            for (int i = startingNb; i < startingNb + nbCount; i++) {
-                String key = i < 10 ? Integer.toString(i) : '%' + Integer.toString(i);
-                values[i-startingNb] = g.tokenEncoder.get(key);
-            }
-
-            int n = g.terminalCount();
-            int[][] A = new int[nbCount][n];
-            for (int i = 0; i < nbCount; i++) {
-                // Default loop
-                for (int j = 0; j < n; j++) {
-                    A[i][j] = i;
-                }
-                // Disallow all numbers above the one associated to the current state
-                for (int j = i + 1; j < values.length; j++) {
-                    A[i][values[j]] = -1;
-                }
-                // Create the transitions to go up a state, except for the last state
-                if (i != A.length - 1) {
-                    A[i][values[i]] = i + 1;
-                }
-            }
-            // cp.post(regular(w, A, 0, Arrays.asList(new Integer[] {4,5,6,7,8,9})));
-            cp.post(regular(w, A));
-            //#endregion
-
-            //#region Cycle parity constraint
-            for (int i = 0; i < values.length; i++) {
-                IntVar numberOccurrences = makeIntVar(cp, 0, 2);
-                numberOccurrences.remove(1);
-                cp.post(among(w, values[i], numberOccurrences));
-            }
-            //#endregion
-
-            //#region Molecular weight constraint
+            
             IntVar weightTarget = makeIntVar(cp, minWeight, maxWeight);
             weightTarget.setName("Weight target");
+
             int minAtomWeight = Collections.min(g.tokenWeight.values());
             int maxAtomWeight = Collections.max(g.tokenWeight.values());
             IntVar[] tokenWeights = makeIntVarArray(cp, wordLength, minAtomWeight, maxAtomWeight);
             for (int i = 0; i < wordLength; i++) {
                 tokenWeights[i].setName("weight_" + i);
             }
-            int[] tokenToWeight = new int[g.terminalCount()];
-            for (int i = 0; i < g.terminalCount(); i++) {
-                String token = g.tokenDecoder.get(i);
-                if (g.tokenWeight.containsKey(token)) {
-                    tokenToWeight[i] = g.tokenWeight.get(token);
-                } else {
-                    tokenToWeight[i] = 0;
-                }
-            }
-            for (int i = 0; i < wordLength; i++) {
-                cp.post(element(tokenToWeight, w[i], tokenWeights[i]));
-            }
-            cp.post(sum(tokenWeights, weightTarget));
             //#endregion
+            
+            grammarConstraint(cp,w,g);
+            cycleCountingConstraint(cp,w,g,1,19);
+            cycleParityConstraint(cp,w,g,1,19);
+            moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
 
             //#region Carbon percentage
             // int[] carbonAtoms = new int[2];
@@ -439,28 +305,6 @@ public class TestGrammar {
             // IntVar carbonRange = makeIntVar(cp, lowerBound, upperBound);
             // cp.post(among(w,carbonAtoms,carbonRange));
             //#endregion
-
-            // C1OC1 C2OC2C3CC3S=CI
-            // w[0].assign(g.tokenEncoder.get("C"));
-            // w[1].assign(g.tokenEncoder.get("1"));
-            // w[2].assign(g.tokenEncoder.get("O"));
-            // w[3].assign(g.tokenEncoder.get("C"));
-            // w[4].assign(g.tokenEncoder.get("1"));
-            // w[5].assign(g.tokenEncoder.get("C"));
-            // w[6].assign(g.tokenEncoder.get("2"));
-            // w[7].assign(g.tokenEncoder.get("C"));
-            // w[8].assign(g.tokenEncoder.get("2"));
-            // w[9].assign(g.tokenEncoder.get("C"));
-            // w[10].assign(g.tokenEncoder.get("3"));
-            // w[11].assign(g.tokenEncoder.get("C"));
-            // w[12].assign(g.tokenEncoder.get("C"));
-            // w[13].assign(g.tokenEncoder.get("S"));
-            // w[14].assign(g.tokenEncoder.get("O"));
-            // w[15].assign(g.tokenEncoder.get("="));
-            // w[16].assign(g.tokenEncoder.get("O"));
-            // w[17].assign(g.tokenEncoder.get("C"));
-            // w[18].assign(g.tokenEncoder.get("I"));
-            // w[19].assign(g.tokenEncoder.get("_"));
 
             if (nCycles == 0) {
                 cp.post(among(w, g.tokenEncoder.get("1"), makeIntVar(cp, 0,0)));
@@ -889,5 +733,74 @@ public class TestGrammar {
             System.out.println(String.format("Failed at line %d", line));
             System.out.println(e);
         }
+    }
+
+    private static void grammarConstraint(Solver cp, IntVar[] w, CFG g) throws FileNotFoundException, IOException {
+        cp.post(grammar(w,g));
+    }
+
+    private static int[] getCycleTokens(CFG g, int start, int end) {
+        int nbCount = end - start + 1;
+        int[] cycleTokens = new int[nbCount];
+        for (int i = start; i < start + nbCount; i++) {
+            String key = i < 10 ? Integer.toString(i) : '%' + Integer.toString(i);
+            cycleTokens[i-start] = g.tokenEncoder.get(key);
+        }
+        return cycleTokens;
+    }
+
+    private static void cycleCountingConstraint(Solver cp, IntVar[] w, CFG g, int start, int end) {
+        int[] cycleTokens = getCycleTokens(g, start, end);
+
+        int n = g.terminalCount();
+        int[][] A = new int[cycleTokens.length][n];
+        for (int i = 0; i < cycleTokens.length; i++) {
+            // Default loop
+            for (int j = 0; j < n; j++) {
+                A[i][j] = i;
+            }
+            // Disallow all numbers above the one associated to the current state
+            for (int j = i + 1; j < cycleTokens.length; j++) {
+                A[i][cycleTokens[j]] = -1;
+            }
+            // Create the transitions to go up a state, except for the last state
+            if (i != A.length - 1) {
+                A[i][cycleTokens[i]] = i + 1;
+            }
+        }
+        cp.post(regular(w, A));
+    }
+
+    private static void cycleParityConstraint(Solver cp, IntVar[] w, CFG g, int start, int end) {
+        int[] cycleTokens = getCycleTokens(g, start, end);
+        for (int i = 0; i < cycleTokens.length; i++) {
+            IntVar numberOccurrences = makeIntVar(cp, 0, 2);
+            numberOccurrences.remove(1);
+            cp.post(among(w, cycleTokens[i], numberOccurrences));
+        }
+    }
+
+    private static void moleculeWeightConstraint(Solver cp, IntVar[] w, IntVar[] tokenWeights, IntVar weightTarget, CFG g) {
+        int[] tokenToWeight = new int[g.terminalCount()];
+        for (int i = 0; i < g.terminalCount(); i++) {
+            String token = g.tokenDecoder.get(i);
+            if (g.tokenWeight.containsKey(token)) {
+                tokenToWeight[i] = g.tokenWeight.get(token);
+            } else {
+                tokenToWeight[i] = 0;
+            }
+        }
+        for (int i = 0; i < w.length; i++) {
+            cp.post(element(tokenToWeight, w[i], tokenWeights[i]));
+        }
+        cp.post(sum(tokenWeights, weightTarget));
+    }
+
+    private static void cycleCountConstraint() {
+        
+    }
+
+    private static void branchCountConstraint() {
+        
     }
 }

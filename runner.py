@@ -7,6 +7,7 @@ BASE_COMMAND = "mvn exec:java -Dexec.mainClass='minicpbp.examples.TestGrammar' -
 TIME = '1:00:00'
 MEM = '1G'
 
+# minWt, maxWt, minC, maxC, #cycles, #branches
 def cc_heuristic_runner(methods, test_cases, size=20, diff=''):
     print("Starting heuristic jobs.")
     for method in methods:
@@ -16,7 +17,7 @@ def cc_heuristic_runner(methods, test_cases, size=20, diff=''):
             command = f"{BASE_COMMAND}'{arguments}'"
             file_content = BASE_LINE+info_print+command
             
-            identifier = f"{size}_{method}_{index}{diff}"
+            identifier = f"{size}_{method}_c{test[4]}b{test[5]}{diff}"
             name = f"job_{identifier}.sh"
             with open(name, 'w') as f:
                 f.write(file_content)
@@ -41,7 +42,7 @@ def cc_random_runner(test_cases, method='rnd', size=20, diff=''):
         file_content = BASE_LINE+info_print+command
         
         for i in range(11):
-            identifier = f"{size}_{method}_{index}_{i}{diff}"
+            identifier = f"{size}_{method}_c{test[4]}b{test[5]}_{i}{diff}"
             name = f"job_{identifier}.sh"
             with open(name, 'w') as f:
                 f.write(file_content)
@@ -93,21 +94,16 @@ def run_failed(test_cases):
 # minWt, maxWt, minC, maxC, #cycles, #branches
 # Results are domWdeg and maxMarginal ??m??s - ??????, ??.??s - ?????
 test_cases = [
-    # ["2996","3000","35","65","2","0"],
-    # ["2996","3000","35","65","2","-1"],
-    # ["2996","3000","35","65","1","2"],
-    # ["2950","3050","0","100","1","3"],
-    # ["2996","3000","0","100","1","3"],
-    ["4750","5000","0","100","1","1"],
     ["4750","5000","0","100","1","2"],
     ["4750","5000","0","100","1","3"],
-    ["4750","5000","0","100","2","1"],
+    ["4750","5000","0","100","1","4"],
     ["4750","5000","0","100","2","2"],
     ["4750","5000","0","100","2","3"],
-    ["4750","5000","0","100","3","1"],
+    ["4750","5000","0","100","2","4"],
     ["4750","5000","0","100","3","2"],
     ["4750","5000","0","100","3","3"],
-    ["4750","5000","0","100","1","4"],
+    ["4750","5000","0","100","3","4"],
+    ["4750","5000","0","100","4","1"],
 ]
 
 methods = [
@@ -125,7 +121,7 @@ methods = [
 ]
 
 cc_heuristic_runner(methods, test_cases, size=40)
-cc_random_runner(methods, method='dom-random', size=40)
+cc_random_runner(test_cases, method='dom-random', size=40)
 
 failed = []
 
