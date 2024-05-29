@@ -108,16 +108,18 @@ test_cases = [
 
 methods = [
     "domWdeg",
-    "domWdegRestart",
-    "maxMarginal",
+    # "domWdegRestart",
+    "domWdegLDS",
+    # "maxMarginal",
     # "maxMarginalRestart",
-    # "maxMarginalStrength",
+    "maxMarginalStrength",
     # "maxMarginalLDS",
     "impact",
-    "impactRestart",
-    "maxMarginalStrengthLDS",
-    "minEntropy",
-    "minEntropyBiasedWheel",
+    # "impactRestart",
+    "impactLDS",
+    # "maxMarginalStrengthLDS",
+    # "minEntropy",
+    # "minEntropyBiasedWheel",
 ]
 
 cc_heuristic_runner(methods, test_cases, size=40)
