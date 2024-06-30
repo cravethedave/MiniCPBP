@@ -103,22 +103,24 @@ test_cases = [
     ["4750","5000","0","100","3","2"],
     ["4750","5000","0","100","3","3"],
     ["4750","5000","0","100","3","4"],
-    ["4750","5000","0","100","4","1"],
 ]
 
 methods = [
     "domWdeg",
-    # "domWdegRestart",
+    "domWdegRestart",
     "domWdegLDS",
-    # "maxMarginal",
-    # "maxMarginalRestart",
+    "maxMarginal",
+    "maxMarginalRestart",
     "maxMarginalStrength",
-    # "maxMarginalLDS",
+    "maxMarginalLDS",
     "impact",
-    # "impactRestart",
+    "impactRestart",
     "impactLDS",
-    # "maxMarginalStrengthLDS",
-    # "minEntropy",
+    "maxMarginalStrengthLDS",
+    "minEntropy",
+    "minEntropyLDS",
+    "impactMinVal",
+    "impactMinValRestart",
     # "minEntropyBiasedWheel",
 ]
 

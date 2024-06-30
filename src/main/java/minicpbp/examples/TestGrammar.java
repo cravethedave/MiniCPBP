@@ -27,7 +27,7 @@ import java.util.Vector;
 public class TestGrammar {
     public static void main(String[] args) {
         generateMolecules(
-            "data/moleculeCNF_v6.txt",
+            "data/moleculeCNF_v7.txt",
             Integer.valueOf(args[0]),
             args[1],
             Integer.valueOf(args[2]),
@@ -38,6 +38,8 @@ public class TestGrammar {
             Integer.valueOf(args[7])
         );
 
+        // System.out.println("This works");
+
         // generateMolecules(
         //     "data/moleculeCNF_v7.txt",
         //     30,
@@ -47,13 +49,20 @@ public class TestGrammar {
         //     0,
         //     100,
         //     2,
-        //     3
+        //     1
         // );
 
         // "CC(C)(C)c1ccc2occ(CC(=O)Nc3ccccc3F)c2c1"
+        // CCCC135
+        // String molecule = "CCC1C1(CCCCC2)CCCCC2";
+        // testMoleculeValidity(
+        //     "data/moleculeCNF_v6.txt",
+        //     molecule,
+        //     0
+        // );
         // testMoleculeValidity(
         //     "data/moleculeCNF_v7.txt",
-        //     "C1CCCCCCCCCCCC",
+        //     molecule,
         //     0
         // );
 
@@ -82,7 +91,7 @@ public class TestGrammar {
             File moleculeFile = new File(moleculePath);
             Scanner reader = new Scanner(moleculeFile);
             while (reader.hasNextLine()) {
-                molecules.add(tokenizeV1(reader.nextLine()));
+                molecules.add(tokenize(reader.nextLine()));
             }
             reader.close();
         } catch (FileNotFoundException e) {
@@ -137,7 +146,7 @@ public class TestGrammar {
         Vector<String> failed_molecules = new Vector<>();
         for (Vector<String> tokens : molecules) {
             String molString = tokens.toString();
-            if (processed % 100 == 0) {
+            if (processed % 10 == 0) {
                 System.out.println("[INFO] Failed " + failures + " of the " + processed + " processed");
             }
             processed++;
@@ -248,6 +257,7 @@ public class TestGrammar {
             for (int i = 0; i < wordLength; i++) {
                 w[i].setName("w_" + i);
             }
+            cp.setMode(PropaMode.SBP);
             //#endregion
 
             try {
@@ -258,14 +268,14 @@ public class TestGrammar {
             }
 
             try {
-                // cycleCountingConstraint(cp, w, g, 1, 19);
+                cycleCountingConstraint(cp, w, g, 1, 8);
             } catch (Exception e) {
                 System.out.println("Failed during regular constraint");
                 throw e;
             }
 
             try {
-                // cycleParityConstraint(cp, w, g, 1, 19);
+                cycleParityConstraint(cp, w, g, 1, 8);
             } catch (Exception e) {
                 System.out.println("Failed during parity constraint");
                 throw e;
@@ -276,6 +286,8 @@ public class TestGrammar {
                 for (i = 0; i < tokens.size(); i++) {
                     Integer token = g.tokenEncoder.get(tokens.get(i));
                     w[i].assign(token);
+                    cp.fixPoint(); // Might slow down, call at the end if that's the case
+                    // cp.post(isEqual(w[i], token));
                 }
             } catch (Exception e) {
                 System.out.println(
@@ -286,7 +298,20 @@ public class TestGrammar {
                     )
                 );
                 throw e;
-            }            
+            }
+            cp.fixPoint();
+
+            // cp.setMode(PropaMode.SBP);
+            // DFSearch dfs = makeDfs(cp, maxMarginalRandomTieBreak(w));
+            // dfs.onSolution(() -> {
+            //     String word = "";
+            //     for (int iter = 0; iter < wordLength; iter++) {
+            //         word += g.tokenDecoder.get(w[iter].min());
+            //     }
+            //     System.out.println(word);
+            // });
+            // System.out.println("[INFO] Now solving");
+            // System.out.println(dfs.solve(stat -> stat.numberOfSolutions() == 1));
 
             System.out.println("[SUCCESS] " + molecule);
         } catch (Exception e) {
@@ -353,6 +378,12 @@ public class TestGrammar {
             // double fraction = 0.005;
             // IntVar[] branchingVars = cp.sample(fraction,w);
 
+            // cp.post(isEqual(w[1], g.tokenEncoder.get("1")));
+            // cp.post(isEqual(w[wordLength - 1], g.tokenEncoder.get("1")));
+            // cp.post(among(w, g.tokenEncoder.get("["), makeIntVar(cp, 0, 0)));
+            // cp.post(among(w, g.tokenEncoder.get("="), makeIntVar(cp, 0, 0)));
+            // cp.post(among(w, g.tokenEncoder.get("C"), makeIntVar(cp, wordLength-3, wordLength)));
+
             cp.setTraceSearchFlag(false);
             
             if (method.equals("maxMarginalLDS")) {
@@ -415,6 +446,21 @@ public class TestGrammar {
                 System.out.println("[INFO] Now solving");
                 System.out.println(lds.solve(stat -> stat.numberOfSolutions() == 1));
                 return;
+            } else if (method.equals("minEntropyLDS")) {
+                cp.setMode(PropaMode.SBP);
+                LDSearch lds = makeLds(cp, minEntropy(w));
+                lds.onSolution(() -> {
+                    String word = "";
+                    int sumWeight = 0;
+                    for (int i = 0; i < wordLength; i++) {
+                        word += g.tokenDecoder.get(w[i].min());
+                        sumWeight += tokenWeights[i].min();
+                    }
+                    System.out.println(word + " weight of " + sumWeight);
+                });
+                System.out.println("[INFO] Now solving");
+                System.out.println(lds.solve(stat -> stat.numberOfSolutions() == 1));
+                return;
             }
 
             DFSearch dfs;
@@ -442,6 +488,11 @@ public class TestGrammar {
                 case "rnd":
                     cp.setMode(PropaMode.SP);
                     dfs = makeDfs(cp, randomVarRandomVal(w));
+                    break;
+                case "impactMinVal":
+                case "impactMinValRestart":
+                    cp.setMode(PropaMode.SBP);
+                    dfs = makeDfs(cp, impactMinVal(w));
                     break;
                 case "dom-random":
                     cp.setMode(PropaMode.SP);
@@ -476,6 +527,7 @@ public class TestGrammar {
                 case "maxMarginalRestart":
                 case "impactRestart":
                 case "domWdegRestart":
+                case "impactMinValRestart":
                     System.out.println("Restarts");
                     stats = dfs.solveRestarts(stat -> stat.numberOfSolutions() == 1);
                     break;
@@ -666,47 +718,21 @@ public class TestGrammar {
 
         try {
             line++;
-            Vector<String> tokens1 = new Vector<>();
-            Vector<String> tokens2 = new Vector<>();
+            Vector<String> tokens = new Vector<>();
             while (reader.ready()) {
                 String moleculeString = reader.readLine();
                 char[] molecule = moleculeString.toCharArray();
-                tokens1.clear();
-                tokens2.clear();
+                tokens.clear();
+                tokens = tokenize(moleculeString);
 
-                for (int i = 0; i < molecule.length; i++) {
-                    if (molecule[i] == '%') {
-                        tokens1.add(String.format("%c", molecule[i]));
-                        tokens1.add(String.format("%c", molecule[i+1]));
-                        tokens1.add(String.format("%c", molecule[i+2]));
-                        tokens2.add(String.format("%c%c%c", molecule[i], molecule[i+1], molecule[i+2]));
-                        i += 2; // Skips the next two chars
-                        continue;
-                    } else if (i != molecule.length - 1 && molecule[i] == 'C' && molecule[i+1] == 'l') {
-                        String token = String.format("%c%c", molecule[i], molecule[i+1]);
-                        tokens1.add(token);
-                        tokens2.add(token);
-                        i += 1;
-                        continue;
-                    } else if (i != molecule.length - 1 && molecule[i] == 'B' && molecule[i+1] == 'r') {
-                        String token = String.format("%c%c", molecule[i], molecule[i+1]);
-                        tokens1.add(token);
-                        tokens2.add(token);
-                        i += 1;
-                        continue;
-                    }
-                    tokens1.add(String.format("%c", molecule[i]));
-                    tokens2.add(String.format("%c", molecule[i]));
-                }
-
-                IntVar[] w1 = makeIntVarArray(cp1, tokens1.size(), 0, g1.terminalCount()-1);
-                IntVar[] w2 = makeIntVarArray(cp2, tokens2.size(), 0, g2.terminalCount()-1);
+                IntVar[] w1 = makeIntVarArray(cp1, tokens.size(), 0, g1.terminalCount()-1);
+                IntVar[] w2 = makeIntVarArray(cp2, tokens.size(), 0, g2.terminalCount()-1);
 
                 int i1 = 0;
                 boolean skip = false;
                 try {
-                    while (i1 < tokens1.size()) {
-                        Integer token = g1.tokenEncoder.get(tokens1.get(i1));
+                    while (i1 < tokens.size()) {
+                        Integer token = g1.tokenEncoder.get(tokens.get(i1));
                         w1[i1].assign(token);
                         i1++;
                     }
@@ -717,8 +743,8 @@ public class TestGrammar {
 
                 int i2 = 0;
                 try {
-                    while (i2 < tokens2.size()) {
-                        Integer token = g2.tokenEncoder.get(tokens2.get(i2));
+                    while (i2 < tokens.size()) {
+                        Integer token = g2.tokenEncoder.get(tokens.get(i2));
                         w2[i2].assign(token);
                         i2++;
                     }
