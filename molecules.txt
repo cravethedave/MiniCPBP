@@ -1,110 +1,116 @@
-('minEntropy','OSSSSSSCCCOCC1CC(CCOCCCCCC)SS1'),
-('minEntropy','BrSCSCCCC(CSSSSCCC=CCCCCCCCCC1CC2)C1CC2'),
-('maxMarginalLDS','ISCCC(CCCOCCCOCCCOCCCCCCCCC=CC1CNNNS1)O'),
-('impact','IN(O)OSSSSSSSSSSSSN1C2(N=N2)N1'),
-('maxMarginalLDS','ICCC(CCC(C1C(CC1CCSC2)C2)C3CSCC3)SSSSSS'),
-('minEntropy','CSSSSSSCCC(C1CCSC1(CCSCOO))SS'),
-('maxMarginal','ISSSSSSC(CCC(CC(CSI))SC1SSSS1)'),
-('maxMarginal','OCC(C1CSC1)c2nnsc2CSSSSSSSSS'),
-('maxMarginalStrength','ISC(SSC1SCOOSC2)SCOOSCOSC1SCN2'),
-('impactRestart','SSC1C(SC(S(CCCSN))NNSSSCNOS)S1'),
-('maxMarginalStrength','OC(SCCNSCCSSCCCSCC)SCCC1CCSSC1'),
-('minEntropy','BrCCCC(CCCSSSCCCC1CC(CSCCCCCCCCC)C1)C2OC2'),
-('maxMarginalStrengthLDS','ISC(C1CC(C(CCSCCCCSCCCCCCOC1CNSS2))CS2)'),
-('maxMarginal','ICCCC(CCCSCCSCCCSCC=CC1CC(CC2CCCC2)SSS1)'),
-('impactRestart','N(Sc1[nH]nc(OI)c2C=NO[O-])SSSSc1nnoc2SSS'),
-('maxMarginalStrength','ICC(CC(CC(SSCCCSCOCl))CC1CCCO1)CNSCCNSCC'),
-('domWdeg','C(C1(SS1))CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'),
-('maxMarginal','ISCCC(CCCOCCCOCCCOCCCCCCCCC=CC1CNNNS1)O'),
-('maxMarginal','ClC(C(C1CSC2)C1SSC2)SSSSSSSSSC'),
-('impactRestart','INNN(N(O(NNc1cc[nH]n1))S\\N=C\\O)SOCSOSSSS'),
-('impactRestart','NCSC(NCCc1sc(CCCSC2(SC1)S3)c2c3OSC#N)SS'),
-('maxMarginalLDS','ICC(CSCOC1CONO1)CSSSSSC2NSSSS2'),
-('maxMarginalLDS','ISSSSSSC(CCC1CC(CSCOCONSBr)SS1)'),
-('minEntropy','OSSSSSSSSC(C(C1CS1)C2(SS2))SS'),
-('impactRestart','INNN(N(ONc1nc[nH]n1))[C@@H]SSSSSSSSNNS'),
-('minEntropy','OCCCC(CCC(SSSSSC(CCCCCCCCCO)C1CCC2)C1)C2'),
-('maxMarginalLDS','SC(SC(C(SSF))S1)N2SSSSC2NSSSS1'),
-('maxMarginalStrengthLDS','IOC(SSSSSSCCSC1CSC2)SC1SCNSC2'),
-('maxMarginalStrength','IOC(OC(OC=CSC=CCC)CNCCC1SCOC1)SCCC2CSCS2'),
-('maxMarginalStrength','ISOSC(SSC(SSSN)SC(CBr)C1SOSOS1)'),
-('maxMarginalStrengthLDS','OOC(NC(OCCCC1CCCCC2)N1NC2)SCOCSSC3COSCS3'),
-('maxMarginalLDS','OCCCC(COCOCOC1CCC=C1)N=C=C=COC2CSSSSSS2'),
-('minEntropy','SSSSSSSCCC(C(C(C)CC1CCSSSS1))'),
-('maxMarginalLDS','ICC(CCC(CNCCNCCNCC1CC(C2CNCC2)SS1)SSSS)'),
-('maxMarginalRestart','ICCCC(CCCCCCCCCCCC(COC)COCC=CCC1CSSSS1)'),
-('impact','INNNS([C@@]ONSSSSSSC1SSSSS1)'),
-('domWdegRestart','C1(CS1)CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'),
-('maxMarginalStrengthLDS','C1C(OC(OC(C2SSSC2)OSCOC1SCOC3)SCOCO)SC3'),
-('maxMarginal','ICCCC(COCOCOC1COC=C2)C=C=C=CCC2CSSSSSS1'),
-('maxMarginal','ICC(CCC(CCCCCCCCCCCCC1CC=C1))CCCCSSSSS'),
-('impactRestart','S[C@]CC#COc1[nH]ccc2SSSSSOOOOOc2ccn(C)c1'),
-('impactRestart','CCCCCNSC(N=CCCc1onnn1)SNSSSSSS'),
-('minEntropy','ISSSSC(CC(CCCCCCCCC(CC)COCCCO)C1CONOO1)'),
-('maxMarginal','OCCCC(CCC(CCCC(CCOCCOCCC1CCCCCC1))SSSSC)'),
-('maxMarginalRestart','SC(C(C(C1CS2)S1)N2SSSSSSSSSSCl)'),
-('maxMarginalLDS','ISSSSSSCCC(CCNCC=CC)CCCC1SSNS1'),
-('maxMarginalRestart','ISSSSSSSC(C1C(CCOCOCNCNBr)SSS1)'),
-('maxMarginalStrengthLDS','IOC(OC(OCOCCNCOCOCNCCNCNCCC1CCCCS1))SCO'),
-('maxMarginalRestart','NC(C)CC(CSC1CNC1)SSSSSSC2SSSS2'),
-('maxMarginalStrengthLDS','C1C(C(CCSCC2SSCSS2)NSSNSS)SSO1'),
-('impactRestart','INNNS([N+][C@@]ONNNNNNNNNNNNN1SSSSSS1)'),
-('maxMarginal','NCC(CCC(C=CC1CC=CC(CCSC1CCSC2)O2))SSSSS'),
-('impact','INNN(N(O(NNc1cc[nH]n1))S\\N=C\\O)SOCSOSSSS'),
-('maxMarginalLDS','SCC(C1CC(NC1CS2)S2)CSSSSSSSSS'),
-('impact','IN(O)OSSSSSSSSSSS(C1C2(CC1)S2)'),
-('maxMarginal','ICCC(CCC(C1C(CC1CCSC2)C2)C3CSCC3)SSSSSS'),
-('impact','INNN(N(ONc1nc[nH]n1))[C@@H]SSSSSSSSNNS'),
-('maxMarginalStrength','ISC(C(C(SC1SS2)SSI)SSC2SSSSS1)'),
-('domWdeg','C1(CS1)CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'),
-('maxMarginalStrengthLDS','ICCC(CCOCOCCOCCOCOCCCC=CCCSCCCOC1CCCS1)'),
-('minEntropy','SSSSSSSSSC(SC(CCCCC1)C2C2OCS1)'),
-('maxMarginal','IC(C(C1C2(SS2)C1)SSSSSSSSSSSBr)'),
-('impactRestart','c1c(c2c(O\\N=[C@@H]\\S)nno1)c(SSSSS)sc2SSS'),
-('maxMarginalStrength','SC(C1SSC(C2(SSC1SS3)SSSS2)SS3)'),
-('maxMarginalRestart','ICCCSC(CC=COCCNCCCNCOCNCCC=CC1CCSCS1)CO'),
-('maxMarginalStrength','ISC(C1CC(C(CCSCCCCSCCCCCCOC1CNSS2))CS2)'),
-('maxMarginalStrength','IOC(OC(OCOCCNCOCOCNCCNCNCCC1CCCCS1))SCO'),
-('minEntropy','ICCCCSCCCCCCCCCCCCCCC(CCC1COCOO1)COOOS'),
-('maxMarginalStrengthLDS','ISOSC(SSC(SSSN)SC(CBr)C1SOSOS1)'),
-('maxMarginalRestart','CCC(CC(C(C=C=CCC1CCCC1))C=CCC)CSSSSSSSC'),
-('maxMarginalRestart','ICC(CNCCC1COC=C1)OC=CNCNCSSSSSSC2CCC2'),
-('maxMarginalRestart','CCC(SSSSSCCC(CC(CSC))SC1SSSS1)'),
-('maxMarginalLDS','ICCC(C=CC1CSC=C1)Oc2nnnn2N=CSC3CSSSSSS3'),
-('maxMarginalStrengthLDS','OSC(C(C1SCSSS2)(SI))SC2SSSSSS1'),
-('maxMarginalStrengthLDS','ICCSC(OSCOCSCSNSCSNSC(C1NSS1))'),
-('maxMarginal','ISSSSSSC(CCC1CC(CSCOCONSBr)SS1)'),
-('maxMarginalRestart','OCCC(SC(SCOC1CCCO1))C=CCCCCCC=CC2CSSSS2'),
-('maxMarginalStrengthLDS','OC(SCCNSCCSSCCCSCC)SCCC1CCSSC1'),
-('minEntropy','BrSSSSSSSSCC(CCCCCCC1CSS2)C2CC1'),
-('maxMarginalRestart','ICCC(CC(C1COCOC2)CC3)C3CCOCCCC2CSSSSSS1'),
-('impact','INNNS([N+][C@@]ONNNNNNNNNNNNN1SSSSSS1)'),
-('maxMarginalRestart','ISC(CCC(CNCOCNCNCC(C1CSCNC1)CNCC2SSSS2))'),
-('maxMarginalLDS','ICCCC(CCCSCCSCCCSCC=CC1CC(CC2CCCC2)SSS1)'),
-('maxMarginalStrengthLDS','ICC(CC(CC(SSCCCSCOCl))CC1CCCO1)CNSCCNSCC'),
-('maxMarginalStrength','C1C(OC(OC(C2SSSC2)OSCOC1SCOC3)SCOCO)SC3'),
-('impactRestart','Nc1nnnnc1SNc2onnc2CSSSN(SOS)SS'),
-('maxMarginalStrengthLDS','IOC(OC(OC=CSC=CCC)CNCCC1SCOC1)SCNC2CSCS2'),
-('maxMarginal','ISSSSSSCCC(CCNCC=CC)CCCC1SSNS1'),
-('maxMarginalStrengthLDS','C1C(SC(SC2SS2)(S)SC3SSS3)SSSS1'),
-('minEntropy','ISSSSCCCC(CCC(CCCCCCCCCCCCCC)C1C=CCO1)O'),
-('impactRestart','C1(SSc2csnc3CSSN3SCSSCS1)OCCS2'),
-('domWdegRestart','C1(SS1)SSSSSSCCCCCCCCCCCCCCCCC'),
-('maxMarginal','OCCC(CCC(COCOCNC1CNC2)C1)C2CNC3CSSSSSS3'),
-('maxMarginalStrengthLDS','CCCCCCCOC=CCNCNCCNCCCC1C(CCC1SCOSC2)SCO2'),
-('maxMarginalStrength','C1C(C(CCSCC2SSCSS2)NSSNSS)SSO1'),
-('maxMarginalRestart','OCC(C1COC1)CSSSSSSSSSC2CSCCC2'),
-('impactRestart','ONSc1ccnc(C2SSSSSS1)c3SSN2NSN3'),
-('impactRestart','N(c1nsnc1OC[NH3+])SSS(SSSSSCSS)'),
-('maxMarginalLDS','ISSSSSSC(CCC(CC(CSI))SC1SSSS1)'),
-('maxMarginalLDS','OCCC(CCC(CCC1CONCC2)C3)C3COCCC2CSSSSSS1'),
-('maxMarginalLDS','ICC(CCC(CCCCCCCCCCCCC1CC=C1))CCCCSSSSS'),
-('impactRestart','SCCSN1CONSSN2(C2(SSSS)SSOS1)'),
-('maxMarginalStrengthLDS','OC1SC(SSC2C(SSC2SSC3)SCS1)SSS3'),
-('impact','IN(O)NONNNNNNNNNNNNNNNNNNNNNc1cnsc1C2CN2'),
-('impactRestart','SCNC1NC2(Oc3ccccc3C#CSSSNON1SS2)(SNON)'),
-('maxMarginalRestart','COSSSCC(CCCCCCOSSSSCOC)C1OOOO1'),
-('domWdeg','C1(SS1)SSSSSSCCCCCCCCCCCCCCCCC'),
-('domWdegRestart','C(C1(SS1))CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'),
-('maxMarginalStrength','SCSSC1SSSSC2(SSC3C(SC2CSC1)S3)'),
-('maxMarginalLDS','CCCCC(CCC(CSCCCCCCCC(C)C)CCCC1CC1)SSSSC'),
+slout_40_dom-random_c1b2_0.txt:c1[nH]nc(OOONC[C@@]=[NH+]CO(CSCSSONI))n1 weight of 4822
+slout_40_dom-random_c1b2_1.txt:SO/[C@@H]=[C@@](N/C(c1ncsc1SSSSI)=C/C)\C weight of 4805
+slout_40_dom-random_c1b2_10.txt:N[C@@H][C@@]1(NC1(I))CSNOCSNONONSO[C@H]S weight of 4903
+slout_40_dom-random_c1b2_2.txt:OOc1oc(Br)cc1O[C@]OCSC=CSCON(CCl)[C@@]=NOCl weight of 4981
+slout_40_dom-random_c1b2_3.txt:FSO\C(Oc1[nH]nnc1OS/N=N\C(NSSI))=[NH+]/O weight of 4873
+slout_40_dom-random_c1b2_4.txt:O=[C@]1(CNS[C@]=[N+]ON1(NNNO[C@@]SSSSI)) weight of 4754
+slout_40_dom-random_c1b2_5.txt:ICSS(=O)(=O)[C@]ONSSCN1[C@][C@]SCN[N+]O1 weight of 4894
+slout_40_dom-random_c1b2_6.txt:S=[C@](Cl)S[C@@](I)SSNS[C@H]Sc1c[nH]nc1O_ weight of 4890
+slout_40_dom-random_c1b2_9.txt:Sc1c([O-])cc(OOSC[C@H][C@]C=NOSCOCI)nc1O weight of 4922
+slout_40_dom-random_c1b3_2.txt:Ic1[nH]nnc1C#[N+]CON/[C@@H]=C(S(O(I)))/C weight of 4769
+slout_40_dom-random_c1b3_3.txt:SC(S)[C@@](=N[C@H]N=COF)OCC(OO1)N1OOONSI weight of 4902
+slout_40_dom-random_c1b3_4.txt:O[C@H]c1c[nH]c(OC)c1C(I)(Br)ONCNOOC[C@]NC weight of 4918
+slout_40_dom-random_c1b3_5.txt:FC(I)ON(I)ONC1([NH+][NH+]1)[N+]S[C@@]#CS weight of 4940
+slout_40_dom-random_c1b3_6.txt:BrO\[C@@]=[N+](S/N=[C@H]\C(I)(SSC1SS1))\N weight of 4773
+slout_40_dom-random_c1b3_7.txt:BrO[C@][N+]O[N+]=[N+]=NOSN(CN1(N(Br)))N1SBr weight of 4939
+slout_40_dom-random_c1b3_8.txt:Ic1coc(Cl)c1COC[NH+]C(O)(F)[C@]O[C@@H]NOBr weight of 4883
+slout_40_dom-random_c1b3_9.txt:N[NH+](N(I))C(Br)NOSN[C@]=NN[C@@]#CC1SNO1 weight of 4840
+slout_40_dom-random_c1b4_0.txt:FCC=[NH+]c1sc(C)nc1C(O(Cl))(OF)SNSC[N+]SBr weight of 4758
+slout_40_dom-random_c1b4_1.txt:S/N=[C@@](c1nn[nH]c1NO(CONNN(I)NN(Br)))\C weight of 4799
+slout_40_dom-random_c1b4_10.txt:ClC[NH+]S(=O)(=O)N[N+]CNN(S(Br))Nc1nncn1NBr weight of 4855
+slout_40_dom-random_c1b4_2.txt:NOSOSN\N=[N+](C(N(N))(N)SC=Nc1nccn1CI)/C weight of 4922
+slout_40_dom-random_c1b4_4.txt:S(=O)(=O)N/N=C(C(SI)Oc1nccn1NC=[C@H]Br)/N weight of 4900
+slout_40_dom-random_c1b4_5.txt:Clc1scnc1C#CN=CCO[C@@]=NSNC(O(C(I)))(Cl)F_ weight of 4951
+slout_40_dom-random_c1b4_6.txt:N[C@@H]NSS(=O)(=O)[C@@](Br)(SBr)OSOc1cnns1 weight of 4883
+slout_40_dom-random_c1b4_7.txt:SOC#CSC(S(Br))(N)CSNS[C@@](SOSOO1)N1[NH+] weight of 4926
+slout_40_dom-random_c1b4_8.txt:S/C(c1cocc1NC(C(Br))(S)C[C@]NOOSCSNF)=C/C weight of 4783
+slout_40_dom-random_c1b4_9.txt:ClC(C(SC1(I)(SNNNCS[O-]))[NH+]1S[NH+]CCF) weight of 4818
+slout_40_dom-random_c2b2_1.txt:SC(NSSSS)=CCNCCOSc1cnc(N[C@H]C2)c2c1OSN_ weight of 4877
+slout_40_dom-random_c2b2_10.txt:BrC([O-])SCNNC[C@]NOOCC1[NH+]C1(SC2SSSS2) weight of 4885
+slout_40_dom-random_c2b2_3.txt:N(Cl)N[N+]Sc1nc(NCSNc2[nH]nnc2OSCSNCCl)co1 weight of 4794
+slout_40_dom-random_c2b2_5.txt:c1occ([O-])c1c2occc2[C@@H](SSSSI)SN[NH3+] weight of 4794
+slout_40_dom-random_c2b2_6.txt:NN=[C@@]NN=NSS[C@]c1nc(CN2(SSSSSCl))c2n1Cl weight of 4847
+slout_40_dom-random_c2b2_7.txt:FNNN[N+]NSNOSc1c(S/N=C/N(C2=NS2))ncn1SSCl weight of 4841
+slout_40_dom-random_c2b2_8.txt:BrON(C([C@]=[NH+]c1cnnn1ONOBr)[C@]NON2)N2Br weight of 4957
+slout_40_dom-random_c2b3_1.txt:[C@H]Sc1[nH]c(OS[C@H]C(CI)N2)c2c1ON(Cl)OBr weight of 4995
+slout_40_dom-random_c2b3_3.txt:BrC=[C@]NCS[NH+](Br)C\C=C(C1OC2(SS2)SS1)\N weight of 4843
+slout_40_dom-random_c2b3_5.txt:Ic1[nH]cnc1C(S(I))(SC2)C2NC/[C@]=[NH+]\C weight of 4920
+slout_40_dom-random_c2b3_7.txt:SNOSc1onnc1c2[nH]c(N(S(I)))nc2NN=N[C@H]F weight of 4762
+slout_40_dom-random_c2b3_8.txt:SNOC1(O[C@]1)NNNc2[nH]ccc2OC(I)(Br)[C@@]S weight of 4950
+slout_40_dom-random_c2b3_9.txt:Fc1onnc1Cc2n(I)nnc2N[C@@H]SN(ON([NH+]))Br weight of 4939
+slout_40_dom-random_c2b4_0.txt:S(=O)(=O)O[C@]OSOOCOc1cccc(OC2ON2(CI))c1 weight of 4751
+slout_40_dom-random_c2b4_10.txt:C[N+]S[NH+]C1(NNC2(S[N+](Br)(I)O2)S1)OOCO weight of 4951
+slout_40_dom-random_c2b4_2.txt:Brc1sc(NI)nc1OC(SC2([N+]Cl))[N+]2(F)N[C@@] weight of 4905
+slout_40_dom-random_c2b4_5.txt:O/N=C(c1snnc1c2sccc2C\N=C\N(N(S(I))S))\O weight of 4863
+slout_40_dom-random_c2b4_7.txt:c1nsnc1C(Br)CSON=[C@]NC(C2(OC2(I)))=[C@]F weight of 4930
+slout_40_dom-random_c2b4_8.txt:Ic1oc(Cl)nc1[C@@H]Oc2c(N(Br))n([C@]SF)nc2F weight of 4984
+slout_40_dom-random_c3b2_10.txt:FCSCc1scnc1OOC[C@H]NSN(CN2([C@]3CO3))N2I weight of 4932
+slout_40_dom-random_c3b2_2.txt:Ic1ocnc1NONS/[N+]([N+]2SS2)=C(c3snnc3)/C weight of 4753
+slout_40_dom-random_c3b2_6.txt:NCc1n[nH]nc1OCCCSSN(F)Nc2onnc2C3(OC3)COBr weight of 4841
+slout_40_dom-random_c3b3_0.txt:NOc1noc(I)c1NOOOOC2N([O-])SSON2(OC3=CO3) weight of 4971
+slout_40_dom-random_c3b3_2.txt:F[C@H]c1c2(NOONON(NN3)C3(SSSSSSCl)S2)nnc1 weight of 4892
+slout_40_dom-random_c3b3_6.txt:Oc1nsc(SC2(SS2)I)c1C=NNC([C@@]O3)[N+]3CCl weight of 4818
+slout_40_dom-random_c3b4_8.txt:BrC(Cl)=C=Cc1oc(Cl)cc1C2(C3(ON3)C2)C[C@H]NI weight of 4898
+slout_40_domWdegRestart_c1b2.txt:C(C1(CN1))CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC weight of 4750
+slout_40_domWdeg_c1b2.txt:C(C1(CN1))CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC weight of 4750
+slout_40_impactLDS_c1b2.txt:IN(C(I)I)c1onnn1________________________ weight of 4757
+slout_40_impactLDS_c1b3.txt:INc1coc([C@]\C=C\[N+](Br)([C@]I))n1______ weight of 4827
+slout_40_impactLDS_c1b4.txt:c1nn(SSCCSSSN)nc1C(SC)([C@]#C[C@@H]Br)(S) weight of 4786
+slout_40_impactLDS_c2b2.txt:Brc1c(SC2)c2c([C@H]SS[C@]SOCl)n1I_________ weight of 4877
+slout_40_impactLDS_c2b3.txt:c1nc(OC(Br)(SBr)I)nn1c2oncc2______________ weight of 4788
+slout_40_impactLDS_c2b4.txt:IN(I)Oc1c(C(Br))c(S[N+]2)c2o1____________ weight of 4878
+slout_40_impactLDS_c3b2.txt:ISc1ncsc1C(C/[N+]=N/N(C))c2cnnnc2c3ncns3 weight of 4902
+slout_40_impactLDS_c3b3.txt:C1(CN1(SSCSS/C(c2nocc2SF)=C/O))SC#CN3SS3 weight of 4758
+slout_40_impactLDS_c3b4.txt:c1c(S\C=C(S)/S)n[nH]c1C2N(SC(I)C3=NS3)S2 weight of 4755
+slout_40_impactMinValRestart_c1b2.txt:CCCCCCCCCCCCCCCCCCCCCCCCC1(S[C@@H]1(Br))C weight of 4870
+slout_40_impactMinValRestart_c1b3.txt:IC(Br)(C1(CC[C@@][C@@H]C1))CCCCCCCCCCCCCC weight of 4968
+slout_40_impactMinVal_c1b2.txt:CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC(C1(NC1))C weight of 4750
+slout_40_impactRestart_c1b2.txt:c1snnc1[N+]C/C=[C@](SNSI)/C(I)__________ weight of 4851
+slout_40_impactRestart_c1b3.txt:ISSNSc1ncnn1NN([C@@](O)\[N+](CC=CCl)=C/N) weight of 4807
+slout_40_impactRestart_c1b4.txt:CC(=NCON\C=C(c1nnc(N(Br)C)s1)\N)NNN=NCSSCl weight of 4897
+slout_40_impactRestart_c2b2.txt:c1n(Br)cc(Br)c1C=CC[N+][N+]2SSSSSS2_______ weight of 4844
+slout_40_impactRestart_c2b3.txt:c1n(Br)cc(Br)c1c2n([C@@])nnc2OSSSNS[C@@H]_ weight of 4752
+slout_40_impactRestart_c2b4.txt:c1n(Br)cc(Br)c1c2snnc2[N+]C=C[C@H](NBr)(S)_ weight of 4879
+slout_40_impactRestart_c3b2.txt:c1n[nH]c(c2scnn2)c1c3n([C@@]SBr)nnc3OSCBr_ weight of 4811
+slout_40_impactRestart_c3b3.txt:c1n[nH]c(c2scnn2)c1c3snc(Br)c3[C@@H]CC(I) weight of 4790
+slout_40_impactRestart_c3b4.txt:c1n[nH]c(c2scnn2)c1c3snc(Br)c3[C@@](Br)(Br) weight of 4829
+slout_40_impact_c1b2.txt:c1snnc1[N+]C/C=[C@](SNSI)/C(I)__________ weight of 4851
+slout_40_impact_c1b3.txt:c1snnc1[N+]C/C=[C@](S(N(I)SI))/C________ weight of 4851
+slout_40_impact_c1b4.txt:c1snnc1[N+]C/C=[C@](S)/C(I)(S(NI))______ weight of 4851
+slout_40_impact_c2b2.txt:c1n(Br)cc(Br)c1C=CC[N+][N+]2SSSSSS2_______ weight of 4844
+slout_40_impact_c2b3.txt:c1n(Br)cc(Br)c1c2n([C@@])nnc2OSSSNS[C@@H]_ weight of 4752
+slout_40_impact_c2b4.txt:c1n(Br)cc(Br)c1c2snnc2[N+]C=C[C@H](NBr)(S)_ weight of 4879
+slout_40_impact_c3b2.txt:c1n[nH]c(c2scnn2)c1c3n([C@@]SBr)nnc3OSCBr_ weight of 4811
+slout_40_impact_c3b3.txt:c1n[nH]c(c2scnn2)c1c3snc(Br)c3[C@@H]CC(I) weight of 4790
+slout_40_impact_c3b4.txt:c1n[nH]c(c2scnn2)c1c3snc(Br)c3[C@@](Br)(Br) weight of 4829
+slout_40_maxMarginalLDS_c1b2.txt:FCCC(CC(CC=CC=CCOCCNCCOCCOCCSCOC1NNNN1)) weight of 4771
+slout_40_maxMarginalLDS_c1b3.txt:ClCC(C(CC(COCCOCCCCCCCCCCC1CCCCO1)))SNCS_ weight of 4957
+slout_40_maxMarginalLDS_c1b4.txt:OC(C(CC(CC(CCSCCCCCCCCSCC1CSCS1)CCCCO))) weight of 4944
+slout_40_maxMarginalLDS_c2b2.txt:BrNCCOCCC(CCCCC(CC)CCOCC1CCCCC1)C2CCCC=C2 weight of 4979
+slout_40_maxMarginalLDS_c2b3.txt:CCCC(CC=CC(CCOCC(NNCCCOCC1CCSC1)N2SSS2)) weight of 4794
+slout_40_maxMarginalLDS_c2b4.txt:BrCCC(CC(C(C=CC(CC=CCSCCNCNC1CS1)))C2CS2) weight of 4772
+slout_40_maxMarginalRestart_c1b2.txt:CCCC(CCCOCCCCCNCCCCCCCCCCNCC(CCC1CCCS1)) weight of 4961
+slout_40_maxMarginalRestart_c1b3.txt:BrC(C(COCOCOC)COCSC=CCOCCCC(COC1C=CCC1))_ weight of 4950
+slout_40_maxMarginalRestart_c1b4.txt:BrC(C(C(CSC(CCC1CC=CSC1))))CCCCCCCCCSC___ weight of 4792
+slout_40_maxMarginalRestart_c2b4.txt:BrCCC(CC(CC(CCCSC(COCOC1COCS1)C2CCCCC2))) weight of 4951
+slout_40_maxMarginalStrengthLDS_c1b2.txt:NOCC(COCCCCCOCNCCOCNCCCCOC1CC(CON)OCO1)_ weight of 4800
+slout_40_maxMarginalStrengthLDS_c1b3.txt:CC(C(CCOC(CC)COCCSCOCCSCOCCOC1CCOC=C1)C) weight of 4782
+slout_40_maxMarginalStrengthLDS_c1b4.txt:BrC(C(CCCCOCC)COCC(COCC(COCCOC1CCOC=C1))) weight of 4789
+slout_40_maxMarginalStrengthLDS_c2b2.txt:FSCCOCOCNOCCCCCCC(C)CCCC1CC(C2CNNCC2)OO1 weight of 4791
+slout_40_maxMarginalStrengthLDS_c2b3.txt:BrNCC(CCCCOCC(COCC)C1CC(COCNC2CCOC2)CO1)_ weight of 4789
+slout_40_maxMarginalStrengthLDS_c2b4.txt:N=CC(C(C=CC(C)CC(C1OCCC1)C=CNC2OCOC2)Br)Br weight of 4778
+slout_40_maxMarginalStrength_c1b2.txt:NOCC(COCCCCCOCNCCOCNCCCCOC1CC(CON)OCO1)_ weight of 4800
+slout_40_maxMarginalStrength_c1b3.txt:ClC(C(CCCC(CCOCCCCSCCCC)CNCCOCNCC1COCO1)) weight of 4946
+slout_40_maxMarginalStrength_c1b4.txt:BrC(C(CCCCOCC)COCC(COCC(COCCOC1CCOC=C1))) weight of 4789
+slout_40_maxMarginal_c1b2.txt:FCCC(CC(CC=CC=CCOCCNCCOCCOCCSCOC1NNNN1)) weight of 4771
+slout_40_maxMarginal_c1b3.txt:FC(C(CC(CCNCCCCCOCCOCCOCCOCC1CCSCSCC1))) weight of 4952
+slout_40_maxMarginal_c1b4.txt:OC(C(CC(CCSCCSCCNCCCCC1CC(C)C1))CCCCSO)C weight of 4773
+slout_40_minEntropyLDS_c1b2.txt:CCCC(CC(CCCCCCCCCCCCCCCCCCSCCCCC1CNC1))_ weight of 4791
+slout_40_minEntropyLDS_c1b3.txt:FC(C(CCCCCCCCCCC(CCCCCCCCCCCCF)))N1OOOS1 weight of 4791
+slout_40_minEntropyLDS_c1b4.txt:CC(C(CC(CCCCCCCCCCCCCCCCCCCCBr))C(C)C1)N1 weight of 4839
+slout_40_minEntropyLDS_c2b2.txt:CCCCCCC(CC(CCCCCCCCCCC1CCCC1)CCC)C2CCSS2 weight of 4802
+slout_40_minEntropyLDS_c2b3.txt:CCCC(CNCC1CCCC(NCCC(CCCCCCCCCC)C2)C2C1)Br weight of 4829
+slout_40_minEntropy_c1b2.txt:CCCC(CC(CCCCCCCCCCCCCCCCCCSCCCCC1CNC1))_ weight of 4791
+slout_40_minEntropy_c1b3.txt:FC(C(CCCCCCCCCCC(CCCCCCCCCCCCF)))N1OOOS1 weight of 4791
+slout_40_minEntropy_c1b4.txt:CC(C(CC(CCCCCCCCCCCCCCCCCCCCBr))C(C)C1)N1 weight of 4839
+slout_40_minEntropy_c2b3.txt:CCCC(CC(CC)CC1CC(CCCCCCCCCCCCCC2CN2)C1)Br weight of 4819

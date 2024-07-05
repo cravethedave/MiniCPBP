@@ -1,0 +1,6 @@
+slout_40_maxMarginalLDS_c1b2.txt:	fail: 0
+slout_40_maxMarginalLDS_c1b3.txt:	fail: 29
+slout_40_maxMarginalLDS_c1b4.txt:	fail: 4
+slout_40_maxMarginalLDS_c2b2.txt:	fail: 27
+slout_40_maxMarginalLDS_c2b3.txt:	fail: 220
+slout_40_maxMarginalLDS_c2b4.txt:	fail: 16

@@ -27,7 +27,7 @@ import java.util.Vector;
 public class TestGrammar {
     public static void main(String[] args) {
         generateMolecules(
-            "data/moleculeCNF_v7.txt",
+            "data/moleculeCNF_v6.txt",
             Integer.valueOf(args[0]),
             args[1],
             Integer.valueOf(args[2]),

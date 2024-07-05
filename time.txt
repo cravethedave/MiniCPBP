@@ -1,0 +1,9 @@
+slout_40_maxMarginalStrengthLDS_c1b2.txt:	execution time (ms): 13490
+slout_40_maxMarginalStrengthLDS_c1b3.txt:	execution time (ms): 23051
+slout_40_maxMarginalStrengthLDS_c1b4.txt:	execution time (ms): 13909
+slout_40_maxMarginalStrengthLDS_c2b2.txt:	execution time (ms): 1107530
+slout_40_maxMarginalStrengthLDS_c2b3.txt:	execution time (ms): 2293070
+slout_40_maxMarginalStrengthLDS_c2b4.txt:	execution time (ms): 219856
+slout_40_maxMarginalStrengthLDS_c3b2.txt:slurmstepd: error: *** JOB 31091728 ON nc11026 CANCELLED AT 2024-06-30T20:03:26 DUE TO TIME LIMIT ***
+slout_40_maxMarginalStrengthLDS_c3b3.txt:slurmstepd: error: *** JOB 31091068 ON nc30521 CANCELLED AT 2024-06-30T19:42:16 DUE TO TIME LIMIT ***
+slout_40_maxMarginalStrengthLDS_c3b4.txt:slurmstepd: error: *** JOB 31091069 ON nc30521 CANCELLED AT 2024-06-30T19:42:16 DUE TO TIME LIMIT ***
