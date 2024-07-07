@@ -1,9 +1,27 @@
-slout_40_maxMarginalStrengthLDS_c1b2.txt:	execution time (ms): 13490
-slout_40_maxMarginalStrengthLDS_c1b3.txt:	execution time (ms): 23051
-slout_40_maxMarginalStrengthLDS_c1b4.txt:	execution time (ms): 13909
-slout_40_maxMarginalStrengthLDS_c2b2.txt:	execution time (ms): 1107530
-slout_40_maxMarginalStrengthLDS_c2b3.txt:	execution time (ms): 2293070
-slout_40_maxMarginalStrengthLDS_c2b4.txt:	execution time (ms): 219856
-slout_40_maxMarginalStrengthLDS_c3b2.txt:slurmstepd: error: *** JOB 31091728 ON nc11026 CANCELLED AT 2024-06-30T20:03:26 DUE TO TIME LIMIT ***
-slout_40_maxMarginalStrengthLDS_c3b3.txt:slurmstepd: error: *** JOB 31091068 ON nc30521 CANCELLED AT 2024-06-30T19:42:16 DUE TO TIME LIMIT ***
-slout_40_maxMarginalStrengthLDS_c3b4.txt:slurmstepd: error: *** JOB 31091069 ON nc30521 CANCELLED AT 2024-06-30T19:42:16 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c1b2.txt:slurmstepd: error: *** JOB 31316018 ON nc10912 CANCELLED AT 2024-07-07T06:14:19 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c1b3.txt:	execution time (ms): 1974794
+slout_40_domWdegRandom_c1b4.txt:	execution time (ms): 202369
+slout_40_domWdegRandom_c2b2.txt:	execution time (ms): 241012
+slout_40_domWdegRandom_c2b3.txt:slurmstepd: error: *** JOB 31316022 ON nc11104 CANCELLED AT 2024-07-07T06:25:00 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c2b4.txt:slurmstepd: error: *** JOB 31316023 ON nc11106 CANCELLED AT 2024-07-07T06:25:00 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b2.txt:slurmstepd: error: *** JOB 31316024 ON nc11115 CANCELLED AT 2024-07-07T06:25:00 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b3.txt:slurmstepd: error: *** JOB 31316025 ON nc11120 CANCELLED AT 2024-07-07T06:25:00 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b4.txt:slurmstepd: error: *** JOB 31316026 ON nc11120 CANCELLED AT 2024-07-07T06:25:00 DUE TO TIME LIMIT ***
+slout_40_maxMarginalStrength_c1b2.txt:	execution time (ms): 7598
+slout_40_maxMarginalStrength_c1b3.txt:	execution time (ms): 9135
+slout_40_maxMarginalStrength_c1b4.txt:	execution time (ms): 9425
+slout_40_maxMarginalStrength_c2b2.txt:	execution time (ms): 8583
+slout_40_maxMarginalStrength_c2b3.txt:	execution time (ms): 9889
+slout_40_maxMarginalStrength_c2b4.txt:	execution time (ms): 9391
+slout_40_maxMarginalStrength_c3b2.txt:	execution time (ms): 6598
+slout_40_maxMarginalStrength_c3b3.txt:	execution time (ms): 8665
+slout_40_maxMarginalStrength_c3b4.txt:	execution time (ms): 8953
+slout_40_maxMarginal_c1b2.txt:	execution time (ms): 8029
+slout_40_maxMarginal_c1b3.txt:	execution time (ms): 9774
+slout_40_maxMarginal_c1b4.txt:	execution time (ms): 10622
+slout_40_maxMarginal_c2b2.txt:	execution time (ms): 7233
+slout_40_maxMarginal_c2b3.txt:	execution time (ms): 8242
+slout_40_maxMarginal_c2b4.txt:	execution time (ms): 9241
+slout_40_maxMarginal_c3b2.txt:	execution time (ms): 5994
+slout_40_maxMarginal_c3b3.txt:	execution time (ms): 8558
+slout_40_maxMarginal_c3b4.txt:	execution time (ms): 9242

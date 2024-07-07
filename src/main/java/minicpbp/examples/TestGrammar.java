@@ -352,8 +352,8 @@ public class TestGrammar {
             //#endregion
             
             grammarConstraint(cp,w,g);
-            cycleCountingConstraint(cp,w,g,1,8);
-            cycleParityConstraint(cp,w,g,1,8);
+            cycleCountingConstraint(cp,w,g,1,19);
+            cycleParityConstraint(cp,w,g,1,19);
             moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
 
             //#region Carbon percentage
