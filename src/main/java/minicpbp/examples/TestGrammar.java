@@ -336,6 +336,9 @@ public class TestGrammar {
             Solver cp = makeSolver(false);
             CFG g = new CFG(filePath);
             IntVar[] w = makeIntVarArray(cp, wordLength, 0, g.terminalCount()-1);
+            for (int i = 0; i < wordLength; i++) {
+                w[i].setName("token_" + i);
+            }
             
             IntVar weightTarget = makeIntVar(cp, minWeight, maxWeight);
             weightTarget.setName("Weight target");
@@ -384,7 +387,7 @@ public class TestGrammar {
             // cp.post(among(w, g.tokenEncoder.get("="), makeIntVar(cp, 0, 0)));
             // cp.post(among(w, g.tokenEncoder.get("C"), makeIntVar(cp, wordLength-3, wordLength)));
 
-            cp.setTraceSearchFlag(false);
+            cp.setTraceSearchFlag(true);
             
             if (method.equals("maxMarginalLDS")) {
                 cp.setMode(PropaMode.SBP);
@@ -493,6 +496,10 @@ public class TestGrammar {
                 case "impactMinValRestart":
                     cp.setMode(PropaMode.SBP);
                     dfs = makeDfs(cp, impactMinVal(w));
+                    break;
+                case "domWdegRandom":
+                    cp.setMode(PropaMode.SBP);
+                    dfs = makeDfs(cp, domWdegRandom(w));
                     break;
                 case "dom-random":
                     cp.setMode(PropaMode.SP);

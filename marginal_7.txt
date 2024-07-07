@@ -1,0 +1,1081 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------------< minicpbp:minicpbp >--------------------------
+[INFO] Building minicpbp 1.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- exec:3.1.0:java (default-cli) @ minicpbp ---
+maxMarginal
+[INFO] Now solving
+### branching on token_2=1 marginal=0.27252256925565466
+### branching on token_3=1 marginal=0.26982111201550135
+### branching on token_4=15 marginal=0.4410926758469943
+### branching on token_5=1 marginal=0.3533925843690625
+### branching on token_6=1 marginal=0.26363228022902613
+### branching on token_8=1 marginal=0.2932223944758728
+### branching on token_9=1 marginal=0.2639039490212502
+### branching on token_11=1 marginal=0.2887396683673974
+### branching on token_12=1 marginal=0.2590144777795921
+### branching on token_14=1 marginal=0.28316750044355155
+### branching on token_15=1 marginal=0.25376417660080713
+### branching on token_17=1 marginal=0.2779040795484426
+### branching on token_18=1 marginal=0.24843794381188444
+### branching on token_20=1 marginal=0.27338786131656984
+### branching on token_21=1 marginal=0.24381059271592365
+### branching on token_23=1 marginal=0.2687649782972135
+### branching on token_24=1 marginal=0.23897089867559607
+### branching on token_26=1 marginal=0.2610650437924081
+### branching on token_27=1 marginal=0.2311909372894696
+### branching on token_29=1 marginal=0.25035617755206047
+### branching on token_30=1 marginal=0.22076919163526784
+### branching on token_32=1 marginal=0.2398643612169198
+### branching on token_33=1 marginal=0.21012199489967304
+### branching on token_35=1 marginal=0.228700783476008
+### branching on token_36=1 marginal=0.19739172856637047
+### branching on token_1=1 marginal=0.20351686512410916
+### branching on token_0=1 marginal=0.19311289864216172
+### branching on token_38=1 marginal=0.19288958899283082
+### branching on token_37=8 marginal=0.16683449663519476
+### branching on token_39=16 marginal=0.1991002387751905
+### branching on token_39!=16
+### branching on token_39=12 marginal=0.1613918494955706
+### branching on token_37!=8
+### branching on token_37=7 marginal=0.1964632776802068
+### branching on token_39=16 marginal=0.16974587488232926
+### branching on token_38!=1
+### branching on token_38=16 marginal=0.23264246624616222
+### branching on token_39=16 marginal=0.18141465835678203
+### branching on token_37=16 marginal=0.16013736400034284
+### branching on token_0!=1
+### branching on token_0=6 marginal=0.22540877577688742
+### branching on token_38=1 marginal=0.19288958899283082
+### branching on token_37=8 marginal=0.1646935355258865
+### branching on token_39=16 marginal=0.19907387114890962
+### branching on token_1!=1
+### branching on token_1=6 marginal=0.24915981086527017
+### branching on token_0=1 marginal=0.1931128986421617
+### branching on token_38=1 marginal=0.19288958899283082
+### branching on token_37=8 marginal=0.1646935355258866
+### branching on token_39=16 marginal=0.19907387114890954
+### branching on token_36!=1
+### branching on token_36=16 marginal=0.22656609899342162
+### branching on token_37=1 marginal=0.20448909544276536
+### branching on token_1=1 marginal=0.19724395311751344
+### branching on token_0=1 marginal=0.1920606375687888
+### branching on token_39=12 marginal=0.17043166619412412
+### branching on token_38=1 marginal=0.18927985039569983
+### branching on token_35!=1
+### branching on token_35=6 marginal=0.24890829469275047
+### branching on token_36=1 marginal=0.19861024240202235
+### branching on token_1=1 marginal=0.20324584076861046
+### branching on token_0=1 marginal=0.19604473743675632
+### branching on token_38=1 marginal=0.19456375729591951
+### branching on token_34=6 marginal=0.16900955273105042
+### branching on token_39=16 marginal=0.1788410263932469
+### branching on token_33!=1
+### branching on token_33=6 marginal=0.21122340376733184
+### branching on token_35=1 marginal=0.20676607395862528
+### branching on token_34=1 marginal=0.2050043572692945
+### branching on token_37=1 marginal=0.2188970953261962
+### branching on token_38=16 marginal=0.2066743039663955
+### branching on token_32!=1
+### branching on token_32=6 marginal=0.2620317090262163
+### branching on token_33=1 marginal=0.21146938367926343
+### branching on token_35=1 marginal=0.21792473194116346
+### branching on token_1=7 marginal=0.19692404868168445
+### branching on token_37=1 marginal=0.20959001816480358
+### branching on token_38=16 marginal=0.2024564287449331
+### branching on token_30!=1
+### branching on token_30=6 marginal=0.2519114764437211
+### branching on token_32=1 marginal=0.21960187384136104
+### branching on token_31=1 marginal=0.21038373118362017
+### branching on token_34=1 marginal=0.23158221435744272
+### branching on token_36=1 marginal=0.21619354561099227
+### branching on token_35=1 marginal=0.19718029947306034
+### branching on token_1=1 marginal=0.20384219403523107
+### branching on token_0=1 marginal=0.20245058255859588
+### branching on token_38=1 marginal=0.19607166780504678
+### branching on token_39=16 marginal=0.17404217001916147
+### branching on token_29!=1
+### branching on token_29=6 marginal=0.27250718603906476
+### branching on token_30=1 marginal=0.22224392787197034
+### branching on token_32=1 marginal=0.23087584807742645
+### branching on token_33=1 marginal=0.20941265304891926
+### branching on token_35=1 marginal=0.22751001738097096
+### branching on token_1=7 marginal=0.19693495500840053
+### branching on token_37=1 marginal=0.2088102504712515
+### branching on token_38=16 marginal=0.20070226695378166
+### branching on token_27!=1
+### branching on token_27=6 marginal=0.26139616360285933
+### branching on token_29=1 marginal=0.2312196453534329
+### branching on token_30=1 marginal=0.22191197128112652
+### branching on token_32=1 marginal=0.2406828545165176
+### branching on token_33=1 marginal=0.21095895003445186
+### branching on token_35=1 marginal=0.22906808660531236
+### branching on token_36=1 marginal=0.1970966417038529
+### branching on token_1=1 marginal=0.20321341458372008
+### branching on token_0=1 marginal=0.19607877013331665
+### branching on token_38=1 marginal=0.19588180497136617
+### branching on token_28=6 marginal=0.17687253521758126
+### branching on token_39=16 marginal=0.17484620361725725
+### branching on token_26!=1
+### branching on token_26=6 marginal=0.28212029687051915
+### branching on token_27=1 marginal=0.23283316623580552
+### branching on token_29=1 marginal=0.2427615238881618
+### branching on token_30=1 marginal=0.22132559494379345
+### branching on token_32=1 marginal=0.23974157977959
+### branching on token_33=1 marginal=0.21018682763959506
+### branching on token_35=1 marginal=0.22813921653138583
+### branching on token_1=7 marginal=0.19694388942824867
+### branching on token_37=1 marginal=0.2082600742043199
+### branching on token_38=16 marginal=0.20126378801356293
+### branching on token_24!=1
+### branching on token_24=6 marginal=0.26837522582870726
+### branching on token_26=1 marginal=0.2418192468255265
+### branching on token_27=1 marginal=0.2323014253702517
+### branching on token_29=1 marginal=0.25258798847391095
+### branching on token_30=1 marginal=0.2229261747140181
+### branching on token_32=1 marginal=0.24112224233655954
+### branching on token_33=1 marginal=0.2108459662847089
+### branching on token_35=1 marginal=0.2285340837289211
+### branching on token_1=7 marginal=0.1968764413263723
+### branching on token_37=1 marginal=0.20891317826353997
+### branching on token_38=16 marginal=0.19969351659834977
+### branching on token_23!=1
+### branching on token_23=6 marginal=0.28899676283349124
+### branching on token_24=1 marginal=0.24074082775181713
+### branching on token_26=1 marginal=0.2535301455694048
+### branching on token_27=1 marginal=0.23185992902944655
+### branching on token_29=1 marginal=0.2516734711946839
+### branching on token_30=1 marginal=0.22214320584189218
+### branching on token_32=1 marginal=0.24024636236686975
+### branching on token_33=1 marginal=0.21006399268132006
+### branching on token_35=1 marginal=0.22760968138080517
+### branching on token_1=7 marginal=0.196932423467711
+### branching on token_37=1 marginal=0.20813167850314906
+### branching on token_38=16 marginal=0.20135294000129444
+### branching on token_21!=1
+### branching on token_21=6 marginal=0.2733025556156123
+### branching on token_23=1 marginal=0.2486929613208303
+### branching on token_24=1 marginal=0.2391723321353706
+### branching on token_26=1 marginal=0.26341905735596055
+### branching on token_27=1 marginal=0.23353321334612206
+### branching on token_29=1 marginal=0.2529975620688148
+### branching on token_30=1 marginal=0.2228367590001919
+### branching on token_32=1 marginal=0.2407109218043088
+### branching on token_33=1 marginal=0.21068460524004926
+### branching on token_35=1 marginal=0.22842175734872325
+### branching on token_1=7 marginal=0.196869107393044
+### branching on token_37=1 marginal=0.20880624072682627
+### branching on token_38=16 marginal=0.19987094504546496
+### branching on token_20!=1
+### branching on token_20=6 marginal=0.29385943338084847
+### branching on token_21=1 marginal=0.2456407960395183
+### branching on token_23=1 marginal=0.2603287973039471
+### branching on token_24=1 marginal=0.23873788807552018
+### branching on token_26=1 marginal=0.2625048316506293
+### branching on token_27=1 marginal=0.23272440987113363
+### branching on token_29=1 marginal=0.25212530374770936
+### branching on token_30=1 marginal=0.2220265934349187
+### branching on token_32=1 marginal=0.2398094692230462
+### branching on token_33=1 marginal=0.2099095244000703
+### branching on token_35=1 marginal=0.22755598094057508
+### branching on token_1=7 marginal=0.19692959483276312
+### branching on token_37=1 marginal=0.2080878155131019
+### branching on token_38=16 marginal=0.2014217736157555
+### branching on token_18!=1
+### branching on token_18=6 marginal=0.27810474254012374
+### branching on token_20=1 marginal=0.2532483985615525
+### branching on token_21=1 marginal=0.24362312522800775
+### branching on token_23=1 marginal=0.2701808961608417
+### branching on token_24=1 marginal=0.24047319749357365
+### branching on token_26=1 marginal=0.26380055791456114
+### branching on token_27=1 marginal=0.23345945175599614
+### branching on token_29=1 marginal=0.25264377611933464
+### branching on token_30=1 marginal=0.2227083267442957
+### branching on token_32=1 marginal=0.24064406744949862
+### branching on token_33=1 marginal=0.2106416806671464
+### branching on token_35=1 marginal=0.2283371318888964
+### branching on token_1=7 marginal=0.19686208786072343
+### branching on token_37=1 marginal=0.20872078023908278
+### branching on token_38=16 marginal=0.200008063730762
+### branching on token_17!=1
+### branching on token_17=6 marginal=0.29869653535512825
+### branching on token_18=1 marginal=0.2503161309149445
+### branching on token_20=1 marginal=0.2647444392863332
+### branching on token_21=1 marginal=0.24320214454767297
+### branching on token_23=1 marginal=0.2692555724653272
+### branching on token_24=1 marginal=0.23963018104472547
+### branching on token_26=1 marginal=0.2629140401071644
+### branching on token_27=1 marginal=0.23261337339625518
+### branching on token_29=1 marginal=0.25173281607429593
+### branching on token_30=1 marginal=0.22189303776715796
+### branching on token_32=1 marginal=0.2397754534203173
+### branching on token_33=1 marginal=0.20989169743128142
+### branching on token_35=1 marginal=0.2275198952758905
+### branching on token_1=7 marginal=0.19692693225504151
+### branching on token_37=1 marginal=0.2080527651856301
+### branching on token_38=16 marginal=0.2014753709224473
+### branching on token_15!=1
+### branching on token_15=6 marginal=0.28307090873045687
+### branching on token_17=1 marginal=0.25843928084759926
+### branching on token_18=1 marginal=0.24856927894088568
+### branching on token_20=1 marginal=0.274494079476732
+### branching on token_21=1 marginal=0.24499678187069915
+### branching on token_23=1 marginal=0.27053734867334367
+### branching on token_24=1 marginal=0.24041172270265554
+### branching on token_26=1 marginal=0.26349093523066214
+### branching on token_27=1 marginal=0.2333544973654976
+### branching on token_29=1 marginal=0.25259523206143975
+### branching on token_30=1 marginal=0.22268208774469023
+### branching on token_32=1 marginal=0.24059680995604926
+### branching on token_33=1 marginal=0.21060643663722356
+### branching on token_35=1 marginal=0.22826844460139656
+### branching on token_1=7 marginal=0.1968560382909009
+### branching on token_37=1 marginal=0.2086523155750764
+### branching on token_38=16 marginal=0.2001100014969488
+### branching on token_14!=1
+### branching on token_14=6 marginal=0.3037230492744087
+### branching on token_15=1 marginal=0.25570872188834015
+### branching on token_17=1 marginal=0.2698385335248714
+### branching on token_18=1 marginal=0.24820203268671706
+### branching on token_20=1 marginal=0.2735469121110346
+### branching on token_21=1 marginal=0.2441127585292461
+### branching on token_23=1 marginal=0.2696295265346706
+### branching on token_24=1 marginal=0.2395251590982848
+### branching on token_26=1 marginal=0.2625587124979706
+### branching on token_27=1 marginal=0.2324964631169025
+### branching on token_29=1 marginal=0.25170665359204686
+### branching on token_30=1 marginal=0.2218820399245243
+### branching on token_32=1 marginal=0.23975509653391835
+### branching on token_33=1 marginal=0.20987670200120506
+### branching on token_35=1 marginal=0.2274904152039648
+### branching on token_1=7 marginal=0.19692459951242047
+### branching on token_37=1 marginal=0.2080248132427992
+### branching on token_38=16 marginal=0.20151563912292575
+### branching on token_12!=1
+### branching on token_12=6 marginal=0.28791581592154086
+### branching on token_14=1 marginal=0.2642020879820566
+### branching on token_15=1 marginal=0.2540887760352256
+### branching on token_17=1 marginal=0.27949160910388515
+### branching on token_18=1 marginal=0.2500708878026026
+### branching on token_20=1 marginal=0.27483204551410534
+### branching on token_21=1 marginal=0.24494502350434366
+### branching on token_23=1 marginal=0.27026407926380563
+### branching on token_24=1 marginal=0.24032609794197632
+### branching on token_26=1 marginal=0.26345339394621836
+### branching on token_27=1 marginal=0.23333823754139385
+### branching on token_29=1 marginal=0.2525635949099135
+### branching on token_30=1 marginal=0.22266211899567892
+### branching on token_32=1 marginal=0.24056077622406177
+### branching on token_33=1 marginal=0.21057894407163918
+### branching on token_35=1 marginal=0.22821285931532048
+### branching on token_1=7 marginal=0.1968521816995871
+### branching on token_37=1 marginal=0.20859700033463183
+### branching on token_38=16 marginal=0.2001803756839834
+### branching on token_11!=1
+### branching on token_11=6 marginal=0.3092680864159873
+### branching on token_12=1 marginal=0.2610315624320284
+### branching on token_14=1 marginal=0.27547293005274665
+### branching on token_15=1 marginal=0.25374329645850274
+### branching on token_17=1 marginal=0.27850859021240526
+### branching on token_18=1 marginal=0.24913392696594022
+### branching on token_20=1 marginal=0.27389482071726884
+### branching on token_21=1 marginal=0.2440130074174276
+### branching on token_23=1 marginal=0.26930682675781287
+### branching on token_24=1 marginal=0.2394237980365272
+### branching on token_26=1 marginal=0.2625380160744711
+### branching on token_27=1 marginal=0.2324902698927181
+### branching on token_29=1 marginal=0.25169363588428156
+### branching on token_30=1 marginal=0.22187444863227027
+### branching on token_32=1 marginal=0.23974069334313672
+### branching on token_33=1 marginal=0.20986645143897106
+### branching on token_35=1 marginal=0.22746812529976865
+### branching on token_1=7 marginal=0.19692298416861767
+### branching on token_37=1 marginal=0.20798533386387041
+### branching on token_38=16 marginal=0.20163943074945895
+### branching on token_9!=1
+### branching on token_9=6 marginal=0.2927306909634017
+### branching on token_11=1 marginal=0.2697268010135199
+### branching on token_12=1 marginal=0.25926951224737954
+### branching on token_14=1 marginal=0.285048032967038
+### branching on token_15=1 marginal=0.25570384704881644
+### branching on token_17=1 marginal=0.27981831225863574
+### branching on token_18=1 marginal=0.25002497862829276
+### branching on token_20=1 marginal=0.27458646875052406
+### branching on token_21=1 marginal=0.24487406339978277
+### branching on token_23=1 marginal=0.2702325508927011
+### branching on token_24=1 marginal=0.24031503155879885
+### branching on token_26=1 marginal=0.2634293522437942
+### branching on token_27=1 marginal=0.23332531133045661
+### branching on token_29=1 marginal=0.2525386941243941
+### branching on token_30=1 marginal=0.2226456662392409
+### branching on token_32=1 marginal=0.24053105246030382
+### branching on token_33=1 marginal=0.21055389367692698
+### branching on token_35=1 marginal=0.22816293429155599
+### branching on token_1=7 marginal=0.19685259454270873
+### branching on token_37=1 marginal=0.20853790102462527
+### branching on token_38=16 marginal=0.20030653296521758
+### branching on token_8!=1
+### branching on token_8=6 marginal=0.3135869609504063
+### branching on token_9=1 marginal=0.26598360811386695
+### branching on token_11=1 marginal=0.2809165978252476
+### branching on token_12=1 marginal=0.2589138767720841
+### branching on token_14=1 marginal=0.28403857085879997
+### branching on token_15=1 marginal=0.2547205034232205
+### branching on token_17=1 marginal=0.2788586108693833
+### branching on token_18=1 marginal=0.2490520750204058
+### branching on token_20=1 marginal=0.2736068440720017
+### branching on token_21=1 marginal=0.24393130635316534
+### branching on token_23=1 marginal=0.2693080821928437
+### branching on token_24=1 marginal=0.2394366726634471
+### branching on token_26=1 marginal=0.2625710266873313
+### branching on token_27=1 marginal=0.23252341010063213
+### branching on token_29=1 marginal=0.25172214936844867
+### branching on token_30=1 marginal=0.2219001928983666
+### branching on token_32=1 marginal=0.2397308422850316
+### branching on token_33=1 marginal=0.2098547635815677
+### branching on token_35=1 marginal=0.22743154843188837
+### branching on token_1=7 marginal=0.19696981666353264
+### branching on token_37=1 marginal=0.2079527058525381
+### branching on token_38=16 marginal=0.2017733487181633
+### branching on token_6!=1
+### branching on token_6=6 marginal=0.2778709917263645
+### branching on token_8=1 marginal=0.2742909472956849
+### branching on token_9=1 marginal=0.2641639100715857
+### branching on token_11=1 marginal=0.29074448185762813
+### branching on token_12=1 marginal=0.2609781896831729
+### branching on token_14=1 marginal=0.28539837184300865
+### branching on token_15=1 marginal=0.2556894888939943
+### branching on token_17=1 marginal=0.2796125080794084
+### branching on token_18=1 marginal=0.24998681057199498
+### branching on token_20=1 marginal=0.27456769816404036
+### branching on token_21=1 marginal=0.24487756454856577
+### branching on token_23=1 marginal=0.2702300580440814
+### branching on token_24=1 marginal=0.24032579286845993
+### branching on token_26=1 marginal=0.26344960999183126
+### branching on token_27=1 marginal=0.23335343981870055
+### branching on token_29=1 marginal=0.25255006890819964
+### branching on token_30=1 marginal=0.22266084840846898
+### branching on token_32=1 marginal=0.24049613873185852
+### branching on token_33=1 marginal=0.21052491173217658
+### branching on token_35=1 marginal=0.22809961592170974
+### branching on token_1=7 marginal=0.19690178190421675
+### branching on token_37=1 marginal=0.2084805795027258
+### branching on token_38=16 marginal=0.20044245725383786
+### branching on token_5!=1
+### branching on token_5=6 marginal=0.39524166511047626
+### branching on token_6=1 marginal=0.26535575382431287
+### branching on token_8=1 marginal=0.2853879948871834
+### branching on token_9=1 marginal=0.2638328313235513
+### branching on token_11=1 marginal=0.28956112644866455
+### branching on token_12=1 marginal=0.2598873985080378
+### branching on token_14=1 marginal=0.2842626779154419
+### branching on token_15=1 marginal=0.2545904229184019
+### branching on token_17=1 marginal=0.27853868660355074
+### branching on token_18=1 marginal=0.24899689878622633
+### branching on token_20=1 marginal=0.2736325179321952
+### branching on token_21=1 marginal=0.24402049721436753
+### branching on token_23=1 marginal=0.26919702331155076
+### branching on token_24=1 marginal=0.23938047814285954
+### branching on token_26=1 marginal=0.2621984377061296
+### branching on token_27=1 marginal=0.2322298923343199
+### branching on token_29=1 marginal=0.25142669376193494
+### branching on token_30=1 marginal=0.2216918235409032
+### branching on token_32=1 marginal=0.2397807347407872
+### branching on token_33=1 marginal=0.2099680461190864
+### branching on token_35=1 marginal=0.22748583185899712
+### branching on token_1=7 marginal=0.19673185208995844
+### branching on token_37=1 marginal=0.20801197732305382
+### branching on token_38=16 marginal=0.20111972345662277
+### branching on token_4!=15
+### branching on token_4=1 marginal=0.29845779901103586
+### branching on token_5=1 marginal=0.294458717353175
+### branching on token_6=1 marginal=0.26363228022902613
+### branching on token_7=15 marginal=0.38943286282805606
+### branching on token_8=1 marginal=0.35084781132904663
+### branching on token_9=1 marginal=0.260613779186485
+### branching on token_11=1 marginal=0.29159884449752854
+### branching on token_12=1 marginal=0.2619179236716598
+### branching on token_14=1 marginal=0.2860075606299031
+### branching on token_15=1 marginal=0.2560162928017751
+### branching on token_17=1 marginal=0.28009783551361345
+### branching on token_18=1 marginal=0.2505401138735664
+### branching on token_20=1 marginal=0.2758248791786693
+### branching on token_21=1 marginal=0.2461074526559742
+### branching on token_23=1 marginal=0.27082681973586964
+### branching on token_24=1 marginal=0.24085217980407003
+### branching on token_26=1 marginal=0.26237654185064746
+### branching on token_27=1 marginal=0.23236044181784835
+### branching on token_29=1 marginal=0.25183868982106716
+### branching on token_30=1 marginal=0.2221060913601618
+### branching on token_32=1 marginal=0.24257395898038533
+### branching on token_33=1 marginal=0.21251833884182533
+### branching on token_35=1 marginal=0.23338713303532235
+### branching on token_36=1 marginal=0.2011700123183947
+### branching on token_1=1 marginal=0.20350412113788804
+### branching on token_39=16 marginal=0.2027116248377437
+### branching on token_38=1 marginal=0.20533509607698067
+### branching on token_3!=1
+### branching on token_3=6 marginal=0.28019749825350687
+### branching on token_5=1 marginal=0.2772238218477441
+### branching on token_4=15 marginal=0.27342657490640043
+### branching on token_7=1 marginal=0.2651823096360609
+### branching on token_9=1 marginal=0.2832951809808264
+### branching on token_10=1 marginal=0.26291012841227057
+### branching on token_12=1 marginal=0.2882435262044433
+### branching on token_13=1 marginal=0.2585448840170363
+### branching on token_15=1 marginal=0.2832070969314225
+### branching on token_16=1 marginal=0.25359178699097623
+### branching on token_18=1 marginal=0.2776281817297261
+### branching on token_19=1 marginal=0.24801145675230252
+### branching on token_21=1 marginal=0.2727618378667212
+### branching on token_22=1 marginal=0.24309528822032672
+### branching on token_24=1 marginal=0.26813187740185085
+### branching on token_25=1 marginal=0.23826616683128535
+### branching on token_27=1 marginal=0.2605275749021634
+### branching on token_28=1 marginal=0.230522957830961
+### branching on token_30=1 marginal=0.24922784543681992
+### branching on token_31=1 marginal=0.2195118808904975
+### branching on token_33=1 marginal=0.23677266170072528
+### branching on token_35=1 marginal=0.2167065187565746
+### branching on token_1=7 marginal=0.1985663259674721
+### branching on token_38=16 marginal=0.2064556767577825
+### branching on token_6=15 marginal=0.1800138780747566
+### branching on token_39=12 marginal=0.26582630514584904
+### branching on token_37=1 marginal=0.2032809912729023
+### branching on token_2!=1
+### branching on token_2=15 marginal=0.3005804127797621
+### branching on token_1=1 marginal=0.353804118977581
+### branching on token_3=1 marginal=0.34170478663648934
+### branching on token_5=1 marginal=0.28871315225837657
+### branching on token_6=1 marginal=0.2670015827424016
+### branching on token_7=1 marginal=0.2682291504328617
+### branching on token_9=1 marginal=0.2917796917885379
+### branching on token_10=1 marginal=0.2622645819195782
+### branching on token_12=1 marginal=0.28732016792708703
+### branching on token_13=1 marginal=0.2575787132191149
+### branching on token_15=1 marginal=0.28165731703983804
+### branching on token_16=1 marginal=0.252147283366894
+### branching on token_18=1 marginal=0.27661524703838997
+### branching on token_19=1 marginal=0.2470623256447318
+### branching on token_21=1 marginal=0.2724432458948385
+### branching on token_22=1 marginal=0.24273638644461848
+### branching on token_24=1 marginal=0.2670793812995823
+### branching on token_25=1 marginal=0.2371603391884451
+### branching on token_27=1 marginal=0.2580806499955972
+### branching on token_28=1 marginal=0.22819154856236806
+### branching on token_30=1 marginal=0.24735066620567203
+### branching on token_31=1 marginal=0.21784439473770106
+### branching on token_33=1 marginal=0.23764888759038355
+### branching on token_35=1 marginal=0.21886148230505995
+### branching on token_36=1 marginal=0.19788025107492965
+### branching on token_39=16 marginal=0.21175752188610475
+### branching on token_38=1 marginal=0.20339235724510013
+### branching on token_2=1 marginal=0.27252256925565466
+### branching on token_3=1 marginal=0.26982111201550135
+### branching on token_4=15 marginal=0.37721438536004737
+### branching on token_5=1 marginal=0.35091946277455416
+### branching on token_6=1 marginal=0.2635937067229103
+### branching on token_8=1 marginal=0.29409610570570766
+### branching on token_9=1 marginal=0.26464489192922114
+### branching on token_11=1 marginal=0.2895261660818596
+### branching on token_12=1 marginal=0.2597214548223847
+### branching on token_14=1 marginal=0.28390388200244804
+### branching on token_15=1 marginal=0.2544415102304767
+### branching on token_17=1 marginal=0.278601231707075
+### branching on token_18=1 marginal=0.2490885653266149
+### branching on token_20=1 marginal=0.27407037443544485
+### branching on token_21=1 marginal=0.24445277800358964
+### branching on token_23=1 marginal=0.2694536190681413
+### branching on token_24=1 marginal=0.23961914518066404
+### branching on token_26=1 marginal=0.2617767516428642
+### branching on token_27=1 marginal=0.23185332977548276
+### branching on token_29=1 marginal=0.25110538361076734
+### branching on token_30=1 marginal=0.22144954948881307
+### branching on token_32=1 marginal=0.24066195351559536
+### branching on token_33=1 marginal=0.21080540831832328
+### branching on token_35=1 marginal=0.22959673880697926
+### branching on token_36=1 marginal=0.19799902969710342
+### branching on token_1=1 marginal=0.20358294791390846
+### branching on token_39=16 marginal=0.1964368116176622
+### branching on token_38=1 marginal=0.20435786398597477
+### branching on token_38!=1
+### branching on token_38=16 marginal=0.2530270517804031
+### branching on token_7=15 marginal=0.17473235600228468
+### branching on token_7!=15
+### branching on token_7=1 marginal=0.17634722478774492
+### branching on token_10=15 marginal=0.1727030258436923
+### branching on token_38!=16
+### branching on token_38=6 marginal=0.20286210196135643
+### branching on token_39!=16
+### branching on token_39=12 marginal=0.20462357973489337
+### branching on token_38=1 marginal=0.19878339381733018
+### branching on token_38!=1
+### branching on token_38=16 marginal=0.24441256806661055
+### branching on token_0=23 marginal=0.1833363694490734
+### branching on token_7=15 marginal=0.20503802147688205
+### branching on token_39!=12
+### branching on token_38=1 marginal=0.22191378181935112
+### branching on token_37=16 marginal=0.17192088370349487
+### branching on token_0=8 marginal=0.15906634665677385
+### branching on token_39=1 marginal=0.16510830937566956
+### branching on token_1!=1
+### branching on token_1=6 marginal=0.24926139488807703
+### branching on token_39=16 marginal=0.1964368116176622
+### branching on token_38=1 marginal=0.20435786398597477
+### branching on token_38!=1
+### branching on token_38=16 marginal=0.25302705178040313
+### branching on token_7=15 marginal=0.17738897600236167
+### branching on token_39!=16
+### branching on token_39=12 marginal=0.20462357973489337
+### branching on token_38=1 marginal=0.19878339381733012
+### branching on token_1!=6
+### branching on token_1=7 marginal=0.32322156591120166
+### branching on token_39=16 marginal=0.1964368116176622
+### branching on token_38=1 marginal=0.20435786398597477
+### branching on token_36!=1
+### branching on token_36=6 marginal=0.2268953604857822
+### branching on token_1=1 marginal=0.2032622937438578
+### branching on token_0=1 marginal=0.19619763150878275
+### branching on token_38=16 marginal=0.19600173133247573
+### branching on token_7=15 marginal=0.1529833496760617
+### branching on token_7!=15
+### branching on token_7=1 marginal=0.17661258122073042
+### branching on token_34=1 marginal=0.15239272271224955
+### branching on token_39=16 marginal=0.2226747702536992
+### branching on token_10=15 marginal=0.18401454619130012
+### branching on token_38!=16
+### branching on token_38=1 marginal=0.2171259441537119
+### branching on token_37=8 marginal=0.18151119029562557
+### branching on token_39=16 marginal=0.20761380730262707
+### branching on token_0!=1
+### branching on token_0=6 marginal=0.22842997535869095
+### branching on token_38=16 marginal=0.1960017313324757
+### branching on token_7=15 marginal=0.15295550463994495
+### branching on token_1!=1
+### branching on token_1=6 marginal=0.24795376219618645
+### branching on token_0=1 marginal=0.19619763150878275
+### branching on token_38=16 marginal=0.19600173133247573
+### branching on token_7=15 marginal=0.15295550463994495
+### branching on token_36!=6
+### branching on token_36=16 marginal=0.2915749295146735
+### branching on token_37=1 marginal=0.20603537289155147
+### branching on token_1=1 marginal=0.19714876817352522
+### branching on token_0=1 marginal=0.19219776981787323
+### branching on token_39=12 marginal=0.1703832176111776
+### branching on token_38=1 marginal=0.18846832275019798
+### branching on token_35!=1
+### branching on token_35=6 marginal=0.25008610140080595
+### branching on token_36=1 marginal=0.19923105829471083
+### branching on token_1=1 marginal=0.20332868616772923
+### branching on token_0=1 marginal=0.19592423596226616
+### branching on token_39=16 marginal=0.19570588760733496
+### branching on token_37=8 marginal=0.1964816677055868
+### branching on token_34=1 marginal=0.16917327748015568
+### branching on token_34!=1
+### branching on token_34=6 marginal=0.1957144541003743
+### branching on token_37!=8
+### branching on token_37=1 marginal=0.22239900333134402
+### branching on token_34=8 marginal=0.1779009248834729
+### branching on token_39!=16
+### branching on token_39=12 marginal=0.20489586471076082
+### branching on token_34=8 marginal=0.18536648831033134
+### branching on token_37=8 marginal=0.1834243763393043
+### branching on token_0!=1
+### branching on token_0=6 marginal=0.22795686076444857
+### branching on token_39=16 marginal=0.19570588760733496
+### branching on token_37=8 marginal=0.19424793625124875
+### branching on token_34=1 marginal=0.1710460477687553
+### branching on token_1!=1
+### branching on token_1=6 marginal=0.24804471986268845
+### branching on token_0=1 marginal=0.19592423596226616
+### branching on token_39=16 marginal=0.19570588760733496
+### branching on token_37=8 marginal=0.1942479362512487
+### branching on token_34=1 marginal=0.17104604776875526
+### branching on token_36!=1
+### branching on token_36=6 marginal=0.22865845714244737
+### branching on token_1=1 marginal=0.2018620558293249
+### branching on token_0=1 marginal=0.19760318714958233
+### branching on token_38=16 marginal=0.19712191972719145
+### branching on token_34=1 marginal=0.16852381307051595
+### branching on token_7=15 marginal=0.1533370323780451
+### branching on token_35!=6
+### branching on token_35=16 marginal=0.2568763268515863
+### branching on token_36=1 marginal=0.2098420965336857
+### branching on token_37=1 marginal=0.20839453202734773
+### branching on token_0=1 marginal=0.19922024671358013
+### branching on token_1=1 marginal=0.19677514932557555
+### branching on token_38=1 marginal=0.17475719099854012
+### branching on token_34=16 marginal=0.17654904833267024
+### branching on token_7=15 marginal=0.16384695541165123
+### branching on token_33!=1
+### branching on token_33=6 marginal=0.21164436581883325
+### branching on token_35=1 marginal=0.2076164168050872
+### branching on token_34=1 marginal=0.20532863774022175
+### branching on token_37=1 marginal=0.21940197652068696
+### branching on token_38=16 marginal=0.2088205795602558
+### branching on token_38!=16
+### branching on token_38=1 marginal=0.21294388066543113
+### branching on token_1=1 marginal=0.20630439875048623
+### branching on token_0=1 marginal=0.19815732135023287
+### branching on token_39=16 marginal=0.17727201166146275
+### branching on token_37!=1
+### branching on token_37=6 marginal=0.23736660539839752
+### branching on token_38=16 marginal=0.2100600427410357
+### branching on token_34!=1
+### branching on token_34=6 marginal=0.24248031192169625
+### branching on token_37=1 marginal=0.21845193065646723
+### branching on token_38=16 marginal=0.21044472896467473
+### branching on token_35!=1
+### branching on token_35=6 marginal=0.2461573883484957
+### branching on token_34=1 marginal=0.20532863774022175
+### branching on token_38=16 marginal=0.20497790657337794
+### branching on token_0=1 marginal=0.20424733521524488
+### branching on token_1=1 marginal=0.19458205994326874
+### branching on token_36=1 marginal=0.17967901581838955
+### branching on token_39=16 marginal=0.20365714530912224
+### branching on token_37=16 marginal=0.18172180531930485
+### branching on token_33!=6
+### branching on token_33=7 marginal=0.23825148925190442
+### branching on token_34=1 marginal=0.21456030007677046
+### branching on token_36=1 marginal=0.20032708509810507
+### branching on token_1=1 marginal=0.20149156651902742
+### branching on token_38=16 marginal=0.19254817249525394
+### branching on token_7=15 marginal=0.17019407720498628
+### branching on token_32!=1
+### branching on token_32=6 marginal=0.2630685695130501
+### branching on token_33=1 marginal=0.2121650397312141
+### branching on token_35=1 marginal=0.20984829598200994
+### branching on token_34=1 marginal=0.2074479641888311
+### branching on token_37=1 marginal=0.22010873087750008
+### branching on token_38=16 marginal=0.20900555315894095
+### branching on token_38!=16
+### branching on token_38=1 marginal=0.21341783249472857
+### branching on token_1=1 marginal=0.20681793678203272
+### branching on token_0=1 marginal=0.2013279034222648
+### branching on token_39=16 marginal=0.17873705960893946
+### branching on token_37!=1
+### branching on token_37=6 marginal=0.23759158801002098
+### branching on token_38=16 marginal=0.21026574457416475
+### branching on token_34!=1
+### branching on token_34=6 marginal=0.24605432879362465
+### branching on token_37=1 marginal=0.2187633174774147
+### branching on token_38=16 marginal=0.2108328080022446
+### branching on token_35!=1
+### branching on token_35=6 marginal=0.2391675984584169
+### branching on token_34=1 marginal=0.2074479641888311
+### branching on token_38=16 marginal=0.2054257792900608
+### branching on token_0=1 marginal=0.20524439227192315
+### branching on token_1=1 marginal=0.1939252229777539
+### branching on token_36=1 marginal=0.17933548947161215
+### branching on token_39=16 marginal=0.20507291249886472
+### branching on token_37=16 marginal=0.18371550774258888
+### branching on token_33!=1
+### branching on token_33=6 marginal=0.2247220467320035
+### branching on token_35=1 marginal=0.20580155576466733
+### branching on token_34=1 marginal=0.20350264086393882
+### branching on token_37=1 marginal=0.21880804624634312
+### branching on token_38=16 marginal=0.21086177605647916
+### branching on token_32!=6
+### branching on token_32=7 marginal=0.2654953169881592
+### branching on token_33=1 marginal=0.21413772540852888
+### branching on token_35=1 marginal=0.22436338325212365
+### branching on token_1=7 marginal=0.197910991778522
+### branching on token_38=16 marginal=0.20565507255053478
+### branching on token_31=15 marginal=0.20743383741941024
+### branching on token_30!=1
+### branching on token_30=6 marginal=0.2528056198461159
+### branching on token_32=1 marginal=0.220391775983707
+### branching on token_33=1 marginal=0.21096903441126938
+### branching on token_35=1 marginal=0.2294714944074711
+### branching on token_36=1 marginal=0.19784785973624525
+### branching on token_1=1 marginal=0.20329070944003994
+### branching on token_0=1 marginal=0.19596647470272557
+### branching on token_38=1 marginal=0.1957659702968862
+### branching on token_31=6 marginal=0.17648475017821916
+### branching on token_39=16 marginal=0.1840169392302545
+### branching on token_39!=16
+### branching on token_37=6 marginal=0.16465977211658595
+### branching on token_34=6 marginal=0.15939570744810683
+### branching on token_31!=6
+### branching on token_31=7 marginal=0.21380218528676664
+### branching on token_39=16 marginal=0.18388004518364726
+### branching on token_38!=1
+### branching on token_38=16 marginal=0.230591469382352
+### branching on token_39=16 marginal=0.19219055714418365
+### branching on token_31=1 marginal=0.17997409891449626
+### branching on token_7=15 marginal=0.16842156753063536
+### branching on token_0!=1
+### branching on token_0=6 marginal=0.22797124055827064
+### branching on token_38=1 marginal=0.1957659702968862
+### branching on token_31=1 marginal=0.1775301485203475
+### branching on token_39=16 marginal=0.18401693923025458
+### branching on token_1!=1
+### branching on token_1=6 marginal=0.24798656996015425
+### branching on token_0=1 marginal=0.19596647470272552
+### branching on token_38=1 marginal=0.1957659702968862
+### branching on token_31=1 marginal=0.1775301485203475
+### branching on token_39=16 marginal=0.1840169392302547
+### branching on token_36!=1
+### branching on token_36=6 marginal=0.22802759215524815
+### branching on token_1=1 marginal=0.20183468523093337
+### branching on token_0=1 marginal=0.1976277087250517
+### branching on token_38=16 marginal=0.19393328598949347
+### branching on token_31=1 marginal=0.17862856345931502
+### branching on token_7=15 marginal=0.15553565095090902
+### branching on token_35!=1
+### branching on token_35=6 marginal=0.2510937852764577
+### branching on token_36=1 marginal=0.19907868817651708
+### branching on token_1=1 marginal=0.20186454981055596
+### branching on token_0=1 marginal=0.19728177043692485
+### branching on token_39=16 marginal=0.19481047055037048
+### branching on token_37=8 marginal=0.19206803427350785
+### branching on token_31=1 marginal=0.18243613790096275
+### branching on token_34=1 marginal=0.17167352221358687
+### branching on token_33!=1
+### branching on token_33=6 marginal=0.20591999385687715
+### branching on token_35=1 marginal=0.20726494230821638
+### branching on token_34=1 marginal=0.20412828915686285
+### branching on token_37=1 marginal=0.22176047771548668
+### branching on token_38=16 marginal=0.20690620907729002
+### branching on token_32!=1
+### branching on token_32=6 marginal=0.2612796412839502
+### branching on token_33=1 marginal=0.21236310199710795
+### branching on token_35=1 marginal=0.2188126482231055
+### branching on token_1=7 marginal=0.19786015354348443
+### branching on token_37=1 marginal=0.2092171876006932
+### branching on token_38=16 marginal=0.20311238808075116
+### branching on token_30!=6
+### branching on token_30=7 marginal=0.2655716309364945
+### branching on token_31=1 marginal=0.22957597296049742
+### branching on token_33=1 marginal=0.21521861252004945
+### branching on token_35=1 marginal=0.21785031668434285
+### branching on token_1=7 marginal=0.19776049030922632
+### branching on token_37=1 marginal=0.2074431824188412
+### branching on token_38=16 marginal=0.20507018346892922
+### branching on token_29!=1
+### branching on token_29=6 marginal=0.2734565535577354
+### branching on token_30=1 marginal=0.2229355852948714
+### branching on token_32=1 marginal=0.22204535407312764
+### branching on token_31=1 marginal=0.2125282464292871
+### branching on token_34=1 marginal=0.2322102506539767
+### branching on token_36=1 marginal=0.21722130963421474
+### branching on token_35=1 marginal=0.19743439603297377
+### branching on token_0=1 marginal=0.2047514588834611
+### branching on token_1=1 marginal=0.20408128687740817
+### branching on token_39=16 marginal=0.20250455252325616
+### branching on token_37=8 marginal=0.18430726968940958
+### branching on token_7=15 marginal=0.17078358553615755
+### branching on token_7!=15
+### branching on token_7=1 marginal=0.17651540674064037
+### branching on token_10=15 marginal=0.2025485282462212
+### branching on token_37!=8
+### branching on token_37=1 marginal=0.2114368520221683
+### branching on token_38=16 marginal=0.20463849463520173
+### branching on token_39!=16
+### branching on token_39=12 marginal=0.2125212393216316
+### branching on token_28=8 marginal=0.17869638576475544
+### branching on token_38=16 marginal=0.2030217271873115
+### branching on token_37=16 marginal=0.20203506885609407
+### branching on token_1!=1
+### branching on token_1=6 marginal=0.24796921483779485
+### branching on token_39=16 marginal=0.20250455252325614
+### branching on token_37=8 marginal=0.18201756380005635
+### branching on token_28=1 marginal=0.169030149528992
+### branching on token_38=16 marginal=0.2889782466279072
+### branching on token_0!=1
+### branching on token_0=6 marginal=0.2407469623320169
+### branching on token_1=1 marginal=0.20408128687740823
+### branching on token_39=16 marginal=0.20250455252325616
+### branching on token_37=8 marginal=0.1820175638000563
+### branching on token_28=1 marginal=0.16903014952899192
+### branching on token_38=16 marginal=0.28897824662790733
+### branching on token_35!=1
+### branching on token_35=6 marginal=0.230607811233444
+### branching on token_0=1 marginal=0.20590242415521917
+### branching on token_1=1 marginal=0.203684308378144
+### branching on token_39=16 marginal=0.20310558647046145
+### branching on token_37=8 marginal=0.18201756380005635
+### branching on token_28=1 marginal=0.1690301495289919
+### branching on token_38=16 marginal=0.2889782466279073
+### branching on token_36!=1
+### branching on token_36=6 marginal=0.2404164332940978
+### branching on token_35=1 marginal=0.19743439603297375
+### branching on token_0=1 marginal=0.20830659032714918
+### branching on token_1=1 marginal=0.20353820929475683
+### branching on token_39=16 marginal=0.19902652114157457
+### branching on token_37=8 marginal=0.19369396826771818
+### branching on token_28=1 marginal=0.16899744232762098
+### branching on token_38=16 marginal=0.2912138443609051
+### branching on token_34!=1
+### branching on token_34=6 marginal=0.2534500065630616
+### branching on token_36=1 marginal=0.19962815942988793
+### branching on token_35=1 marginal=0.20256112817001767
+### branching on token_0=1 marginal=0.20812498869468973
+### branching on token_1=1 marginal=0.2035768478261805
+### branching on token_39=16 marginal=0.20308410760778733
+### branching on token_37=8 marginal=0.17950231295147012
+### branching on token_28=1 marginal=0.16990877048540484
+### branching on token_7=15 marginal=0.19599467069140983
+### branching on token_31!=1
+### branching on token_34=1 marginal=0.2273744872875454
+### branching on token_36=1 marginal=0.21342316004600187
+### branching on token_31=7 marginal=0.21150104971265976
+### branching on token_1=1 marginal=0.19840120173619116
+### branching on token_39=16 marginal=0.1926211151833177
+### branching on token_38=16 marginal=0.2013074553406531
+### branching on token_28=15 marginal=0.19298944086012498
+### branching on token_32!=1
+### branching on token_32=6 marginal=0.252858318361099
+### branching on token_33=1 marginal=0.2125830026113724
+### branching on token_35=1 marginal=0.22156576800761632
+### branching on token_1=7 marginal=0.19809065600261735
+### branching on token_37=1 marginal=0.20811641597063776
+### branching on token_38=16 marginal=0.20277347657479844
+### branching on token_30!=1
+### branching on token_30=6 marginal=0.25498877285949745
+### branching on token_32=1 marginal=0.21374030892316132
+### branching on token_31=1 marginal=0.2206357842827683
+### branching on token_34=1 marginal=0.23064935932589362
+### branching on token_36=1 marginal=0.21496586233642934
+### branching on token_1=7 marginal=0.1969091612303024
+### branching on token_39=16 marginal=0.19501269088652304
+### branching on token_38=16 marginal=0.20181626542474454
+### branching on token_28=15 marginal=0.1951266477331007
+### branching on token_29!=6
+### branching on token_29=7 marginal=0.27410734306629847
+### branching on token_30=1 marginal=0.2315692835090737
+### branching on token_32=1 marginal=0.22236975154531588
+### branching on token_31=1 marginal=0.21260983406889294
+### branching on token_34=1 marginal=0.23052145651524178
+### branching on token_36=1 marginal=0.21507814456958393
+### branching on token_1=7 marginal=0.19688169681696974
+### branching on token_39=16 marginal=0.19555050363983983
+### branching on token_38=16 marginal=0.20210366298251323
+### branching on token_28=15 marginal=0.22391166339157434
+### branching on token_27!=1
+### branching on token_27=6 marginal=0.26223495182834566
+### branching on token_29=1 marginal=0.23198358704777408
+### branching on token_30=1 marginal=0.22261834222365304
+### branching on token_32=1 marginal=0.24150334396892886
+### branching on token_33=1 marginal=0.2116599148651773
+### branching on token_35=1 marginal=0.22997740143554551
+### branching on token_36=1 marginal=0.19770366146757123
+### branching on token_1=1 marginal=0.20328126401650615
+### branching on token_0=1 marginal=0.1959805868211009
+### branching on token_39=16 marginal=0.19546309256450228
+### branching on token_37=8 marginal=0.19145667034247243
+### branching on token_28=1 marginal=0.1823186342658897
+### branching on token_25=1 marginal=0.15436406853442608
+### branching on token_38=16 marginal=0.29107175077996633
+### branching on token_38!=16
+### branching on token_38=1 marginal=0.20128434608643436
+### branching on token_25!=1
+### branching on token_25=6 marginal=0.17441545548832313
+### branching on token_7=15 marginal=0.19514102854631135
+### branching on token_28!=1
+### branching on token_28=6 marginal=0.214313018162632
+### branching on token_25=1 marginal=0.15436406853442608
+### branching on token_7=15 marginal=0.1951410285463112
+### branching on token_37!=8
+### branching on token_37=1 marginal=0.21536433962809778
+### branching on token_28=8 marginal=0.189504246728391
+### branching on token_7=15 marginal=0.16994710424291645
+### branching on token_39!=16
+### branching on token_39=12 marginal=0.2061681433465515
+### branching on token_28=8 marginal=0.19130285085856885
+### branching on token_37=8 marginal=0.18044995164564498
+### branching on token_38=16 marginal=0.23900905911608697
+### branching on token_0!=1
+### branching on token_0=6 marginal=0.22798093247742465
+### branching on token_39=16 marginal=0.19546309256450228
+### branching on token_37=8 marginal=0.1891460080985517
+### branching on token_28=1 marginal=0.18432018801275843
+### branching on token_25=1 marginal=0.15515522352209266
+### branching on token_7=15 marginal=0.19510713003209065
+### branching on token_1!=1
+### branching on token_1=6 marginal=0.2479721080041373
+### branching on token_0=1 marginal=0.19598058682110092
+### branching on token_39=16 marginal=0.19546309256450228
+### branching on token_37=8 marginal=0.18914600809855173
+### branching on token_28=1 marginal=0.18432018801275832
+### branching on token_25=1 marginal=0.1551552235220926
+### branching on token_7=15 marginal=0.1951071300320906
+### branching on token_36!=1
+### branching on token_36=6 marginal=0.2278782242845778
+### branching on token_1=1 marginal=0.20182663901787706
+### branching on token_0=1 marginal=0.19763994875883134
+### branching on token_38=16 marginal=0.19443895550201032
+### branching on token_28=1 marginal=0.1803120304987311
+### branching on token_7=15 marginal=0.15548649974921652
+### branching on token_35!=1
+### branching on token_35=6 marginal=0.25200089980376217
+### branching on token_36=1 marginal=0.19893085011785144
+### branching on token_1=1 marginal=0.20185688068770025
+### branching on token_0=1 marginal=0.19729323795714362
+### branching on token_39=16 marginal=0.19522606950479895
+### branching on token_37=8 marginal=0.19224266852837196
+### branching on token_28=1 marginal=0.18503235131122658
+### branching on token_34=1 marginal=0.1717800080152944
+### branching on token_33!=1
+### branching on token_33=6 marginal=0.2123928493803555
+### branching on token_35=1 marginal=0.20762394026261194
+### branching on token_34=1 marginal=0.2044650172248371
+### branching on token_37=1 marginal=0.22078429241059092
+### branching on token_38=16 marginal=0.20786388431861721
+### branching on token_32!=1
+### branching on token_32=6 marginal=0.2647347470961204
+### branching on token_33=1 marginal=0.21302154915886623
+### branching on token_35=1 marginal=0.21879247157584034
+### branching on token_1=7 marginal=0.19809440756854946
+### branching on token_37=1 marginal=0.2079267762745983
+### branching on token_38=16 marginal=0.20457200455355778
+### branching on token_30!=1
+### branching on token_30=6 marginal=0.25337058865199147
+### branching on token_32=1 marginal=0.22185939895084444
+### branching on token_33=1 marginal=0.2123675290203067
+### branching on token_35=1 marginal=0.22967898430631967
+### branching on token_1=7 marginal=0.19805779390537223
+### branching on token_37=1 marginal=0.20805397907705525
+### branching on token_38=16 marginal=0.20078760537754103
+### branching on token_29!=1
+### branching on token_29=6 marginal=0.272760028284513
+### branching on token_30=1 marginal=0.22417125159238005
+### branching on token_32=1 marginal=0.23327314667393598
+### branching on token_33=1 marginal=0.21169742101924371
+### branching on token_35=1 marginal=0.2289185914733503
+### branching on token_1=7 marginal=0.19787658731084076
+### branching on token_37=1 marginal=0.20759174921114332
+### branching on token_38=16 marginal=0.20216565647495072
+### branching on token_27!=6
+### branching on token_27=7 marginal=0.2719034335771197
+### branching on token_28=1 marginal=0.24309180678030745
+### branching on token_30=1 marginal=0.22810404952267166
+### branching on token_32=1 marginal=0.23140691554490725
+### branching on token_34=1 marginal=0.2225308725759116
+### branching on token_36=1 marginal=0.2115960708823966
+### branching on token_1=7 marginal=0.1987675416726071
+### branching on token_38=16 marginal=0.18776626478208827
+### branching on token_7=15 marginal=0.17685248929219752
+### branching on token_26!=1
+### branching on token_26=6 marginal=0.2830047095044667
+### branching on token_27=1 marginal=0.2335064845617034
+### branching on token_29=1 marginal=0.23355834731241096
+### branching on token_30=1 marginal=0.22307454869736487
+### branching on token_32=1 marginal=0.2411936461425449
+### branching on token_33=1 marginal=0.21156514970218673
+### branching on token_35=1 marginal=0.22994068810378263
+### branching on token_36=1 marginal=0.19760079113159998
+### branching on token_1=1 marginal=0.20323367504806586
+### branching on token_0=1 marginal=0.19604888648503502
+### branching on token_39=16 marginal=0.1955463187418619
+### branching on token_37=8 marginal=0.19130438352342635
+### branching on token_28=1 marginal=0.18268342061720835
+### branching on token_25=1 marginal=0.17157849048333781
+### branching on token_38=16 marginal=0.29107102835585524
+### branching on token_38!=16
+### branching on token_38=1 marginal=0.2012848333625202
+### branching on token_25!=1
+### branching on token_25=15 marginal=0.20133472047242273
+### branching on token_38=16 marginal=0.20703963679659845
+### branching on token_28!=1
+### branching on token_28=6 marginal=0.2135654543730233
+### branching on token_25=1 marginal=0.16879149647822095
+### branching on token_7=15 marginal=0.1951421662801954
+### branching on token_37!=8
+### branching on token_37=1 marginal=0.2151525130169981
+### branching on token_28=8 marginal=0.18717565899810434
+### branching on token_7=15 marginal=0.16986564272986884
+### branching on token_39!=16
+### branching on token_39=12 marginal=0.20610934133852665
+### branching on token_28=8 marginal=0.18929666570159884
+### branching on token_25=8 marginal=0.18365844192123867
+### branching on token_38=16 marginal=0.22715419783926766
+### branching on token_37=16 marginal=0.23502072161036017
+### branching on token_0!=1
+### branching on token_0=6 marginal=0.22802341607585072
+### branching on token_39=16 marginal=0.19554631874186193
+### branching on token_37=8 marginal=0.1889910417767442
+### branching on token_28=1 marginal=0.18411829861803025
+### branching on token_25=1 marginal=0.1735126253124777
+### branching on token_7=15 marginal=0.1951082673297049
+### branching on token_1!=1
+### branching on token_1=6 marginal=0.24789924940749267
+### branching on token_0=1 marginal=0.19604888648503502
+### branching on token_39=16 marginal=0.19554631874186193
+### branching on token_37=8 marginal=0.18899104177674422
+### branching on token_28=1 marginal=0.18411829861803025
+### branching on token_25=1 marginal=0.17351262531247774
+### branching on token_7=15 marginal=0.19510826732970496
+### branching on token_36!=1
+### branching on token_36=6 marginal=0.22773551185352087
+### branching on token_1=1 marginal=0.2017766480379772
+### branching on token_0=1 marginal=0.1977106215292322
+### branching on token_38=16 marginal=0.19459427902716447
+### branching on token_28=1 marginal=0.1801314317682948
+### branching on token_25=1 marginal=0.1675337134470039
+### branching on token_39=16 marginal=0.22215231125425827
+### branching on token_7=15 marginal=0.18617561383977468
+### branching on token_35!=1
+### branching on token_35=6 marginal=0.2519658125943533
+### branching on token_36=1 marginal=0.198826404692934
+### branching on token_1=1 marginal=0.20180758456724635
+### branching on token_0=1 marginal=0.1973631175239519
+### branching on token_39=16 marginal=0.1953180024965811
+### branching on token_37=8 marginal=0.19208845739179262
+### branching on token_28=1 marginal=0.18466959031174424
+### branching on token_25=1 marginal=0.17403468041281456
+### branching on token_7=15 marginal=0.1946966787013151
+### branching on token_33!=1
+### branching on token_33=6 marginal=0.21233757516545376
+### branching on token_35=1 marginal=0.20750223495118364
+### branching on token_34=1 marginal=0.204431721034701
+### branching on token_37=1 marginal=0.22063177079544333
+### branching on token_38=16 marginal=0.20802898431966824
+### branching on token_32!=1
+### branching on token_32=6 marginal=0.2642650592633714
+### branching on token_33=1 marginal=0.21292529628020346
+### branching on token_35=1 marginal=0.21870832666606224
+### branching on token_1=7 marginal=0.19807751372956148
+### branching on token_37=1 marginal=0.20778402895874842
+### branching on token_38=16 marginal=0.2048347680323006
+### branching on token_30!=1
+### branching on token_30=6 marginal=0.2539181114777337
+### branching on token_32=1 marginal=0.22150617897676542
+### branching on token_33=1 marginal=0.21227529840389164
+### branching on token_35=1 marginal=0.22967621763534876
+### branching on token_1=7 marginal=0.19804344477471614
+### branching on token_37=1 marginal=0.20790169349339377
+### branching on token_38=16 marginal=0.2010547525359915
+### branching on token_29!=1
+### branching on token_29=6 marginal=0.26360986686288385
+### branching on token_30=1 marginal=0.22464653668929824
+### branching on token_32=1 marginal=0.23308657949257836
+### branching on token_33=1 marginal=0.21168030345208078
+### branching on token_35=1 marginal=0.22876720657155478
+### branching on token_1=7 marginal=0.19811338798866268
+### branching on token_37=1 marginal=0.207086892930975
+### branching on token_38=16 marginal=0.20282882703240193
+### branching on token_27!=1
+### branching on token_27=6 marginal=0.26467434763108544
+### branching on token_29=1 marginal=0.22603634590542257
+### branching on token_28=1 marginal=0.22917768021730264
+### branching on token_31=1 marginal=0.2427090859821481
+### branching on token_32=1 marginal=0.21544361551458824
+### branching on token_34=1 marginal=0.23434038216668893
+### branching on token_36=1 marginal=0.2139717281418491
+### branching on token_1=7 marginal=0.1968988593523394
+### branching on token_39=16 marginal=0.19514712901460665
+### branching on token_38=16 marginal=0.2028924412831612
+### branching on token_25=15 marginal=0.1981070568566152
+### branching on token_26!=6
+### branching on token_26=7 marginal=0.2810926889339061
+### branching on token_27=1 marginal=0.24291628655470765
+### branching on token_29=1 marginal=0.23474353786175542
+### branching on token_30=1 marginal=0.22403616031276832
+### branching on token_32=1 marginal=0.24123617309925752
+### branching on token_33=1 marginal=0.21159649051667306
+### branching on token_35=1 marginal=0.22840068565882257
+### branching on token_1=7 marginal=0.19784707559190462

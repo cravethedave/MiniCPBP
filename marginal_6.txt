@@ -1,0 +1,65 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------------< minicpbp:minicpbp >--------------------------
+[INFO] Building minicpbp 1.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- exec:3.1.0:java (default-cli) @ minicpbp ---
+maxMarginal
+[INFO] Now solving
+### branching on token_39=37 marginal=0.9712766207209214
+### branching on token_0=1 marginal=0.2821933651659441
+### branching on token_1=1 marginal=0.26803072478267637
+### branching on token_3=1 marginal=0.26375899980968454
+### branching on token_4=25 marginal=0.4172833692532885
+### branching on token_5=1 marginal=0.42184655872611965
+### branching on token_2=25 marginal=0.4038661282289863
+### branching on token_33=1 marginal=0.2719636360359019
+### branching on token_32=1 marginal=0.27594906748665193
+### branching on token_34=37 marginal=0.8310563111853232
+### branching on token_6=34 marginal=0.28213396345807984
+### branching on token_12=26 marginal=0.3162103112154921
+### branching on token_11=35 marginal=0.38253983088047855
+### branching on token_13=1 marginal=0.27750814873786417
+### branching on token_25=23 marginal=0.28402624978074303
+### branching on token_27=23 marginal=0.39550534510522845
+### branching on token_28=30 marginal=0.3687426581167198
+### branching on token_29=23 marginal=0.35666263947785554
+### branching on token_30=30 marginal=0.9115436723649791
+### branching on token_26=34 marginal=0.32103099632412413
+### branching on token_31=35 marginal=0.4697861261841515
+### branching on token_15=1 marginal=0.3221079137939604
+### branching on token_16=1 marginal=0.3021796327881541
+### branching on token_7=18 marginal=0.3148390087484016
+### branching on token_10=18 marginal=0.3148390087484016
+### branching on token_35=18 marginal=0.3148390087484016
+### branching on token_38=18 marginal=0.3148390087484016
+### branching on token_36=18 marginal=0.31405312426540477
+### branching on token_9=18 marginal=0.31405312426540444
+### branching on token_24=26 marginal=0.3812307905704621
+### branching on token_18=1 marginal=0.31880039031898294
+### branching on token_22=1 marginal=0.2874804299546499
+### branching on token_20=16 marginal=0.2927523088356803
+### branching on token_8=17 marginal=0.29918637029934925
+### branching on token_37=17 marginal=0.29918637029934925
+### branching on token_21=1 marginal=0.23845076285537817
+### branching on token_19=1 marginal=0.2105741273416028
+### branching on token_14=44 marginal=0.2673960356900898
+### branching on token_23=43 marginal=0.0907319924241676
+### branching on token_17=15 marginal=0.09090909090909093
+CC(C(C1SOSS2)C=CC%19CCNCC9)c1cncn2CC3SSOS3 weight of 4786
+### branching on token_17!=15
+
+	#choice: 41
+	#fail: 0
+	execution time (ms): 3865
+	#sols : 1
+	completed : false
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  9.364 s
+[INFO] Finished at: 2024-07-06T18:13:22-04:00
+[INFO] ------------------------------------------------------------------------

@@ -1,0 +1,53 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------------< minicpbp:minicpbp >--------------------------
+[INFO] Building minicpbp 1.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- exec:3.1.0:java (default-cli) @ minicpbp ---
+impactBasedSearch
+[INFO] Now solving
+Restarts
+### branching on token_0=14; marginal=1.1945566043617286E-4; entropy=2.040709409376437
+### branching on token_2=20; marginal=0.3915126459502409; entropy=1.1239728628244083
+### branching on token_3=9; marginal=7.517282021210914E-4; entropy=1.3848112167243505
+### branching on token_8=15; marginal=0.20664646196417455; entropy=0.509479454644018
+### branching on token_9=14; marginal=1.6696003207066634E-4; entropy=1.5498411554061517
+### branching on token_10=25; marginal=0.7008012205326195; entropy=0.6101839003702674
+### branching on token_11=26; marginal=0.0815126545942546; entropy=1.1469590982195308
+### branching on token_12=14; marginal=0.5189260099958669; entropy=0.6924306216826508
+### branching on token_13=20; marginal=0.444522214313697; entropy=0.9065333035811118
+### branching on token_14=20; marginal=0.04853526393184025; entropy=0.1941796216248306
+### branching on token_17=14; marginal=0.9999999999999998; entropy=1.0090754665141995E-14
+### branching on token_19=14; marginal=3.6939855927594533E-4; entropy=1.3623016637456697
+### branching on token_25=0; marginal=7.60649512684441E-7; entropy=0.02370146016120179
+### branching on token_21=20; marginal=0.1715742142327156; entropy=0.45837356994383366
+### branching on token_26=0; marginal=0.1652538080401809; entropy=0.8156968987734345
+### branching on token_27=11; marginal=0.9127432124007708; entropy=0.29614466238565973
+### branching on token_39=12; marginal=0.1500960433851433; entropy=2.2412257921441205
+### branching on token_38=11; marginal=0.0011241381292368252; entropy=2.2082015714418786
+### branching on token_38!=11
+### branching on token_38=23; marginal=0.09430938452795676; entropy=2.2019195989357607
+### branching on token_37=1; marginal=0.1722020365475231; entropy=1.5553883664718946
+### branching on token_32=20; marginal=0.19496576816526606; entropy=1.3483626200793255
+### branching on token_33=14; marginal=0.8589889208843475; entropy=0.4067946500096774
+### branching on token_34=27; marginal=0.6078331907449138; entropy=0.6697074659352393
+### branching on token_29=23; marginal=0.22032988568805195; entropy=0.5273251696795835
+### branching on token_31=20; marginal=0.5079717347424216; entropy=0.6930200780652322
+### branching on token_35=7; marginal=0.24304483232325197; entropy=1.370032830356015
+c1n[nH]c(c2scnn2)c1c3n([C@@]SBr)nnc3OSCBr_ weight of 4811
+### branching on token_35!=7
+
+	#choice: 28
+	#fail: 1
+	execution time (ms): 8507
+	#sols : 1
+	completed : true
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  23.221 s
+[INFO] Finished at: 2024-07-06T17:48:59-04:00
+[INFO] ------------------------------------------------------------------------
