@@ -109,11 +109,12 @@ methods = [
     # "domWdeg",
     # "domWdegRestart",
     # "domWdegLDS",
-    "maxMarginal",
+    # "maxMarginal",
     # "maxMarginalRestart",
     # "maxMarginalLDS",
-    "maxMarginalStrength",
+    # "maxMarginalStrength",
     # "maxMarginalStrengthLDS",
+    "lexicoMarginal",
     # "impact",
     # "impactRestart",
     # "impactLDS",
@@ -122,11 +123,11 @@ methods = [
     # "impactMinVal",
     # "impactMinValRestart",
     # "minEntropyBiasedWheel",
-    "domWdegRandom",
+    # "domWdegRandom",
 ]
 
 cc_heuristic_runner(methods, test_cases, size=40)
-# cc_random_runner(test_cases, method='dom-random', size=40)
+# cc_random_runner(test_cases, method='domWdegRandom', size=40)
 
 failed = []
 

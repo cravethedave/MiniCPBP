@@ -1,27 +1,127 @@
-slout_40_domWdegRandom_c1b2.txt:slurmstepd: error: *** JOB 31316018 ON nc10912 CANCELLED AT 2024-07-07T06:14:19 DUE TO TIME LIMIT ***
-slout_40_domWdegRandom_c1b3.txt:	execution time (ms): 1974794
-slout_40_domWdegRandom_c1b4.txt:	execution time (ms): 202369
-slout_40_domWdegRandom_c2b2.txt:	execution time (ms): 241012
-slout_40_domWdegRandom_c2b3.txt:slurmstepd: error: *** JOB 31316022 ON nc11104 CANCELLED AT 2024-07-07T06:25:00 DUE TO TIME LIMIT ***
-slout_40_domWdegRandom_c2b4.txt:slurmstepd: error: *** JOB 31316023 ON nc11106 CANCELLED AT 2024-07-07T06:25:00 DUE TO TIME LIMIT ***
-slout_40_domWdegRandom_c3b2.txt:slurmstepd: error: *** JOB 31316024 ON nc11115 CANCELLED AT 2024-07-07T06:25:00 DUE TO TIME LIMIT ***
-slout_40_domWdegRandom_c3b3.txt:slurmstepd: error: *** JOB 31316025 ON nc11120 CANCELLED AT 2024-07-07T06:25:00 DUE TO TIME LIMIT ***
-slout_40_domWdegRandom_c3b4.txt:slurmstepd: error: *** JOB 31316026 ON nc11120 CANCELLED AT 2024-07-07T06:25:00 DUE TO TIME LIMIT ***
-slout_40_maxMarginalStrength_c1b2.txt:	execution time (ms): 7598
-slout_40_maxMarginalStrength_c1b3.txt:	execution time (ms): 9135
-slout_40_maxMarginalStrength_c1b4.txt:	execution time (ms): 9425
-slout_40_maxMarginalStrength_c2b2.txt:	execution time (ms): 8583
-slout_40_maxMarginalStrength_c2b3.txt:	execution time (ms): 9889
-slout_40_maxMarginalStrength_c2b4.txt:	execution time (ms): 9391
-slout_40_maxMarginalStrength_c3b2.txt:	execution time (ms): 6598
-slout_40_maxMarginalStrength_c3b3.txt:	execution time (ms): 8665
-slout_40_maxMarginalStrength_c3b4.txt:	execution time (ms): 8953
-slout_40_maxMarginal_c1b2.txt:	execution time (ms): 8029
-slout_40_maxMarginal_c1b3.txt:	execution time (ms): 9774
-slout_40_maxMarginal_c1b4.txt:	execution time (ms): 10622
-slout_40_maxMarginal_c2b2.txt:	execution time (ms): 7233
-slout_40_maxMarginal_c2b3.txt:	execution time (ms): 8242
-slout_40_maxMarginal_c2b4.txt:	execution time (ms): 9241
-slout_40_maxMarginal_c3b2.txt:	execution time (ms): 5994
-slout_40_maxMarginal_c3b3.txt:	execution time (ms): 8558
-slout_40_maxMarginal_c3b4.txt:	execution time (ms): 9242
+slout_40_domWdegRandom_c1b2_0.txt:	execution time (ms): 32414
+slout_40_domWdegRandom_c1b2_1.txt:	execution time (ms): 6345
+slout_40_domWdegRandom_c1b2_10.txt:slurmstepd: error: *** JOB 31317269 ON nc10155 CANCELLED AT 2024-07-07T08:36:51 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c1b2_2.txt:	execution time (ms): 6359
+slout_40_domWdegRandom_c1b2_3.txt:	execution time (ms): 5469
+slout_40_domWdegRandom_c1b2_4.txt:	execution time (ms): 4736
+slout_40_domWdegRandom_c1b2_5.txt:	execution time (ms): 4786
+slout_40_domWdegRandom_c1b2_6.txt:	execution time (ms): 5139
+slout_40_domWdegRandom_c1b2_7.txt:	execution time (ms): 5752
+slout_40_domWdegRandom_c1b2_8.txt:	execution time (ms): 91467
+slout_40_domWdegRandom_c1b2_9.txt:	execution time (ms): 130516
+
+slout_40_domWdegRandom_c1b3_0.txt:	execution time (ms): 5782
+slout_40_domWdegRandom_c1b3_1.txt:	execution time (ms): 4114
+slout_40_domWdegRandom_c1b3_10.txt:	execution time (ms): 5574
+slout_40_domWdegRandom_c1b3_2.txt:	execution time (ms): 5915
+slout_40_domWdegRandom_c1b3_3.txt:	execution time (ms): 1489285
+slout_40_domWdegRandom_c1b3_4.txt:slurmstepd: error: *** JOB 31317475 ON nc30409 CANCELLED AT 2024-07-07T08:46:07 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c1b3_5.txt:	execution time (ms): 6204
+slout_40_domWdegRandom_c1b3_6.txt:	execution time (ms): 6236
+slout_40_domWdegRandom_c1b3_7.txt:	execution time (ms): 5372
+slout_40_domWdegRandom_c1b3_8.txt:	execution time (ms): 1369559
+slout_40_domWdegRandom_c1b3_9.txt:	execution time (ms): 5389
+
+slout_40_domWdegRandom_c1b4_0.txt:	execution time (ms): 4219
+slout_40_domWdegRandom_c1b4_1.txt:	execution time (ms): 340609
+slout_40_domWdegRandom_c1b4_10.txt:	execution time (ms): 5928
+slout_40_domWdegRandom_c1b4_2.txt:	execution time (ms): 23172
+slout_40_domWdegRandom_c1b4_3.txt:	execution time (ms): 357401
+slout_40_domWdegRandom_c1b4_4.txt:	execution time (ms): 5598
+slout_40_domWdegRandom_c1b4_5.txt:	execution time (ms): 3410
+slout_40_domWdegRandom_c1b4_6.txt:	execution time (ms): 6149
+slout_40_domWdegRandom_c1b4_7.txt:	execution time (ms): 7185
+slout_40_domWdegRandom_c1b4_8.txt:	execution time (ms): 4153
+slout_40_domWdegRandom_c1b4_9.txt:	execution time (ms): 5334
+
+slout_40_domWdegRandom_c2b2_0.txt:slurmstepd: error: *** JOB 31317468 ON nc30409 CANCELLED AT 2024-07-07T08:46:07 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c2b2_1.txt:	execution time (ms): 43780
+slout_40_domWdegRandom_c2b2_10.txt:	execution time (ms): 152479
+slout_40_domWdegRandom_c2b2_2.txt:	execution time (ms): 35868
+slout_40_domWdegRandom_c2b2_3.txt:	execution time (ms): 11706
+slout_40_domWdegRandom_c2b2_4.txt:slurmstepd: error: *** JOB 31317298 ON nc10322 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c2b2_5.txt:	execution time (ms): 4286
+slout_40_domWdegRandom_c2b2_6.txt:slurmstepd: error: *** JOB 31317300 ON nc10322 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c2b2_7.txt:	execution time (ms): 6407
+slout_40_domWdegRandom_c2b2_8.txt:	execution time (ms): 241623
+slout_40_domWdegRandom_c2b2_9.txt:	execution time (ms): 5944
+
+slout_40_domWdegRandom_c2b3_0.txt:	execution time (ms): 3976
+slout_40_domWdegRandom_c2b3_1.txt:	execution time (ms): 4139
+slout_40_domWdegRandom_c2b3_10.txt:	execution time (ms): 5058
+slout_40_domWdegRandom_c2b3_2.txt:	execution time (ms): 8298
+slout_40_domWdegRandom_c2b3_3.txt:	execution time (ms): 106446
+slout_40_domWdegRandom_c2b3_4.txt:	execution time (ms): 18788
+slout_40_domWdegRandom_c2b3_5.txt:	execution time (ms): 7051
+slout_40_domWdegRandom_c2b3_6.txt:	execution time (ms): 11433
+slout_40_domWdegRandom_c2b3_7.txt:	execution time (ms): 10182
+slout_40_domWdegRandom_c2b3_8.txt:slurmstepd: error: *** JOB 31317313 ON nc10335 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c2b3_9.txt:	execution time (ms): 5705
+
+slout_40_domWdegRandom_c2b4_0.txt:	execution time (ms): 1741741
+slout_40_domWdegRandom_c2b4_1.txt:slurmstepd: error: *** JOB 31317448 ON nc10230 CANCELLED AT 2024-07-07T08:45:33 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c2b4_10.txt:	execution time (ms): 32645
+slout_40_domWdegRandom_c2b4_2.txt:slurmstepd: error: *** JOB 31317478 ON nc30409 CANCELLED AT 2024-07-07T08:46:07 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c2b4_3.txt:slurmstepd: error: *** JOB 31317465 ON nc30409 CANCELLED AT 2024-07-07T08:46:07 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c2b4_4.txt:slurmstepd: error: *** JOB 31317320 ON nc10341 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c2b4_5.txt:slurmstepd: error: *** JOB 31317321 ON nc10341 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c2b4_6.txt:	execution time (ms): 10087
+slout_40_domWdegRandom_c2b4_7.txt:	execution time (ms): 11420
+slout_40_domWdegRandom_c2b4_8.txt:	execution time (ms): 5291
+slout_40_domWdegRandom_c2b4_9.txt:	execution time (ms): 6316
+
+slout_40_domWdegRandom_c3b2_0.txt:slurmstepd: error: *** JOB 31317479 ON nc30409 CANCELLED AT 2024-07-07T08:46:07 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b2_1.txt:	execution time (ms): 5465
+slout_40_domWdegRandom_c3b2_10.txt:slurmstepd: error: *** JOB 31317467 ON nc30409 CANCELLED AT 2024-07-07T08:46:07 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b2_2.txt:slurmstepd: error: *** JOB 31317329 ON nc10349 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b2_3.txt:	execution time (ms): 126557
+slout_40_domWdegRandom_c3b2_4.txt:	execution time (ms): 837523
+slout_40_domWdegRandom_c3b2_5.txt:slurmstepd: error: *** JOB 31317456 ON nc30409 CANCELLED AT 2024-07-07T08:46:07 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b2_6.txt:slurmstepd: error: *** JOB 31317463 ON nc30409 CANCELLED AT 2024-07-07T08:46:07 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b2_7.txt:slurmstepd: error: *** JOB 31317334 ON nc31101 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b2_8.txt:slurmstepd: error: *** JOB 31317335 ON nc31104 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b2_9.txt:slurmstepd: error: *** JOB 31317474 ON nc30409 CANCELLED AT 2024-07-07T08:46:07 DUE TO TIME LIMIT ***
+
+slout_40_domWdegRandom_c3b3_0.txt:slurmstepd: error: *** JOB 31317460 ON nc30409 CANCELLED AT 2024-07-07T08:46:07 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b3_1.txt:	execution time (ms): 13453
+slout_40_domWdegRandom_c3b3_10.txt:slurmstepd: error: *** JOB 31317349 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b3_2.txt:slurmstepd: error: *** JOB 31317340 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b3_3.txt:slurmstepd: error: *** JOB 31317341 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b3_4.txt:slurmstepd: error: *** JOB 31317342 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b3_5.txt:	execution time (ms): 6822
+slout_40_domWdegRandom_c3b3_6.txt:slurmstepd: error: *** JOB 31317345 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b3_7.txt:slurmstepd: error: *** JOB 31317346 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b3_8.txt:slurmstepd: error: *** JOB 31317347 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b3_9.txt:slurmstepd: error: *** JOB 31317348 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+
+slout_40_domWdegRandom_c3b4_0.txt:slurmstepd: error: *** JOB 31317357 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b4_1.txt:slurmstepd: error: *** JOB 31317358 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b4_10.txt:slurmstepd: error: *** JOB 31317373 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b4_2.txt:	execution time (ms): 65573
+slout_40_domWdegRandom_c3b4_3.txt:slurmstepd: error: *** JOB 31317361 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b4_4.txt:slurmstepd: error: *** JOB 31317362 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b4_5.txt:slurmstepd: error: *** JOB 31317365 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b4_6.txt:slurmstepd: error: *** JOB 31317366 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b4_7.txt:slurmstepd: error: *** JOB 31317368 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b4_8.txt:slurmstepd: error: *** JOB 31317370 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+slout_40_domWdegRandom_c3b4_9.txt:slurmstepd: error: *** JOB 31317372 ON nc31114 CANCELLED AT 2024-07-07T08:39:53 DUE TO TIME LIMIT ***
+
+slout_40_maxMarginalStrength_c1b2.txt:	execution time (ms): 6242
+slout_40_maxMarginalStrength_c1b3.txt:	execution time (ms): 4213
+slout_40_maxMarginalStrength_c1b4.txt:	execution time (ms): 5911
+slout_40_maxMarginalStrength_c2b2.txt:	execution time (ms): 4876
+slout_40_maxMarginalStrength_c2b3.txt:	execution time (ms): 4832
+slout_40_maxMarginalStrength_c2b4.txt:	execution time (ms): 5912
+slout_40_maxMarginalStrength_c3b2.txt:	execution time (ms): 7321
+slout_40_maxMarginalStrength_c3b3.txt:slurmstepd: error: *** JOB 31317256 ON nc10126 CANCELLED AT 2024-07-07T08:30:45 DUE TO TIME LIMIT ***
+slout_40_maxMarginalStrength_c3b4.txt:slurmstepd: error: *** JOB 31317257 ON nc10126 CANCELLED AT 2024-07-07T08:30:45 DUE TO TIME LIMIT ***
+
+slout_40_maxMarginal_c1b2.txt:	execution time (ms): 6761
+slout_40_maxMarginal_c1b3.txt:	execution time (ms): 6689
+slout_40_maxMarginal_c1b4.txt:	execution time (ms): 5153
+slout_40_maxMarginal_c2b2.txt:	execution time (ms): 1029831
+slout_40_maxMarginal_c2b3.txt:slurmstepd: error: *** JOB 31317244 ON nc10437 CANCELLED AT 2024-07-07T08:25:09 DUE TO TIME LIMIT ***
+slout_40_maxMarginal_c2b4.txt:	execution time (ms): 5408
+slout_40_maxMarginal_c3b2.txt:slurmstepd: error: *** JOB 31317246 ON nc11117 CANCELLED AT 2024-07-07T08:25:09 DUE TO TIME LIMIT ***
+slout_40_maxMarginal_c3b3.txt:slurmstepd: error: *** JOB 31317247 ON nc11117 CANCELLED AT 2024-07-07T08:25:09 DUE TO TIME LIMIT ***
+slout_40_maxMarginal_c3b4.txt:slurmstepd: error: *** JOB 31317248 ON nc11121 CANCELLED AT 2024-07-07T08:25:09 DUE TO TIME LIMIT ***

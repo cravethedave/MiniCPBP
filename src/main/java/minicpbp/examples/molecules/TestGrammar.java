@@ -1,5 +1,7 @@
-package minicpbp.examples;
+package minicpbp.examples.molecules;
 
+import minicpbp.engine.constraints.Grammar;
+import minicpbp.engine.core.Constraint;
 import minicpbp.engine.core.IntVar;
 import minicpbp.engine.core.Solver;
 import minicpbp.engine.core.Solver.PropaMode;
@@ -23,20 +25,42 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Scanner;
 import java.util.Vector;
+import java.util.concurrent.CompletableFuture;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpRequest.BodyPublisher;
+import java.net.http.HttpResponse.BodyHandlers;
 
 public class TestGrammar {
     public static void main(String[] args) {
         generateMolecules(
-            "data/moleculeCNF_v6.txt",
+            "data/moleculeCNF_v7.txt",
             Integer.valueOf(args[0]),
             args[1],
             Integer.valueOf(args[2]),
             Integer.valueOf(args[3]),
             Integer.valueOf(args[4]),
-            Integer.valueOf(args[5]),
-            Integer.valueOf(args[6]),
-            Integer.valueOf(args[7])
+            Integer.valueOf(args[5])
         );
+
+        // oracleRun(
+        //     "data/moleculeCNF_v7.txt",
+        //     Integer.valueOf(args[0]),
+        //     args[1],
+        //     Integer.valueOf(args[2]),
+        //     Integer.valueOf(args[3]),
+        //     Integer.valueOf(args[4]),
+        //     Integer.valueOf(args[5])
+        // );
+
+        // try {
+        //     System.out.println(testRequest().join());
+        // } catch (Exception e) {
+        //     System.out.println(e);
+        // }
 
         // System.out.println("This works");
 
@@ -320,14 +344,12 @@ public class TestGrammar {
         }
     }
 
-    private static void generateMolecules(
+    private static void oracleRun(
         String filePath,
         int wordLength,
         String method,
         int minWeight,
         int maxWeight,
-        int minCarbon,
-        int maxCarbon,
         int nCycles,
         int nBranches
     ) {
@@ -352,19 +374,75 @@ public class TestGrammar {
             //#endregion
             
             grammarConstraint(cp,w,g);
+            cycleCountingConstraint(cp,w,g,1,8);
+            cycleParityConstraint(cp,w,g,1,8);
+            moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
+
+            if (nCycles == 0) {
+                cp.post(among(w, g.tokenEncoder.get("1"), makeIntVar(cp, 0,0)));
+            } else if (nCycles > 0) {
+                cp.post(among(w, g.tokenEncoder.get(Integer.toString(nCycles)), makeIntVar(cp, 2,2)));
+                cp.post(among(w, g.tokenEncoder.get(Integer.toString(nCycles + 1)), makeIntVar(cp, 0,0)));
+            }
+            if (nBranches >= 0) {
+                cp.post(among(w, g.tokenEncoder.get("("), makeIntVar(cp, nBranches, nBranches)));
+            }
+            
+            HttpClient client = HttpClient.newHttpClient();
+
+            String moleculeSoFar = "";
+            for (int i = 0; i < wordLength; i++) {
+                HttpRequest request = HttpRequest.newBuilder()
+                  .uri(URI.create("http://localhost:5000/token"))
+                  .POST(HttpRequest.BodyPublishers.ofString(moleculeSoFar))
+                  .build();
+                String response = client.sendAsync(request, BodyHandlers.ofString()).thenApply(HttpResponse::body).join();
+                
+                break;
+                // cp.post(oracle(w[i], null, null));
+                // moleculeSoFar += "";
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private static void generateMolecules(
+        String filePath,
+        int wordLength,
+        String method,
+        int minWeight,
+        int maxWeight,
+        int nCycles,
+        int nBranches
+    ) {
+        try {
+            long start = System.currentTimeMillis();
+            //#region Base initialization
+            Solver cp = makeSolver(false);
+            CFG g = new CFG(filePath);
+            IntVar[] w = makeIntVarArray(cp, wordLength, 0, g.terminalCount()-1);
+            for (int i = 0; i < wordLength; i++) {
+                w[i].setName("token_" + i);
+            }
+            
+            IntVar weightTarget = makeIntVar(cp, minWeight, maxWeight);
+            weightTarget.setName("Weight target");
+
+            int minAtomWeight = Collections.min(g.tokenWeight.values());
+            int maxAtomWeight = Collections.max(g.tokenWeight.values());
+            IntVar[] tokenWeights = makeIntVarArray(cp, wordLength, minAtomWeight, maxAtomWeight);
+            for (int i = 0; i < wordLength; i++) {
+                tokenWeights[i].setName("weight_" + i);
+            }
+            System.out.println("Init: " + (System.currentTimeMillis() - start));
+            //#endregion
+            
+            grammarConstraint(cp,w,g);
             cycleCountingConstraint(cp,w,g,1,19);
             cycleParityConstraint(cp,w,g,1,19);
             moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
-
-            //#region Carbon percentage
-            // int[] carbonAtoms = new int[2];
-            // carbonAtoms[0] = g.tokenEncoder.get("C");
-            // carbonAtoms[1] = g.tokenEncoder.get("c");
-            // int lowerBound = Math.floorDiv(wordLength * minCarbon, 100);
-            // int upperBound = Math.floorDiv(wordLength * maxCarbon, 100);
-            // IntVar carbonRange = makeIntVar(cp, lowerBound, upperBound);
-            // cp.post(among(w,carbonAtoms,carbonRange));
-            //#endregion
 
             if (nCycles == 0) {
                 cp.post(among(w, g.tokenEncoder.get("1"), makeIntVar(cp, 0,0)));
@@ -378,16 +456,12 @@ public class TestGrammar {
 
             //#region Solve
             // Sampling, replace w by branching vars if wanted
-            // double fraction = 0.005;
+            // double fraction = 0.00000000001;
+            // System.out.println("Wordlength " + wordLength);
+            // System.out.println("Fraction " + fraction * 100 + "%");
             // IntVar[] branchingVars = cp.sample(fraction,w);
 
-            // cp.post(isEqual(w[1], g.tokenEncoder.get("1")));
-            // cp.post(isEqual(w[wordLength - 1], g.tokenEncoder.get("1")));
-            // cp.post(among(w, g.tokenEncoder.get("["), makeIntVar(cp, 0, 0)));
-            // cp.post(among(w, g.tokenEncoder.get("="), makeIntVar(cp, 0, 0)));
-            // cp.post(among(w, g.tokenEncoder.get("C"), makeIntVar(cp, wordLength-3, wordLength)));
-
-            cp.setTraceSearchFlag(true);
+            cp.setTraceSearchFlag(false);
             
             if (method.equals("maxMarginalLDS")) {
                 cp.setMode(PropaMode.SBP);
@@ -408,16 +482,17 @@ public class TestGrammar {
                 cp.setMode(PropaMode.SBP);
                 LDSearch lds = makeLds(cp, maxMarginalStrength(w));
                 lds.onSolution(() -> {
-                    String word = "";
-                    int sumWeight = 0;
-                    for (int i = 0; i < wordLength; i++) {
-                        word += g.tokenDecoder.get(w[i].min());
-                        sumWeight += tokenWeights[i].min();
-                    }
-                    System.out.println(word + " weight of " + sumWeight);
+                    // String word = "";
+                    // int sumWeight = 0;
+                    // for (int i = 0; i < wordLength; i++) {
+                    //     word += g.tokenDecoder.get(w[i].min());
+                    //     sumWeight += tokenWeights[i].min();
+                    // }
+                    // System.out.println(word + " weight of " + sumWeight);
                 });
                 System.out.println("[INFO] Now solving");
-                System.out.println(lds.solve(stat -> stat.numberOfSolutions() == 1));
+                // System.out.println(lds.solve(stat -> stat.numberOfSolutions() == 1));
+                System.out.println(lds.solve());
                 return;
             } else if (method.equals("domWdegLDS")) {
                 cp.setMode(PropaMode.SP);
@@ -472,6 +547,10 @@ public class TestGrammar {
                     cp.setMode(PropaMode.SBP);
                     dfs = makeDfs(cp, minEntropy(w));
                     break;
+                case "lexicoMarginal":
+                    cp.setMode(PropaMode.SBP);
+                    dfs = makeDfs(cp, lexicoMaxMarginalValue(w));
+                    break;
                 case "minEntropyBiasedWheel":
                     cp.setMode(PropaMode.SBP);
                     dfs = makeDfs(cp, minEntropyBiasedWheelSelectVal(w));
@@ -500,6 +579,10 @@ public class TestGrammar {
                 case "domWdegRandom":
                     cp.setMode(PropaMode.SBP);
                     dfs = makeDfs(cp, domWdegRandom(w));
+                    break;
+                case "domRaw":
+                    cp.setMode(PropaMode.SBP);
+                    dfs = makeDfs(cp, domRaw(w));
                     break;
                 case "dom-random":
                     cp.setMode(PropaMode.SP);
@@ -831,7 +914,13 @@ public class TestGrammar {
     }
 
     private static void grammarConstraint(Solver cp, IntVar[] w, CFG g) throws FileNotFoundException, IOException {
-        cp.post(grammar(w,g));
+        long start = System.currentTimeMillis();
+        Constraint constraint = grammar(w,g);
+        System.out.println("Grammar init: " + (System.currentTimeMillis() - start));
+
+        start = System.currentTimeMillis();
+        cp.post(constraint);
+        System.out.println("Grammar propagate: " + (System.currentTimeMillis() - start));
     }
 
     private static int[] getCycleTokens(CFG g, int start, int end) {
@@ -845,6 +934,7 @@ public class TestGrammar {
     }
 
     private static void cycleCountingConstraint(Solver cp, IntVar[] w, CFG g, int start, int end) {
+        long startTime = System.currentTimeMillis();
         int[] cycleTokens = getCycleTokens(g, start, end);
 
         int n = g.terminalCount();
@@ -863,19 +953,34 @@ public class TestGrammar {
                 A[i][cycleTokens[i]] = i + 1;
             }
         }
-        cp.post(regular(w, A));
+        Constraint constraint = regular(w, A);
+        System.out.println("Cycle counting init: " + (System.currentTimeMillis() - startTime));
+
+        startTime = System.currentTimeMillis();
+        cp.post(constraint);
+        System.out.println("Cycle counting propagate: " + (System.currentTimeMillis() - startTime));
     }
 
     private static void cycleParityConstraint(Solver cp, IntVar[] w, CFG g, int start, int end) {
+        long startTime = System.currentTimeMillis();
         int[] cycleTokens = getCycleTokens(g, start, end);
+        Constraint[] constraints = new Constraint[cycleTokens.length];
         for (int i = 0; i < cycleTokens.length; i++) {
             IntVar numberOccurrences = makeIntVar(cp, 0, 2);
             numberOccurrences.remove(1);
-            cp.post(among(w, cycleTokens[i], numberOccurrences));
+            constraints[i] = among(w, cycleTokens[i], numberOccurrences);
         }
+        System.out.println("Cycle parity init: " + (System.currentTimeMillis() - startTime));
+        
+        startTime = System.currentTimeMillis();
+        for (int i = 0; i < cycleTokens.length; i++) {
+            cp.post(constraints[i]);
+        }
+        System.out.println("Cycle parity propagate: " + (System.currentTimeMillis() - startTime));
     }
 
     private static void moleculeWeightConstraint(Solver cp, IntVar[] w, IntVar[] tokenWeights, IntVar weightTarget, CFG g) {
+        long startTime = System.currentTimeMillis();
         int[] tokenToWeight = new int[g.terminalCount()];
         for (int i = 0; i < g.terminalCount(); i++) {
             String token = g.tokenDecoder.get(i);
@@ -885,10 +990,44 @@ public class TestGrammar {
                 tokenToWeight[i] = 0;
             }
         }
+        Constraint[] elements = new Constraint[w.length];
         for (int i = 0; i < w.length; i++) {
-            cp.post(element(tokenToWeight, w[i], tokenWeights[i]));
+            elements[i] = element(tokenToWeight, w[i], tokenWeights[i]);
         }
-        cp.post(sum(tokenWeights, weightTarget));
+        Constraint sum = sum(tokenWeights, weightTarget);
+        System.out.println("Weight init: " + (System.currentTimeMillis() - startTime));
+
+        startTime = System.currentTimeMillis();
+        for (int i = 0; i < w.length; i++) {
+            cp.post(elements[i]);
+        }
+        cp.post(sum);
+        System.out.println("Weight propagate: " + (System.currentTimeMillis() - startTime));
+    }
+
+    private static void readNgramWeights(String filePath) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+            // Dictionnary?
+            while (reader.ready()) {
+                reader.readLine();
+                // Read, convert to right tokens, associate to weight * 100 floored
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+
+        } catch (IOException e) {
+
+        }
+    }
+
+    private static CompletableFuture<String> testRequest() throws Exception {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:5000/token"))
+            .POST(HttpRequest.BodyPublishers.ofString("Hello World"))
+            .build();
+        return client.sendAsync(request, BodyHandlers.ofString()).thenApply(HttpResponse::body);
     }
 
     private static void cycleCountConstraint() {
