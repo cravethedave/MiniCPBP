@@ -67,9 +67,9 @@ public class TestGrammarV7 {
             GenConstraints.grammarConstraint(cp,w,g);
             GenConstraints.cycleCountingConstraint(cp,w,g,1,8);
             GenConstraints.cycleParityConstraint(cp,w,g,1,8);
-            // GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
-            // GenConstraints.limitCycleConstraint(cp, w, g, nCycles);
-            // GenConstraints.limitBranchConstraint(cp, w, g, nBranches);
+            GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
+            GenConstraints.limitCycleConstraint(cp, w, g, nCycles);
+            GenConstraints.limitBranchConstraint(cp, w, g, nBranches);
             IntVar logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_weights.txt", -50000, 50000);
 
             //#region Solve

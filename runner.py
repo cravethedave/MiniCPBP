@@ -109,7 +109,7 @@ methods = [
     # "domWdeg",
     # "domWdegRestart",
     # "domWdegLDS",
-    # "maxMarginal",
+    "maxMarginal",
     # "maxMarginalRestart",
     # "maxMarginalLDS",
     # "maxMarginalStrength",
