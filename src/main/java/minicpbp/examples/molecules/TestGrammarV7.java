@@ -70,7 +70,7 @@ public class TestGrammarV7 {
             GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
             GenConstraints.limitCycleConstraint(cp, w, g, nCycles);
             GenConstraints.limitBranchConstraint(cp, w, g, nBranches);
-            IntVar logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_weights.txt", -50000, 50000);
+            // IntVar logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_weights.txt", -50000, 50000);
 
             //#region Solve
             // Sampling, replace w by branching vars if wanted
@@ -227,7 +227,7 @@ public class TestGrammarV7 {
                     word += g.tokenDecoder.get(w[i].min());
                     sumWeight += tokenWeights[i].min();
                 }
-                System.out.println(word + " weight of " + sumWeight + " logP value of " + logPEstimate.min());
+                System.out.println(word + " weight of " + sumWeight);
             });
 
             System.out.println("[INFO] Now solving");
