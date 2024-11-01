@@ -214,6 +214,7 @@ public final class BranchingScheme {
      * @see Factory#makeDfs(Solver, Supplier)
      */
     public static Supplier<Procedure[]> lexicoMaxMarginalValue(IntVar... x) {
+        System.out.println("lexicoMaxMarginal");
 	boolean tracing = x[0].getSolver().tracingSearch();
         return () -> {
             IntVar xs = selectMin(x,

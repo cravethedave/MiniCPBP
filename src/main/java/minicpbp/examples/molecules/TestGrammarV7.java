@@ -15,6 +15,7 @@ import java.util.Collections;
 
 public class TestGrammarV7 {
     public static void main(String[] args) {
+        // GenConstraints.goingForwardTest();
         generateMolecules(
             "data/moleculeCNF_v7.txt",
             Integer.valueOf(args[0]),
@@ -24,9 +25,10 @@ public class TestGrammarV7 {
             Integer.valueOf(args[4]),
             Integer.valueOf(args[5])
         );
+        
         // generateMolecules(
         //     "data/moleculeCNF_v7.txt",
-        //     20,
+        //     40,
         //     "maxMarginal",
         //     4750,
         //     5000,
@@ -70,7 +72,8 @@ public class TestGrammarV7 {
             GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
             GenConstraints.limitCycleConstraint(cp, w, g, nCycles);
             GenConstraints.limitBranchConstraint(cp, w, g, nBranches);
-            // IntVar logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_weights.txt", -50000, 50000);
+            IntVar logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_weights.txt", 200, 500);
+            // GenConstraints.setMolecule(cp, w, g, "ISC1NC(I)(I)S1");
 
             //#region Solve
             // Sampling, replace w by branching vars if wanted
@@ -227,7 +230,7 @@ public class TestGrammarV7 {
                     word += g.tokenDecoder.get(w[i].min());
                     sumWeight += tokenWeights[i].min();
                 }
-                System.out.println(word + " weight of " + sumWeight);
+                System.out.println(word + " weight of " + sumWeight + " logP of " + logPEstimate.min());
             });
 
             System.out.println("[INFO] Now solving");
