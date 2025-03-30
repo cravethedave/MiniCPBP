@@ -18,12 +18,15 @@ package minicpbp.engine.core;
 import minicpbp.search.Objective;
 import minicpbp.util.exception.InconsistencyException;
 
+import java.util.Iterator;
+
 /**
  * Minimization objective function
  */
 public class Minimize implements Objective {
     private int bound = Integer.MAX_VALUE;
     private final IntVar x;
+    private static boolean traceOptim = true;
 
     public Minimize(IntVar x) {
         this.x = x;
@@ -37,5 +40,21 @@ public class Minimize implements Objective {
         if (!x.isBound()) throw new RuntimeException("objective not bound");
         this.bound = x.max() - 1;
         throw InconsistencyException.INCONSISTENCY;
+    }
+
+    public  boolean problemIsBound() {
+        Iterator<IntVar> iterator = x.getSolver().getVariables().iterator();
+        while (iterator.hasNext()) {
+            if (!iterator.next().isBound())
+               return false;
+        }
+        return true;
+    }
+    public void setTraceOptimizationFlag(boolean traceOptim) {
+        this.traceOptim = traceOptim;
+    }
+
+    public boolean tracingOptimization() {
+        return traceOptim;
     }
 }

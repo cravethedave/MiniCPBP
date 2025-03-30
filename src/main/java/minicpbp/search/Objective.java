@@ -30,4 +30,16 @@ public interface Objective {
      * the next found solution is better.
      */
     void tighten();
+
+    boolean problemIsBound();
+
+    /**
+     * Activate trace of progress for objective fct optimization if @param traceOptim is true
+     */
+    void setTraceOptimizationFlag(boolean traceOptim);
+
+    /**
+     * @return whether optimization should be traced
+     */
+    boolean tracingOptimization();
 }
