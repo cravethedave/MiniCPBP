@@ -11,3 +11,4 @@ userguide/build/
 userguide/userguideenv/
 dependency-reduced-pom.xml
 output
+results*

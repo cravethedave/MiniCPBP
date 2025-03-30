@@ -1,0 +1,5 @@
+molecule count: 10, target weight: [2000, 2750]
+molecule, weight, perplexity, time (s)
+<s>C(C(C(=N))OC)N(CO(CC(C)N1CC(NC)[C@]1))__,2560,67.6794913379085,46
+<s>NC#COC(O)(CC(NN)=C(O))(C(SC=C)(C)(C))___,2711,66.15462466329619,44
+<s>NC(N(C(N(C(NN=C(N)))NN(N(N))CC)N))=[N+]_,2610,50.723294167139635,49

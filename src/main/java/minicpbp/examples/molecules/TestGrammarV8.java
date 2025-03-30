@@ -15,15 +15,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 
-public class TestGrammarV7 {
+public class TestGrammarV8 {
     public static void main(String[] args) {
         // GenConstraints.goingRndTest();
         generateMolecules(
-            "data/moleculeCNF_v7.txt",
+            "data/moleculeCNF_v12.txt",
             Integer.valueOf(args[0]),
             args[1],
             Integer.valueOf(args[2]),
-            Integer.valueOf(args[3])
+            Integer.valueOf(args[3]),
+            Integer.valueOf(args[4])
         );
         
         // generateMolecules(
@@ -42,7 +43,8 @@ public class TestGrammarV7 {
         int wordLength,
         String method,
         int minWeight,
-        int maxWeight
+        int maxWeight,
+        int numSolutions
     ) {
         long startTime = System.currentTimeMillis()/1000;
         try {
@@ -65,41 +67,25 @@ public class TestGrammarV7 {
             }
             //#endregion
             
+            // Smiles Validity
             GenConstraints.grammarConstraint(cp,w,g);
-            GenConstraints.cycleCountingConstraint(cp,w,g,1,8);
-            GenConstraints.cycleParityConstraint(cp,w,g,1,8);
-            // GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
-            // GenConstraints.limitCycleConstraint(cp, w, g, nCycles);
-            // GenConstraints.limitBranchConstraint(cp, w, g, nBranches);
-            IntVar logPEstimate = makeIntVar(cp, 0, 0);
-            // IntVar logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_weights.txt", 200, 500);
-            // GenConstraints.setMolecule(cp, w, g, "ISC1NC(I)(I)S1");
-
-            //#region Force molecule
-            //C1SCN(N(CC1
-            // w[0].assign(g.tokenEncoder.get("C"));
-            // w[1].assign(g.tokenEncoder.get("1"));
-            // w[2].assign(g.tokenEncoder.get("S"));
-            // w[3].assign(g.tokenEncoder.get("C"));
-            // w[4].assign(g.tokenEncoder.get("N"));
-            // w[5].assign(g.tokenEncoder.get("("));
-            // w[6].assign(g.tokenEncoder.get("N"));
-            // w[7].assign(g.tokenEncoder.get("("));
-            // w[8].assign(g.tokenEncoder.get("C"));
-            // w[9].assign(g.tokenEncoder.get("C"));
-            // w[10].assign(g.tokenEncoder.get("1"));
-            //#endregion
+            GenConstraints.cycleCountingConstraint(cp,w,g,1,6);
+            GenConstraints.cycleParityConstraint(cp,w,g,1,6);
+            GenConstraints.avoidBranchOnEnd(cp, w, g);
+            // Molecular weight
+            GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
+            // H Donors
+            GenConstraints.limitDonors(cp, w, g, makeIntVar(cp, 0, 5));
+            // H Acceptors
+            GenConstraints.limitAcceptors(cp, w, g, makeIntVar(cp, 0, 10));
+            // LogP
+            // IntVar logPEstimate = makeIntVar(cp, 0, 0);
+            IntVar logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_changed.txt", 200, 500);
 
             //#region Solve
             // Sampling, replace w by branching vars if wanted
-            // double fraction = 0.005;
-            // IntVar[] branchingVars = cp.sample(fraction,w);
-
-            // cp.post(isEqual(w[1], g.tokenEncoder.get("1")));
-            // cp.post(isEqual(w[wordLength - 1], g.tokenEncoder.get("1")));
-            // cp.post(among(w, g.tokenEncoder.get("["), makeIntVar(cp, 0, 0)));
-            // cp.post(among(w, g.tokenEncoder.get("="), makeIntVar(cp, 0, 0)));
-            // cp.post(among(w, g.tokenEncoder.get("C"), makeIntVar(cp, wordLength-3, wordLength)));
+            double fraction = Math.pow(37, -7);
+            IntVar[] branchingVars = cp.sample(fraction,w);
 
             cp.setTraceSearchFlag(false);
             
@@ -116,7 +102,7 @@ public class TestGrammarV7 {
                     System.out.println(word + " weight of " + sumWeight);
                 });
                 System.out.println("[INFO] Now solving");
-                System.out.println(lds.solve(stat -> stat.numberOfSolutions() == 1));
+                System.out.println(lds.solve(stat -> stat.numberOfSolutions() == numSolutions));
                 return;
             } else if (method.equals("maxMarginalStrengthLDS")) {
                 cp.setMode(PropaMode.SBP);
@@ -131,7 +117,7 @@ public class TestGrammarV7 {
                     System.out.println(word + " weight of " + sumWeight);
                 });
                 System.out.println("[INFO] Now solving");
-                System.out.println(lds.solve(stat -> stat.numberOfSolutions() == 1));
+                System.out.println(lds.solve(stat -> stat.numberOfSolutions() == numSolutions));
                 return;
             } else if (method.equals("domWdegLDS")) {
                 cp.setMode(PropaMode.SP);
@@ -146,7 +132,7 @@ public class TestGrammarV7 {
                     System.out.println(word + " weight of " + sumWeight);
                 });
                 System.out.println("[INFO] Now solving");
-                System.out.println(lds.solve(stat -> stat.numberOfSolutions() == 1));
+                System.out.println(lds.solve(stat -> stat.numberOfSolutions() == numSolutions));
                 return;
             } else if (method.equals("impactLDS")) {
                 cp.setMode(PropaMode.SP);
@@ -161,7 +147,7 @@ public class TestGrammarV7 {
                     System.out.println(word + " weight of " + sumWeight);
                 });
                 System.out.println("[INFO] Now solving");
-                System.out.println(lds.solve(stat -> stat.numberOfSolutions() == 1));
+                System.out.println(lds.solve(stat -> stat.numberOfSolutions() == numSolutions));
                 return;
             } else if (method.equals("minEntropyLDS")) {
                 cp.setMode(PropaMode.SBP);
@@ -176,7 +162,7 @@ public class TestGrammarV7 {
                     System.out.println(word + " weight of " + sumWeight);
                 });
                 System.out.println("[INFO] Now solving");
-                System.out.println(lds.solve(stat -> stat.numberOfSolutions() == 1));
+                System.out.println(lds.solve(stat -> stat.numberOfSolutions() == numSolutions));
                 return;
             }
 
@@ -204,7 +190,7 @@ public class TestGrammarV7 {
                     break;
                 case "maxMarginal":
                     cp.setMode(PropaMode.SBP);
-                    dfs = makeDfs(cp, maxMarginal(w));
+                    dfs = makeDfs(cp, maxMarginal(branchingVars));
                     break;
                 case "rnd":
                     cp.setMode(PropaMode.SP);
@@ -244,7 +230,7 @@ public class TestGrammarV7 {
             //     }
             // });
 
-            String fileName = "./results_size"+String.valueOf(wordLength)+"_v7.txt";
+            // String fileName = "./results_size"+String.valueOf(wordLength)+"_v12.txt";
             dfs.onSolution(() -> {
                 String word = "";
                 int sumWeight = 0;
@@ -253,19 +239,19 @@ public class TestGrammarV7 {
                     sumWeight += tokenWeights[i].min();
                 }
                 System.out.println(word + " weight of " + sumWeight + " logP of " + logPEstimate.min());
-                try {
-                    FileWriter resultsWriter = new FileWriter(fileName, true);
-                    resultsWriter.write(
-                        word + "," +
-                        String.valueOf(sumWeight) + "," +
-                        String.valueOf(0) + "," +
-                        String.valueOf(System.currentTimeMillis()/1000 - startTime) +
-                        "\n"
-                    );
-                    resultsWriter.close();
-                } catch (IOException e) {
-                    System.out.println("[ERROR] File not writing ********************");
-                }
+                // try {
+                //     FileWriter resultsWriter = new FileWriter(fileName, true);
+                //     resultsWriter.write(
+                //         word + "," +
+                //         String.valueOf(sumWeight) + "," +
+                //         String.valueOf(0) + "," +
+                //         String.valueOf(System.currentTimeMillis()/1000 - startTime) +
+                //         "\n"
+                //     );
+                //     resultsWriter.close();
+                // } catch (IOException e) {
+                //     System.out.println("[ERROR] File not writing ********************");
+                // }
             });
 
             System.out.println("[INFO] Now solving");
@@ -278,12 +264,12 @@ public class TestGrammarV7 {
                 case "domWdegRestart":
                 case "impactMinValRestart":
                     System.out.println("Restarts");
-                    stats = dfs.solveRestarts(stat -> stat.numberOfSolutions() == 1);
+                    stats = dfs.solveRestarts(stat -> stat.numberOfSolutions() == numSolutions);
                     break;
                 default:
                     System.out.println("No restarts");
                     stats = dfs.solve();
-                    // stats = dfs.solve(stat -> stat.numberOfSolutions() == 1 || stat.timeElapsed()/1000 > 900);
+                    // stats = dfs.solve(stat -> stat.numberOfSolutions() == numSolutions);
             }
             System.out.println(stats);
             //#endregion

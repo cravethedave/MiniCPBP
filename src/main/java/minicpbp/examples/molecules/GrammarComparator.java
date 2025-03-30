@@ -2,35 +2,16 @@ package minicpbp.examples.molecules;
 
 import minicpbp.engine.core.IntVar;
 import minicpbp.engine.core.Solver;
-import minicpbp.engine.core.Solver.PropaMode;
-import minicpbp.search.DFSearch;
-import minicpbp.search.LDSearch;
-import minicpbp.search.SearchStatistics;
 import minicpbp.util.CFG;
-import minicpbp.util.Procedure;
-import minicpbp.util.exception.InconsistencyException;
 
-import static minicpbp.cp.BranchingScheme.*;
 import static minicpbp.cp.Factory.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Scanner;
 import java.util.Vector;
-import java.util.concurrent.CompletableFuture;
-
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpRequest.BodyPublisher;
-import java.net.http.HttpResponse.BodyHandlers;
 
 public class GrammarComparator {
     public static void main(String[] args) {

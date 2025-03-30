@@ -1,9 +1,11 @@
 package minicpbp.examples.molecules;
 
 import static minicpbp.cp.Factory.among;
+import static minicpbp.cp.Factory.atmost;
 import static minicpbp.cp.Factory.element;
 import static minicpbp.cp.Factory.equal;
 import static minicpbp.cp.Factory.grammar;
+import static minicpbp.cp.Factory.isEqual;
 import static minicpbp.cp.Factory.makeIntVar;
 import static minicpbp.cp.Factory.makeIntVarArray;
 import static minicpbp.cp.Factory.regular;
@@ -14,6 +16,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Vector;
@@ -101,6 +105,61 @@ public class GenConstraints {
         if (nBranches >= 0) {
             cp.post(among(w, g.tokenEncoder.get("("), makeIntVar(cp, nBranches, nBranches)));
         }
+    }
+    
+    public static void limitAcceptors(Solver cp, IntVar[] w, CFG g, IntVar target) {
+        cp.post(
+            among(
+                w,
+                new int[]{
+                    g.tokenEncoder.get("N"),
+                    g.tokenEncoder.get("T"),
+                    g.tokenEncoder.get("O"),
+                    g.tokenEncoder.get("X"),
+                    g.tokenEncoder.get("S"),
+                    g.tokenEncoder.get("R"),
+                    g.tokenEncoder.get("n"),
+                    g.tokenEncoder.get("o"),
+                    g.tokenEncoder.get("s"),
+                },
+                target
+            )
+        );
+    }
+
+    public static void limitDonors(Solver cp, IntVar[] w, CFG g, IntVar target) {
+        cp.post(
+            among(
+                w,
+                new int[]{
+                    g.tokenEncoder.get("T"),
+                    g.tokenEncoder.get("X"),
+                    g.tokenEncoder.get("R"),
+                },
+                target
+            )
+        );
+    }
+
+    public static void avoidBranchOnEnd(Solver cp, IntVar[] w, CFG g) {
+        int n = g.terminalCount();
+        int[][] A = new int[2][n];
+
+        // Setup base state transitions
+        for (int i = 0; i < n; i++) {
+            A[0][i] = 1; // All tokens lead to the accepted state
+            A[1][i] = 1; // Once accepted, it stays accepted
+        }
+
+        A[0][g.tokenEncoder.get("_")] = 0; // Padding keeps us in the start state
+        A[0][g.tokenEncoder.get(")")] = -1; // A closing branch being the last token is forbidden
+
+        IntVar[] wInverse = makeIntVarArray(cp, w.length, 0, g.terminalCount()-1);;
+        for (int i = 0; i < w.length; i++) {
+            cp.post(isEqual(wInverse[i], w[w.length - 1 - i]));
+        }
+        
+        cp.post(regular(wInverse, A));
     }
 
     private static boolean isCycleToken(String token) {
@@ -215,61 +274,114 @@ public class GenConstraints {
         System.out.println(elementVector.size());
     }
 
-    public static void goingRndTest() {
-        int terminalCount = 3;
-        int STAR = -1;
+    public static void goingRndTest(){
+        final int STAR = -1;
+        int n = 4;
 
-        String[] baseExamples = new String[]{"aab","abc","acb","bab","bac","bca","cab","cba"};
-        HashMap<Integer,HashMap<Integer,HashMap<Integer,Integer>>> elementMap = new HashMap<>();
+        CFG g;
+        try {
+            g = new CFG("data/lingo_rnd_CNF.txt");
+        } catch (IOException e) {
+            return;
+        }
+        Vector<int[]> lingos = new Vector<>();
+        int a = g.tokenEncoder.get("a");
+        int b = g.tokenEncoder.get("b");
+        lingos.add(new int[]{a,a,a,b});
+        lingos.add(new int[]{a,a,b,b});
+        lingos.add(new int[]{a,b,b,b});
 
-        HashSet<String> exampleSet = new HashSet<>();
-        Vector<HashMap<Integer,HashSet<String>>> missingMap = new Vector<>();
-        missingMap.add(new HashMap<>());
-        missingMap.add(new HashMap<>());
-        missingMap.add(new HashMap<>());
-        
-        for (String iter : baseExamples) {
-            exampleSet.add(iter);
-            char[] c = iter.toCharArray();
+        //#region Generating Lingo table
+        int[] startingWord = new int[n];
+        for (int i = 0; i < n; i++) {
+            startingWord[i] = STAR;
+        }
+        Vector<int[]> elementVector = recursiveThing(lingos, startingWord, g.terminalCount(), new Integer[]{0,1,2,3});
+        //#endregion
+    }
 
-            for (int i = 0; i < terminalCount; i++) {
-                if (!missingMap.get(i).keySet().contains(c[i] - 'a')) {
-                    missingMap.get(i).put(c[i] - 'a',new HashSet<>());
+    public static Vector<int[]> recursiveThing(Vector<int[]> lingos, int[] currentWord, int terminalCount, Integer[] unvisitedPos) {
+        // Create an array of 0 for the frequencies
+        int n = currentWord.length;
+
+        // Initialize a vector of hashsets that will contain how many different tokens are in each position
+        Vector<HashSet<Integer>> keys = new Vector<>();
+        for (int i = 0; i < n; i++) {
+            keys.add(new HashSet<>());
+        }
+
+        for (int[] lingo : lingos) {
+            // The for loop validates that the current lingo respects previous constraints
+            boolean matchingSequence = true;
+            for (int i = 0; i < n; i++) {
+                // -1 is a wildcard, it accepts all
+                if (currentWord[i] != -1 && lingo[i] != currentWord[i]) {
+                    matchingSequence = false;
+                    break;
                 }
-                missingMap.get(i).get(c[i] - 'a').add(iter);
             }
-        }
-
-        // create tuples with * where there are missing tokens
-        for (int i = 0; i < missingMap.size(); i++) {
-
-        }
-
-        // Pass through creating weighted tuples for tokens most present
-
-        Vector<int[]> elementVector = new Vector<>();
-        for (int i = 0; i < terminalCount; i++) {
-            
-
-            if (!elementMap.keySet().contains(i)) {
-                elementVector.add(new int[]{i,STAR,STAR,0});
+            // If the lingo does not respect previous constraints, it cannot contribute to counting
+            if (!matchingSequence) {
                 continue;
             }
-            for (int j = 0; j < terminalCount; j++) {
-                if (!elementMap.get(i).keySet().contains(j)) {
-                    elementVector.add(new int[]{i,j,STAR,0});
-                    continue;
-                }
-                for (int k = 0; k < terminalCount; k++) {
-                    if (!elementMap.get(i).get(j).keySet().contains(k)) {
-                        elementVector.add(new int[]{i,j,k,0});
-                        continue;
-                    }
-                    elementVector.add(new int[]{i,j,k,elementMap.get(i).get(j).get(k)});
+
+            // Add each token of this lingo to the present keys structure
+            for (int i = 0; i < n; i++) {
+                if (currentWord[i] == -1) {
+                    keys.get(i).add(lingo[i]);
                 }
             }
         }
-        System.out.println(elementVector.size());
+        
+        // Find what order to visit the remaining positions in
+        Arrays.sort(unvisitedPos, Comparator.comparingInt(i -> keys.get(i).size()));
+
+        // Add the desired elements
+        Vector<int[]> elementVector = new Vector<>();
+        for (int o : unvisitedPos) {
+            for (int t = 0; t < terminalCount; t++) {
+                if (!keys.get(o).contains(t)) { // This token is missing from this position
+                    int[] addedWord = new int[n + 1];
+                    for (int i = 0; i < n; i++) {
+                        addedWord[i] = currentWord[i];
+                    }
+                    addedWord[n] = 0; // Add the weight
+                    addedWord[o] = t;
+                    System.out.println("Weight of 0: " + addedWord[0] + " " + addedWord[1] + " " + addedWord[2] + " " + addedWord[3]);
+                    elementVector.add(addedWord);
+                }
+            }
+            Integer[] positionsLeft = new Integer[unvisitedPos.length - 1];
+            int j = 0;
+            for (int i = 0; i < positionsLeft.length; i++) {
+                if (unvisitedPos[i] == o) {
+                    j += 1;
+                }
+                positionsLeft[i] = unvisitedPos[j];
+                j++;
+            }
+            unvisitedPos = positionsLeft;
+            if (positionsLeft.length == 0) {
+                for (int t : keys.get(o)) {
+                    int[] addedWord = new int[n + 1];
+                    for (int i = 0; i < n; i++) {
+                        addedWord[i] = currentWord[i];
+                    }
+                    addedWord[n] = 0; // Add the weight
+                    addedWord[o] = t;
+                    System.out.println("Weight of ?: " + addedWord[0] + " " + addedWord[1] + " " + addedWord[2] + " " + addedWord[3]);
+                    elementVector.add(addedWord);
+                }
+            } else {
+                for (int t : keys.get(o)) {
+                    int[] changedWord = currentWord.clone();
+                    changedWord[o] = t;
+                    elementVector.addAll(recursiveThing(lingos, changedWord, terminalCount, positionsLeft));
+                }
+            }
+        }
+
+        return elementVector;
     }
 
     public static IntVar shortLingoRND(
@@ -283,61 +395,41 @@ public class GenConstraints {
         final int STAR = -1;
 
         HashMap<Integer,HashMap<Integer,HashMap<Integer,HashMap<Integer,Integer>>>> elementMap = new HashMap<>();
-
-        Vector<HashMap<Integer,HashSet<String[]>>> lookupTable = new Vector<>();
-        lookupTable.add(new HashMap<>());
-        lookupTable.add(new HashMap<>());
-        lookupTable.add(new HashMap<>());
-        lookupTable.add(new HashMap<>());
-
-        HashSet<String[]> remainingLingos = new HashSet<>();
+        Vector<int[]> lingos = new Vector<>();
 
         //#region File reading
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        int n = 0;
         while (reader.ready()) {
             // Read, convert to right tokens, associate to weight * 100 rounded
             String[] line = reader.readLine().split(" ");
-            String[] tokens = line[0].split(",");
+            String[] stringTokens = line[0].split(",");
+            n = stringTokens.length;
             int weight = Math.round(Float.parseFloat(line[1]) * 100);
-            remainingLingos.add(tokens);
 
             // Verifies that all tokens are in the grammar before crashing
-            if (!g.tokenEncoder.keySet().contains(tokens[0])) {
-                System.out.println(tokens[0]);
-            } else if (!g.tokenEncoder.keySet().contains(tokens[1])) {
-                System.out.println(tokens[1]);
-            } else if (!g.tokenEncoder.keySet().contains(tokens[2])) {
-                System.out.println(tokens[2]);
-            } else if (!g.tokenEncoder.keySet().contains(tokens[3])) {
-                System.out.println(tokens[3]);
-            }
-
-            for (int i = 0; i < lookupTable.size(); i++) {
-                int t = g.tokenEncoder.get(tokens[i]);
-                if (!lookupTable.get(i).keySet().contains(t)) {
-                    lookupTable.get(i).put(t, new HashSet<>());
+            for (String t : stringTokens) {
+                if (!g.tokenEncoder.keySet().contains(t)) {
+                    System.out.println("Does not contain " + t);
                 }
-                lookupTable.get(i).get(t).add(tokens);
             }
-
-            int a = g.tokenEncoder.get(tokens[0]);
-            if (!elementMap.containsKey(a)) {
-                elementMap.put(a, new HashMap<>());
+            int[] tokens = new int[n];
+            for (int i = 0; i < n; i++) {
+                tokens[i] = g.tokenEncoder.get(stringTokens[i]);
             }
+            lingos.add(tokens);
 
-            int b = g.tokenEncoder.get(tokens[1]);
-            if (!elementMap.get(a).containsKey(b)) {
-                elementMap.get(a).put(b, new HashMap<>());
+            if (!elementMap.containsKey(tokens[0])) {
+                elementMap.put(tokens[0], new HashMap<>());
             }
-
-            int c = g.tokenEncoder.get(tokens[2]);
-            if (!elementMap.get(a).get(b).containsKey(c)) {
-                elementMap.get(a).get(b).put(c, new HashMap<>());
+            if (!elementMap.get(tokens[0]).containsKey(tokens[1])) {
+                elementMap.get(tokens[0]).put(tokens[1], new HashMap<>());
             }
-
-            int d = g.tokenEncoder.get(tokens[3]);
-            if (!elementMap.get(a).get(b).get(c).containsKey(d)) {
-                elementMap.get(a).get(b).get(c).put(d, weight);
+            if (!elementMap.get(tokens[0]).get(tokens[1]).containsKey(tokens[2])) {
+                elementMap.get(tokens[0]).get(tokens[1]).put(tokens[2], new HashMap<>());
+            }
+            if (!elementMap.get(tokens[0]).get(tokens[1]).get(tokens[2]).containsKey(tokens[3])) {
+                elementMap.get(tokens[0]).get(tokens[1]).get(tokens[2]).put(tokens[3], weight);
             }
 
         }
@@ -345,14 +437,26 @@ public class GenConstraints {
         //#endregion
 
         //#region Generating Lingo table
-        Vector<int[]> elementVector = new Vector<>();
+        int[] startingWord = new int[n];
+        for (int i = 0; i < n; i++) {
+            startingWord[i] = STAR;
+        }
+        Vector<int[]> elementVector = recursiveThing(lingos, startingWord, g.terminalCount(), new Integer[]{0,1,2,3});
+        //#endregion
 
-        for (int a = 0; a < g.terminalCount(); a++) {
-            for (int i = 0; i < lookupTable.size(); i++) {
-                
+        for (int[] iter : elementVector) {
+            HashMap currentPos = elementMap;
+            for (int i = 0; i < n; i++) {
+                if (!currentPos.containsKey(iter[i])) {
+                    break;
+                }
+                if (i == n-1) { // Get the weight
+                    iter[n] = (int)currentPos.get(iter[i]);
+                } else { // If we are not at the end, we go deeper
+                    currentPos = (HashMap)currentPos.get(iter[i]);
+                }
             }
         }
-        //#endregion
         
         int[][] elementTable = new int[elementVector.size()][5];
         elementTable = elementVector.toArray(elementTable);
@@ -465,12 +569,12 @@ public class GenConstraints {
         int[][] elementTable = new int[elementVector.size()][5];
         elementTable = elementVector.toArray(elementTable);
 
-        System.out.println("Original size: " + Math.pow(g.terminalCount(), 4));
-        System.out.println("Current size: " + elementTable.length);
-        System.out.println(Math.pow(g.terminalCount(), 4) - elementTable.length);
+        // System.out.println("Original size: " + Math.pow(g.terminalCount(), 4));
+        // System.out.println("Current size: " + elementTable.length);
+        // System.out.println(Math.pow(g.terminalCount(), 4) - elementTable.length);
 
         // Adding the constraints to the model
-        System.out.println("Starting");            
+        // System.out.println("Starting");            
         IntVar[] logPValues = makeIntVarArray(cp, w.length - 3, -800, 800);
         for (int i = 0; i < logPValues.length; i++) {
             cp.post(new ShortTableCT(
@@ -479,7 +583,7 @@ public class GenConstraints {
                 STAR
             ));
         }
-        System.out.println("Survived");
+        // System.out.println("Survived");
         IntVar logPEstimate = makeIntVar(cp, minValue, maxValue);
         cp.post(sum(logPValues, logPEstimate));
         return logPEstimate;
@@ -493,6 +597,7 @@ public class GenConstraints {
         int minValue,
         int maxValue
     ) throws FileNotFoundException, IOException {
+        System.out.println("long");
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));            
             HashMap<Integer,HashMap<Integer,HashMap<Integer,HashMap<Integer,Integer>>>> elementMap = new HashMap<>();
