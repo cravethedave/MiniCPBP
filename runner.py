@@ -32,7 +32,6 @@ def cc_heuristic_runner(methods, test_cases, size=20, diff=''):
             if test[6] != "0":
                 identifier += f"_b{test[6]}"
             
-            identifier = f"{size}_{method}_c{test[5]}b{test[6]}{diff}"
             name = f"job_{identifier}.sh"
             with open(name, 'w') as f:
                 f.write(file_content)
@@ -119,7 +118,6 @@ test_cases = [
     ["false","false","2","1","600","3","2"],
     ["false","false","2","1","600","3","3"],
     ["false","false","2","1","600","3","4"],
-    
     ["true","false","2","1","600","1","2"],
     ["true","false","2","1","600","1","3"],
     ["true","false","2","1","600","1","4"],
