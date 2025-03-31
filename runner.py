@@ -3,7 +3,8 @@ import subprocess
 import time
 
 BASE_LINE = "#!/bin/bash\nmodule load maven\nexport JAVA_TOOL_OPTIONS=-Xmx1g\nmvn compile -q\n"
-BASE_COMMAND = "mvn exec:java -Dexec.mainClass='minicpbp.examples.molecules.TestGrammarV7' -q -Dexec.args="
+# BASE_COMMAND = "mvn exec:java -Dexec.mainClass='minicpbp.examples.molecules.TestGrammarV7' -q -Dexec.args="
+BASE_COMMAND = "mvn exec:java -q -Dexec.args="
 TIME = '1:00:00'
 MEM = '1G'
 
@@ -21,7 +22,6 @@ def cc_heuristic_runner(methods, test_cases, size=20, diff=''):
             name = f"job_{identifier}.sh"
             with open(name, 'w') as f:
                 f.write(file_content)
-                f.close()
             
             subprocess.call(["chmod", "+x", name])
             subprocess.Popen([
@@ -29,7 +29,7 @@ def cc_heuristic_runner(methods, test_cases, size=20, diff=''):
                 "-c",
                 f"sbatch --output=slout_{identifier}.txt --mem={MEM} --time={TIME} {name}"
             ])
-            time.sleep(1) # prevents overloading compute canada
+            time.sleep(0.1) # prevents overloading compute canada
             
     print("Done queueing heuristic jobs.")
 
@@ -54,7 +54,7 @@ def cc_random_runner(test_cases, method='rnd', size=20, diff=''):
                 "-c",
                 f"sbatch --output=slout_{identifier}.txt --mem={MEM} --time={TIME} {name}"
             ])
-            time.sleep(3) # prevents overloading compute canada
+            time.sleep(0.1) # prevents overloading compute canada
     print("Done queueing random jobs.")
 
 def home_runner(method, test, size=20):
@@ -91,43 +91,56 @@ def run_failed(test_cases):
         time.sleep(1) # prevents overloading compute canada
     print("Done queueing failed jobs.")
 
-# minWt, maxWt, minC, maxC, #cycles, #branches
+# doLipinski, doSampling, sampleExponent, #sols, limitInSeconds, #cycles, #branches
 # Results are domWdeg and maxMarginal ??m??s - ??????, ??.??s - ?????
 test_cases = [
-    ["4750","5000","0","100","1","2"],
-    ["4750","5000","0","100","1","3"],
-    ["4750","5000","0","100","1","4"],
-    ["4750","5000","0","100","2","2"],
-    ["4750","5000","0","100","2","3"],
-    ["4750","5000","0","100","2","4"],
-    ["4750","5000","0","100","3","2"],
-    ["4750","5000","0","100","3","3"],
-    ["4750","5000","0","100","3","4"],
+    ["false","false","2","1","600","1","2"],
+    ["false","false","2","1","600","1","3"],
+    ["false","false","2","1","600","1","4"],
+    ["false","false","2","1","600","2","2"],
+    ["false","false","2","1","600","2","3"],
+    ["false","false","2","1","600","2","4"],
+    ["false","false","2","1","600","3","2"],
+    ["false","false","2","1","600","3","3"],
+    ["false","false","2","1","600","3","4"],
+    
+    ["true","false","2","1","600","1","2"],
+    ["true","false","2","1","600","1","3"],
+    ["true","false","2","1","600","1","4"],
+    ["true","false","2","1","600","2","2"],
+    ["true","false","2","1","600","2","3"],
+    ["true","false","2","1","600","2","4"],
+    ["true","false","2","1","600","3","2"],
+    ["true","false","2","1","600","3","3"],
+    ["true","false","2","1","600","3","4"],
 ]
 
 methods = [
-    # "domWdeg",
-    # "domWdegRestart",
+    "domWdeg",
     # "domWdegLDS",
+    # "domWdegRandom",
+    "domWdegMaxMarginalValue",
+    # "dom-random",
     "maxMarginal",
     # "maxMarginalRestart",
     # "maxMarginalLDS",
-    # "maxMarginalStrength",
-    # "maxMarginalStrengthLDS",
-    "lexicoMarginal",
+    "maxMarginalStrength",
+    "maxMarginalStrengthLDS",
+    "firstFailMaxMarginalValue",
+    # "lexicoMarginal",
     # "impact",
     # "impactRestart",
     # "impactLDS",
-    # "minEntropy",
+    "minEntropy",
     # "minEntropyLDS",
     # "impactMinVal",
     # "impactMinValRestart",
     # "minEntropyBiasedWheel",
-    # "domWdegRandom",
 ]
 
 cc_heuristic_runner(methods, test_cases, size=40)
-# cc_random_runner(test_cases, method='domWdegRandom', size=40)
+cc_random_runner(test_cases, method='domWdegRandom', size=40)
+cc_random_runner(test_cases, method='dom-random', size=40)
 
 failed = []
 

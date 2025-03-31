@@ -1108,6 +1108,7 @@ public final class BranchingScheme {
      * @see Factory#makeDfs(Solver, Supplier)
      */
     public static Supplier<Procedure[]> domWdegMaxMarginalValue(IntVar... x) {
+        System.out.println("domWdegMaxMarginalValue");
         boolean tracing = x[0].getSolver().tracingSearch();
         for (IntVar a : x)
             a.setForBranching(true);

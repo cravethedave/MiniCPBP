@@ -237,11 +237,17 @@ public class CFG {
 		}
     }
 
+    public void printTokens() {
+        for (int i = 0; i < terminalCount; i++) {
+            System.out.println(i + ":" + tokenDecoder.get(i));
+        }
+    }
+
     public int terminalCount() {
-    return terminalCount;
+        return terminalCount;
     }
     public int nonTerminalCount() {
-    return nonTerminalCount;
+        return nonTerminalCount;
     }
     
     public int productionCount() {

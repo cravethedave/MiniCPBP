@@ -59,6 +59,9 @@ for c in [1,2,3]:
     for b in [2,3,4]:
         formatted_table += '|' + f"c{c}b{b}".center(2 * column_sizes + 1) + '|'
         for iter in column_names:
+            if (c,b) not in results[iter].keys():
+                formatted_table += '?'.center(column_sizes) + '|' + '?'.center(column_sizes) + '|'
+                continue
             t,f = results[iter][(c,b)]
             t,f = str(t), str(f)
             formatted_table += t.center(column_sizes) + '|' + f.center(column_sizes) + '|'

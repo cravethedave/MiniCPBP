@@ -49,6 +49,7 @@ public class TestGrammarV12 {
             //#region Base initialization
             Solver cp = makeSolver(false);
             CFG g = new CFG(filePath);
+            // g.printTokens();
             IntVar[] w = makeIntVarArray(cp, wordLength, 0, g.terminalCount()-1);
             for (int i = 0; i < wordLength; i++) {
                 w[i].setName("token_" + i);
@@ -71,21 +72,21 @@ public class TestGrammarV12 {
             logPEstimate.setName("LogP estimate");
             if (doLipinski) {
                 // Fix to the grammar to reduce donor/acceptor error
-                GenConstraints.avoidBranchOnEnd(cp, w, g);
+                // GenConstraints.avoidBranchOnEnd(cp, w, g);
                 // Molecular weight
-                IntVar weightTarget = makeIntVar(cp, 0, 5000);
+                IntVar weightTarget = makeIntVar(cp, 4750, 5000);
                 weightTarget.setName("Weight target");
                 GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
                 // H Donors
                 IntVar donorTarget = makeIntVar(cp, 0, 5);
                 donorTarget.setName("Donor target");
-                GenConstraints.limitDonors(cp, w, g, donorTarget);
+                // GenConstraints.limitDonors(cp, w, g, donorTarget);
                 // H Acceptors
                 IntVar acceptorTarget = makeIntVar(cp, 0, 10);
                 acceptorTarget.setName("Acceptor target");
-                GenConstraints.limitAcceptors(cp, w, g, acceptorTarget);
+                // GenConstraints.limitAcceptors(cp, w, g, acceptorTarget);
                 // LogP
-                logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_changed.txt", 200, 500);
+                // logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_changed.txt", 200, 500);
             }
             if (numBranches != 0) {
                 GenConstraints.limitBranchConstraint(cp, w, g, numBranches);
@@ -115,6 +116,7 @@ public class TestGrammarV12 {
             }
             fileName += ".txt";
             cp.setTraceSearchFlag(false);
+            cp.setTraceBPFlag(false);
             switch (method) {
                 case "maxMarginalStrengthLDS":
                 case "domWdegLDS":
@@ -266,9 +268,14 @@ public class TestGrammarV12 {
 
         DFSearch dfs;
         switch (method) {
+            case "domWdegMaxMarginalValue":
+                cp.setMode(PropaMode.SBP);
+                dfs = makeDfs(cp, firstFailMaxMarginalValue(targetArray));
+                break;
             case "firstFailMaxMarginalValue":
                 cp.setMode(PropaMode.SBP);
                 dfs = makeDfs(cp, firstFailMaxMarginalValue(targetArray));
+                break;
             case "minEntropy":
                 cp.setMode(PropaMode.SBP);
                 dfs = makeDfs(cp, minEntropy(targetArray));
@@ -319,7 +326,7 @@ public class TestGrammarV12 {
                 cp.setMode(PropaMode.SBP);
                 dfs = makeDfs(cp, impactBasedSearch(targetArray));
                 break;
-            case "domWdegRestart":
+            case "domWdeg":
             default:
                 cp.setMode(PropaMode.SP);
                 dfs = makeDfs(cp, domWdeg(targetArray));
@@ -354,7 +361,9 @@ public class TestGrammarV12 {
             // case "minEntropyBiasedWheel":
             case "maxMarginalRestart":
             case "impactRestart":
-            case "domWdegRestart":
+            case "domWdeg":
+            case "domWdegRandom":
+            case "domWdegMaxMarginalValue":
             case "impactMinValRestart":
                 System.out.println("Restarts");
                 if (numSolutions == 0 && limitInSeconds == 0) {

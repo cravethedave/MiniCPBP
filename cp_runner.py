@@ -12,17 +12,28 @@ def call_maven(method: str, cycle_count: int, branch_count: int, thread_number: 
     subprocess.call([
         "mvn",
         "exec:java",
-        f"-Dexec.args=40 {method} false false 2 1 600 {cycle_count} {branch_count}"
+        f"-Dexec.args=40 {method} true false 2 1 600 {cycle_count} {branch_count}"
     ],)
 
-deterministic_methods = ["maxMarginal", "minEntropy", "firstFailMaxMarginalValue"]
+deterministic_methods = [
+    "firstFailMaxMarginalValue",
+    "domWdegMaxMarginalValue",
+    "domWdeg",
+    "maxMarginal",
+    "maxMarginalStrength",
+    "maxMarginalStrengthLDS",
+    "minEntropy"
+]
 instances_to_run: list[tuple[str,int,int]] = []
 for method in deterministic_methods:
     for c in [1,2,3]:
         for b in [2,3,4]:
             instances_to_run.append((method,c,b))
             
-random_methods = []
+random_methods = [
+    "dom-random",
+    "domWdegRandom",
+]
 for method in random_methods:
     for c in [1,2,3]:
         for b in [2,3,4]:
