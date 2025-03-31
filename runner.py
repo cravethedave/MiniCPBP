@@ -55,7 +55,20 @@ def cc_random_runner(test_cases, method='rnd', size=20, diff=''):
         file_content = BASE_LINE+info_print+command
         
         for i in range(11):
-            identifier = f"{size}_{method}_c{test[4]}b{test[5]}_{i}{diff}"
+            identifier = f"{size}_{method}"
+            if test[0] == "true":
+                identifier += "_lip"
+            if test[1] == "true":
+                identifier += f"_smpl_k{test[2]}"
+            if test[3] != "0":
+                identifier += f"_{test[3]}sols"
+            if test[4] != "0":
+                identifier += f"_{test[4]}secs"
+            if test[5] != "0":
+                identifier += f"_c{test[5]}"
+            if test[6] != "0":
+                identifier += f"_b{test[6]}"
+            identifier += f"_{i}"
             name = f"job_{identifier}.sh"
             with open(name, 'w') as f:
                 f.write(file_content)
