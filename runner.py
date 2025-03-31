@@ -5,7 +5,7 @@ import time
 BASE_LINE = "#!/bin/bash\nmodule load maven\nexport JAVA_TOOL_OPTIONS=-Xmx1g\nmvn compile -q\n"
 # BASE_COMMAND = "mvn exec:java -Dexec.mainClass='minicpbp.examples.molecules.TestGrammarV7' -q -Dexec.args="
 BASE_COMMAND = "mvn exec:java -q -Dexec.args="
-TIME = '1:00:00'
+TIME = '0:15:00'
 MEM = '1G'
 
 # minWt, maxWt, minC, maxC, #cycles, #branches
@@ -18,7 +18,21 @@ def cc_heuristic_runner(methods, test_cases, size=20, diff=''):
             command = f"{BASE_COMMAND}'{arguments}'"
             file_content = BASE_LINE+info_print+command
             
-            identifier = f"{size}_{method}_c{test[4]}b{test[5]}{diff}"
+            identifier = f"{size}_{method}"
+            if test[0] == "true":
+                identifier += "_lip"
+            if test[1] == "true":
+                identifier += f"_smpl_k{test[2]}"
+            if test[3] != "0":
+                identifier += f"_{test[3]}sols"
+            if test[4] != "0":
+                identifier += f"_{test[4]}secs"
+            if test[5] != "0":
+                identifier += f"_c{test[5]}"
+            if test[6] != "0":
+                identifier += f"_b{test[6]}"
+            
+            identifier = f"{size}_{method}_c{test[5]}b{test[6]}{diff}"
             name = f"job_{identifier}.sh"
             with open(name, 'w') as f:
                 f.write(file_content)
@@ -94,6 +108,8 @@ def run_failed(test_cases):
 # doLipinski, doSampling, sampleExponent, #sols, limitInSeconds, #cycles, #branches
 # Results are domWdeg and maxMarginal ??m??s - ??????, ??.??s - ?????
 test_cases = [
+#   ["00000","00001","2","3","004","5","6"],
+#   ["lpnsk","sampl","k","#","lim","c","b"],
     ["false","false","2","1","600","1","2"],
     ["false","false","2","1","600","1","3"],
     ["false","false","2","1","600","1","4"],
