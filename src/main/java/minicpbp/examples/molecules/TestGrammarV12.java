@@ -268,9 +268,13 @@ public class TestGrammarV12 {
 
         DFSearch dfs;
         switch (method) {
+            case "maxMarginalStrengthBiasedWheelSelectVal":
+                cp.setMode(PropaMode.SBP);
+                dfs = makeDfs(cp, maxMarginalStrengthBiasedWheelSelectVal(targetArray));
+                break;
             case "domWdegMaxMarginalValue":
                 cp.setMode(PropaMode.SBP);
-                dfs = makeDfs(cp, firstFailMaxMarginalValue(targetArray));
+                dfs = makeDfs(cp, domWdegMaxMarginalValue(targetArray));
                 break;
             case "firstFailMaxMarginalValue":
                 cp.setMode(PropaMode.SBP);

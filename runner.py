@@ -122,26 +122,44 @@ def run_failed(test_cases):
 test_cases = [
 #   ["00000","00001","2","3","004","5","6"],
 #   ["lpnsk","sampl","k","#","lim","c","b"],
-    ["true","false","2","1","600","0","0"],
+    ["false","false","2","1","600","1","2"],
+    ["false","false","2","1","600","1","3"],
+    ["false","false","2","1","600","1","4"],
+    ["false","false","2","1","600","2","2"],
+    ["false","false","2","1","600","2","3"],
+    ["false","false","2","1","600","2","4"],
+    ["false","false","2","1","600","3","2"],
+    ["false","false","2","1","600","3","3"],
+    ["false","false","2","1","600","3","4"],
+    ["true","false","2","1","600","1","2"],
+    ["true","false","2","1","600","1","3"],
+    ["true","false","2","1","600","1","4"],
+    ["true","false","2","1","600","2","2"],
+    ["true","false","2","1","600","2","3"],
+    ["true","false","2","1","600","2","4"],
+    ["true","false","2","1","600","3","2"],
+    ["true","false","2","1","600","3","3"],
+    ["true","false","2","1","600","3","4"],
 ]
 
 methods = [
-    "domWdeg",
+    # "domWdeg",
     # "domWdegLDS",
     # "domWdegRandom",
     "domWdegMaxMarginalValue",
     # "dom-random",
-    "maxMarginal",
+    # "maxMarginal",
     # "maxMarginalRestart",
     # "maxMarginalLDS",
-    "maxMarginalStrength",
-    "maxMarginalStrengthLDS",
-    "firstFailMaxMarginalValue",
+    # "maxMarginalStrength",
+    # "maxMarginalStrengthLDS",
+    "maxMarginalStrengthBiasedWheelSelectVal",
+    # "firstFailMaxMarginalValue",
     # "lexicoMarginal",
     # "impact",
     # "impactRestart",
     # "impactLDS",
-    "minEntropy",
+    # "minEntropy",
     # "minEntropyLDS",
     # "impactMinVal",
     # "impactMinValRestart",
@@ -149,8 +167,8 @@ methods = [
 ]
 
 cc_heuristic_runner(methods, test_cases, size=40)
-cc_random_runner(test_cases, method='domWdegRandom', size=40)
-cc_random_runner(test_cases, method='dom-random', size=40)
+# cc_random_runner(test_cases, method='domWdegRandom', size=40)
+# cc_random_runner(test_cases, method='dom-random', size=40)
 
 failed = []
 
