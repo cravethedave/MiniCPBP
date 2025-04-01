@@ -18,7 +18,20 @@ import java.util.Collections;
 public class TestGrammarV12 {
     public static void main(String[] args) {
         // GenConstraints.goingRndTest();
-        generateMolecules(
+        // generateMoleculesSyntax(
+        //     "data/moleculeCNF_v12.txt",
+        //     Integer.valueOf(args[0]),
+        //     args[1],
+        //     Boolean.valueOf(args[2]),
+        //     Boolean.valueOf(args[3]),
+        //     Integer.valueOf(args[4]),
+        //     Integer.valueOf(args[5]),
+        //     Integer.valueOf(args[6]),
+        //     Integer.valueOf(args[7]),
+        //     Integer.valueOf(args[8])
+        // );
+
+        generateMoleculesLipinski(
             "data/moleculeCNF_v12.txt",
             Integer.valueOf(args[0]),
             args[1],
@@ -28,11 +41,13 @@ public class TestGrammarV12 {
             Integer.valueOf(args[5]),
             Integer.valueOf(args[6]),
             Integer.valueOf(args[7]),
-            Integer.valueOf(args[8])
+            Integer.valueOf(args[8]),
+            Integer.valueOf(args[9]),
+            Integer.valueOf(args[10])
         );
     }
 
-    private static void generateMolecules(
+    private static void generateMoleculesSyntax(
         String filePath,
         int wordLength,
         String method,
@@ -159,6 +174,123 @@ public class TestGrammarV12 {
         }
     }
 
+    private static void generateMoleculesLipinski(
+        String filePath,
+        int wordLength,
+        String method,
+        boolean doLipinski,
+        boolean doSampling,
+        int k,
+        int numSolutions,
+        int limitInSeconds,
+        int minWeight,
+        int maxWeight,
+        int minLogP,
+        int maxLogP
+    ) {
+        long startTime = System.currentTimeMillis()/1000;
+        try {
+            //#region Base initialization
+            Solver cp = makeSolver(false);
+            CFG g = new CFG(filePath);
+            // g.printTokens();
+            IntVar[] w = makeIntVarArray(cp, wordLength, 0, g.terminalCount()-1);
+            for (int i = 0; i < wordLength; i++) {
+                w[i].setName("token_" + i);
+            }
+
+            int minAtomWeight = Collections.min(g.tokenWeight.values());
+            int maxAtomWeight = Collections.max(g.tokenWeight.values());
+            IntVar[] tokenWeights = makeIntVarArray(cp, wordLength, minAtomWeight, maxAtomWeight);
+            for (int i = 0; i < wordLength; i++) {
+                tokenWeights[i].setName("weight_" + i);
+            }
+            //#endregion
+            
+            // Smiles Validity
+            GenConstraints.grammarConstraint(cp,w,g);
+            GenConstraints.cycleCountingConstraint(cp,w,g,1,6);
+            GenConstraints.cycleParityConstraint(cp,w,g,1,6);
+            // Other constraints
+            IntVar logPEstimate = makeIntVar(cp, 0, 0);
+            logPEstimate.setName("LogP estimate");
+            if (doLipinski) {
+                // Fix to the grammar to reduce donor/acceptor error
+                GenConstraints.avoidBranchOnEnd(cp, w, g);
+                // Molecular weight
+                IntVar weightTarget = makeIntVar(cp, 4750, 5000);
+                weightTarget.setName("Weight target");
+                GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
+                // H Donors
+                IntVar donorTarget = makeIntVar(cp, 0, 5);
+                donorTarget.setName("Donor target");
+                GenConstraints.limitDonors(cp, w, g, donorTarget);
+                // H Acceptors
+                IntVar acceptorTarget = makeIntVar(cp, 0, 10);
+                acceptorTarget.setName("Acceptor target");
+                GenConstraints.limitAcceptors(cp, w, g, acceptorTarget);
+                // LogP
+                logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_changed.txt", 200, 500);
+            }
+   
+            String fileName = "results_" + method + "_sz" + wordLength;
+            if (doLipinski) {
+                fileName += "_lip";
+            }
+            if (doSampling) {
+                fileName += "_smpl" + k;
+            }
+            if (numSolutions != 0) {
+                fileName += "_" + numSolutions + "sols";
+            }
+            if (limitInSeconds != 0) {
+                fileName += "_" + limitInSeconds + "secs";
+            }
+            fileName += ".txt";
+            cp.setTraceSearchFlag(false);
+            cp.setTraceBPFlag(false);
+            switch (method) {
+                case "maxMarginalStrengthLDS":
+                case "domWdegLDS":
+                case "impactLDS":
+                case "minEntropyLDS":
+                case "maxMarginalLDS":
+                    if (doSampling) {
+                        double fraction = Math.pow(37, -k);
+                        IntVar[] branchingVars = cp.sample(fraction,w);
+                        solveLDS(cp, branchingVars, g, method, tokenWeights, logPEstimate, numSolutions, limitInSeconds, fileName);
+                    } else {
+                        solveLDS(cp, w, g, method, tokenWeights, logPEstimate, numSolutions, limitInSeconds, fileName);
+                    }
+                    break;
+                default:
+                    if (doSampling) {
+                        double fraction = Math.pow(37, -k);
+                        IntVar[] branchingVars = cp.sample(fraction,w);
+                        solveDFS(cp, branchingVars, g, method, tokenWeights, logPEstimate, numSolutions, limitInSeconds, fileName);
+                    } else {
+                        solveDFS(cp, w, g, method, tokenWeights, logPEstimate, numSolutions, limitInSeconds, fileName);
+                    }
+            }
+
+            // This shows the marginals for each token
+            // cp.fixPoint();
+            // cp.vanillaBP(1);
+            // int counter = 1;
+            // for (IntVar iter : w) {
+            //     System.out.println(String.format("Position %d", counter));
+            //     for (int i = iter.min(); i <= iter.max(); i++) {
+            //         if (iter.contains(i)) {
+            //             System.out.println(String.format("%s %f", g.tokenDecoder.get(i), iter.marginal(i)));
+            //         }
+            //     }
+            //     counter++;
+            // }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
     private static void solveLDS(
         Solver cp,
         IntVar[] targetArray,
@@ -210,18 +342,18 @@ public class TestGrammarV12 {
                 sumWeight += tokenWeights[i].min();
             }
             System.out.println(word + " weight of " + sumWeight + " logP of " + logPEstimate.min());
-            try {
-                FileWriter resultsWriter = new FileWriter(fileName, true);
-                resultsWriter.write(
-                    word + "," +
-                    String.valueOf(sumWeight) + "," +
-                    String.valueOf(logPEstimate.min()) + "," +
-                    "\n"
-                );
-                resultsWriter.close();
-            } catch (IOException e) {
-                System.out.println("[ERROR] File not writing ********************");
-            }
+            // try {
+            //     FileWriter resultsWriter = new FileWriter(fileName, true);
+            //     resultsWriter.write(
+            //         word + "," +
+            //         String.valueOf(sumWeight) + "," +
+            //         String.valueOf(logPEstimate.min()) + "," +
+            //         "\n"
+            //     );
+            //     resultsWriter.close();
+            // } catch (IOException e) {
+            //     System.out.println("[ERROR] File not writing ********************");
+            // }
         });
 
         System.out.println("[INFO] Now solving");
@@ -393,14 +525,14 @@ public class TestGrammarV12 {
                 }
         }
 
-        try {
-            FileWriter resultsWriter = new FileWriter(fileName, true);
-            resultsWriter.write("\n\n");
-            resultsWriter.write(stats.toString());
-            resultsWriter.close();
-        } catch (IOException e) {
-            System.out.println("[ERROR] File not writing ********************");
-        }
+        // try {
+        //     FileWriter resultsWriter = new FileWriter(fileName, true);
+        //     resultsWriter.write("\n\n");
+        //     resultsWriter.write(stats.toString());
+        //     resultsWriter.close();
+        // } catch (IOException e) {
+        //     System.out.println("[ERROR] File not writing ********************");
+        // }
         System.out.println(stats);
     }
 
