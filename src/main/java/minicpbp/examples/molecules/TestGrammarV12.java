@@ -72,7 +72,7 @@ public class TestGrammarV12 {
             logPEstimate.setName("LogP estimate");
             if (doLipinski) {
                 // Fix to the grammar to reduce donor/acceptor error
-                // GenConstraints.avoidBranchOnEnd(cp, w, g);
+                GenConstraints.avoidBranchOnEnd(cp, w, g);
                 // Molecular weight
                 IntVar weightTarget = makeIntVar(cp, 4750, 5000);
                 weightTarget.setName("Weight target");
@@ -80,13 +80,13 @@ public class TestGrammarV12 {
                 // H Donors
                 IntVar donorTarget = makeIntVar(cp, 0, 5);
                 donorTarget.setName("Donor target");
-                // GenConstraints.limitDonors(cp, w, g, donorTarget);
+                GenConstraints.limitDonors(cp, w, g, donorTarget);
                 // H Acceptors
                 IntVar acceptorTarget = makeIntVar(cp, 0, 10);
                 acceptorTarget.setName("Acceptor target");
-                // GenConstraints.limitAcceptors(cp, w, g, acceptorTarget);
+                GenConstraints.limitAcceptors(cp, w, g, acceptorTarget);
                 // LogP
-                // logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_changed.txt", 200, 500);
+                logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_changed.txt", 200, 500);
             }
             if (numBranches != 0) {
                 GenConstraints.limitBranchConstraint(cp, w, g, numBranches);
