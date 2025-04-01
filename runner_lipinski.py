@@ -28,6 +28,12 @@ def cc_heuristic_runner(methods, test_cases, size=20, diff=''):
             if test[4] != "0":
                 identifier += f"_{test[4]}secs"
             
+            # weight
+            identifier += f"_weight[{test[5]}-{test[6]}]"
+            
+            # logP
+            identifier += f"_logP[{test[7]}-{test[8]}]"
+            
             name = f"job_{identifier}.sh"
             with open(name, 'w') as f:
                 f.write(file_content)
@@ -60,10 +66,13 @@ def cc_random_runner(test_cases, method='rnd', size=20, diff=''):
                 identifier += f"_{test[3]}sols"
             if test[4] != "0":
                 identifier += f"_{test[4]}secs"
-            if test[5] != "0":
-                identifier += f"_c{test[5]}"
-            if test[6] != "0":
-                identifier += f"_b{test[6]}"
+                        
+            # weight
+            identifier += f"_weight[{test[5]}-{test[6]}]"
+            
+            # logP
+            identifier += f"_logP[{test[7]}-{test[8]}]"
+            
             identifier += f"_{i}"
             name = f"job_{identifier}.sh"
             with open(name, 'w') as f:
@@ -117,25 +126,16 @@ def run_failed(test_cases):
 # Results are domWdeg and maxMarginal ??m??s - ??????, ??.??s - ?????
 test_cases = [
 #   ["00000","00001","2","3","004","5","6"],
-#   ["lpnsk","sampl","k","#","lim","c","b"],
-    ["false","false","2","1","600","1","2"],
-    ["false","false","2","1","600","1","3"],
-    ["false","false","2","1","600","1","4"],
-    ["false","false","2","1","600","2","2"],
-    ["false","false","2","1","600","2","3"],
-    ["false","false","2","1","600","2","4"],
-    ["false","false","2","1","600","3","2"],
-    ["false","false","2","1","600","3","3"],
-    ["false","false","2","1","600","3","4"],
-    ["true","false","2","1","600","1","2"],
-    ["true","false","2","1","600","1","3"],
-    ["true","false","2","1","600","1","4"],
-    ["true","false","2","1","600","2","2"],
-    ["true","false","2","1","600","2","3"],
-    ["true","false","2","1","600","2","4"],
-    ["true","false","2","1","600","3","2"],
-    ["true","false","2","1","600","3","3"],
-    ["true","false","2","1","600","3","4"],
+#   ["lpsk","sampl","k","#","lim","minW","maxW","minL","mxL"],
+    ["true","false","2","1","600","4750","5000","-400","400"],
+    ["true","false","2","1","600","4750","5000","-200","200"],
+    ["true","false","2","1","600","4750","5000","-100","100"],
+    ["true","false","2","1","600","4500","5000","-400","400"],
+    ["true","false","2","1","600","4500","5000","-200","200"],
+    ["true","false","2","1","600","4500","5000","-100","100"],
+    ["true","false","2","1","600","4000","5000","-400","400"],
+    ["true","false","2","1","600","4000","5000","-200","200"],
+    ["true","false","2","1","600","4000","5000","-100","100"],
 ]
 
 methods = [

@@ -218,7 +218,7 @@ public class TestGrammarV12 {
                 // Fix to the grammar to reduce donor/acceptor error
                 GenConstraints.avoidBranchOnEnd(cp, w, g);
                 // Molecular weight
-                IntVar weightTarget = makeIntVar(cp, 4750, 5000);
+                IntVar weightTarget = makeIntVar(cp, minWeight, maxWeight);
                 weightTarget.setName("Weight target");
                 GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
                 // H Donors
@@ -230,7 +230,7 @@ public class TestGrammarV12 {
                 acceptorTarget.setName("Acceptor target");
                 GenConstraints.limitAcceptors(cp, w, g, acceptorTarget);
                 // LogP
-                logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_changed.txt", 200, 500);
+                logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_changed.txt", minLogP, maxLogP);
             }
    
             String fileName = "results_" + method + "_sz" + wordLength;
