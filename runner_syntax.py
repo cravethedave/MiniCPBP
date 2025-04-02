@@ -131,6 +131,7 @@ test_cases = [
     ["false","false","2","1","600","3","2"],
     ["false","false","2","1","600","3","3"],
     ["false","false","2","1","600","3","4"],
+    
     ["true","false","2","1","600","1","2"],
     ["true","false","2","1","600","1","3"],
     ["true","false","2","1","600","1","4"],
@@ -143,23 +144,23 @@ test_cases = [
 ]
 
 methods = [
-    "domWdeg",
+    # "domWdeg",
     # "domWdegLDS",
     # "domWdegRandom",
     "domWdegMaxMarginalValue",
     # "dom-random",
-    "maxMarginal",
+    # "maxMarginal",
     # "maxMarginalRestart",
     # "maxMarginalLDS",
-    "maxMarginalStrength",
-    "maxMarginalStrengthLDS",
-    "maxMarginalStrengthBiasedWheelSelectVal",
-    "firstFailMaxMarginalValue",
+    # "maxMarginalStrength",
+    # "maxMarginalStrengthLDS",
+    # "maxMarginalStrengthBiasedWheelSelectVal",
+    # "firstFailMaxMarginalValue",
     # "lexicoMarginal",
     # "impact",
     # "impactRestart",
     # "impactLDS",
-    "minEntropy",
+    # "minEntropy",
     # "minEntropyLDS",
     # "impactMinVal",
     # "impactMinValRestart",
@@ -167,8 +168,7 @@ methods = [
 ]
 
 cc_heuristic_runner(methods, test_cases, size=40)
-cc_random_runner(test_cases, method='domWdegRandom', size=40)
-cc_random_runner(test_cases, method='dom-random', size=40)
+cc_random_runner(test_cases, method='maxMarginalStrengthBiasedWheelSelectVal', size=40)
 
 failed = []
 

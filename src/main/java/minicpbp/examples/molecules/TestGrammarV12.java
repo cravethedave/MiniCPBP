@@ -18,20 +18,7 @@ import java.util.Collections;
 public class TestGrammarV12 {
     public static void main(String[] args) {
         // GenConstraints.goingRndTest();
-        // generateMoleculesSyntax(
-        //     "data/moleculeCNF_v12.txt",
-        //     Integer.valueOf(args[0]),
-        //     args[1],
-        //     Boolean.valueOf(args[2]),
-        //     Boolean.valueOf(args[3]),
-        //     Integer.valueOf(args[4]),
-        //     Integer.valueOf(args[5]),
-        //     Integer.valueOf(args[6]),
-        //     Integer.valueOf(args[7]),
-        //     Integer.valueOf(args[8])
-        // );
-
-        generateMoleculesLipinski(
+        generateMoleculesSyntax(
             "data/moleculeCNF_v12.txt",
             Integer.valueOf(args[0]),
             args[1],
@@ -41,10 +28,23 @@ public class TestGrammarV12 {
             Integer.valueOf(args[5]),
             Integer.valueOf(args[6]),
             Integer.valueOf(args[7]),
-            Integer.valueOf(args[8]),
-            Integer.valueOf(args[9]),
-            Integer.valueOf(args[10])
+            Integer.valueOf(args[8])
         );
+
+        // generateMoleculesLipinski(
+        //     "data/moleculeCNF_v12.txt",
+        //     Integer.valueOf(args[0]),
+        //     args[1],
+        //     Boolean.valueOf(args[2]),
+        //     Boolean.valueOf(args[3]),
+        //     Integer.valueOf(args[4]),
+        //     Integer.valueOf(args[5]),
+        //     Integer.valueOf(args[6]),
+        //     Integer.valueOf(args[7]),
+        //     Integer.valueOf(args[8]),
+        //     Integer.valueOf(args[9]),
+        //     Integer.valueOf(args[10])
+        // );
     }
 
     private static void generateMoleculesSyntax(
@@ -87,7 +87,7 @@ public class TestGrammarV12 {
             logPEstimate.setName("LogP estimate");
             if (doLipinski) {
                 // Fix to the grammar to reduce donor/acceptor error
-                GenConstraints.avoidBranchOnEnd(cp, w, g);
+                // GenConstraints.avoidBranchOnEnd(cp, w, g);
                 // Molecular weight
                 IntVar weightTarget = makeIntVar(cp, 4750, 5000);
                 weightTarget.setName("Weight target");
@@ -95,13 +95,13 @@ public class TestGrammarV12 {
                 // H Donors
                 IntVar donorTarget = makeIntVar(cp, 0, 5);
                 donorTarget.setName("Donor target");
-                GenConstraints.limitDonors(cp, w, g, donorTarget);
+                // GenConstraints.limitDonors(cp, w, g, donorTarget);
                 // H Acceptors
                 IntVar acceptorTarget = makeIntVar(cp, 0, 10);
                 acceptorTarget.setName("Acceptor target");
-                GenConstraints.limitAcceptors(cp, w, g, acceptorTarget);
+                // GenConstraints.limitAcceptors(cp, w, g, acceptorTarget);
                 // LogP
-                logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_changed.txt", 200, 500);
+                // logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_changed.txt", 200, 500);
             }
             if (numBranches != 0) {
                 GenConstraints.limitBranchConstraint(cp, w, g, numBranches);

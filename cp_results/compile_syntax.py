@@ -1,36 +1,47 @@
 import os
 
-file_names = [iter for iter in os.listdir("./") if iter.endswith('.txt')]
+file_names = [iter for iter in os.listdir("./cp_results_syntax/") if iter.startswith("slout") and iter.endswith('.txt')]
 
 # slout_40_domWdegRandom_1sols_600secs_c1_b3_10.txt
 # dict of method name to dict of (c,b) to (time,fail)
 array_results: dict[str,dict[tuple[bool,int,int],list[tuple[int,int]]]] = {}
 for name in file_names:
-    with open(f"{name}", 'r') as f:
+    with open(f"./cp_results_syntax/{name}", 'r') as f:
         lines = f.readlines()
 
-    n, method, is_lipinski, _, _, _, _, cycle_count, branch_count = lines[1].split(' ')
+    identifier_line = lines[1]
+    n, method, is_lipinski, _, _, _, _, cycle_count, branch_count = identifier_line.split(' ')
     is_lipinski = is_lipinski == "true"
     cycle_count = int(cycle_count)
     branch_count = int(branch_count)
 
     if method not in array_results.keys():
         array_results[method] = {}
-    
+
     instance = (is_lipinski,cycle_count,branch_count)
-    
+
     if instance not in array_results[method].keys():
         array_results[method][instance] = []
-    
+
     # if the instance was not solved, we add a time out
-    if [iter for iter in lines if iter.lstrip().startswith('#sols')][0].split(':')[-1].strip() != '1':
+    sol_line = [iter for iter in lines if iter.lstrip().startswith('#sols')]
+    if len(sol_line) == 0:
+        array_results[method][instance].append((-2,-2))
+        continue
+    if sol_line[0].split(':')[-1].strip() != '1':
         array_results[method][instance].append((-1,-1))
         continue
-    
+
     time_line = int([iter for iter in lines if iter.lstrip().startswith('execution')][0].split(':')[-1].strip())
     fail_line = int([iter for iter in lines if iter.lstrip().startswith('#fail')][0].split(':')[-1].strip())
     array_results[method][instance].append((time_line,fail_line))
 
+for method in array_results.keys():
+    for instance in array_results[method].keys():
+        if len(array_results[method][instance]) < 11 and len(array_results[method][instance]) > 1:
+            print(method,instance,array_results[method][instance])
+
+print("Done reading")
 results: dict[str,dict[tuple[bool,int,int],tuple[int,int]]] = {}
 for method in array_results.keys():
     results[method] = {}
@@ -39,15 +50,17 @@ for method in array_results.keys():
         if len(array_results[method][instance]) == 1:
             results[method][instance] = array_results[method][instance][0]
         # Timed out random instance
-        elif array_results[method][instance].count((-1,-1)) >= 6:
+        elif array_results[method][instance].count((-1,-1)) + array_results[method][instance].count((-2,-2)) >= 6:
             results[method][instance] = (-1,-1)
         # Passed random instance, get median
         else:
-            median_time = [a for a,_ in array_results[method][instance] if a != -1][5]
-            median_fail = [b for _,b in array_results[method][instance] if b != -1][5]
+            median_time = [a for a,_ in array_results[method][instance] if a >= 0][5]
+            median_fail = [b for _,b in array_results[method][instance] if b >= 0][5]
             results[method][instance] = (median_time,median_fail)
 
+print("Done creating results dict")
 column_names = list(results.keys())
+print(results)
 column_sizes = max(max(len(iter) for iter in column_names),26)
 
 if column_sizes % 2 == 0:
