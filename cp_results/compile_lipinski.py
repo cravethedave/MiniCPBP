@@ -88,9 +88,9 @@ for iter in column_names:
     formatted_table += 'time(s)'.center(column_sizes) + '|' + 'fails'.center(column_sizes) + '|'
 formatted_table += '\n'
 
-for min_weight in [4750,4500,4000]:
-    for min_logP, max_logP in [(-400,400),(-200,200),(-100,100)]:
-        formatted_table += '|' + f"{min_weight}-5000_{min_logP}-{max_logP}".center(2 * column_sizes + 1) + '|'
+for min_weight, max_weight in [(1750,2250),(2750,3250),(3750,4250)]:
+    for min_logP, max_logP in [(-400,-300),(-200,-100),(100,200)]:
+        formatted_table += '|' + f"{min_weight}-{max_weight}_{min_logP}-{max_logP}".center(2 * column_sizes + 1) + '|'
         for iter in column_names:
             if (min_weight,min_logP,max_logP) not in results[iter].keys():
                 formatted_table += '?'.center(column_sizes) + '|' + '?'.center(column_sizes) + '|'

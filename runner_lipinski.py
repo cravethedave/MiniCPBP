@@ -2,11 +2,11 @@
 import subprocess
 import time
 
-BASE_LINE = "#!/bin/bash\nmodule load maven\nexport JAVA_TOOL_OPTIONS=-Xmx1g\nmvn compile -q\n"
+BASE_LINE = "#!/bin/bash\nmodule load maven\nexport JAVA_TOOL_OPTIONS=-Xmx4g\nmvn compile -q\n"
 # BASE_COMMAND = "mvn exec:java -Dexec.mainClass='minicpbp.examples.molecules.TestGrammarV7' -q -Dexec.args="
 BASE_COMMAND = "mvn exec:java -q -Dexec.args="
 TIME = '0:15:00'
-MEM = '1G'
+MEM = '8G'
 
 # minWt, maxWt, minC, maxC, #cycles, #branches
 def cc_heuristic_runner(methods, test_cases, size=20, diff=''):
@@ -56,7 +56,7 @@ def cc_random_runner(test_cases, method='rnd', size=20, diff=''):
         command = f"{BASE_COMMAND}'{arguments}'"
         file_content = BASE_LINE+info_print+command
         
-        for i in range(11):
+        for i in range(5):
             identifier = f"{size}_{method}"
             if test[0] == "true":
                 identifier += "_lip"
@@ -127,35 +127,35 @@ def run_failed(test_cases):
 test_cases = [
 #   ["00000","00001","2","3","004","5","6"],
 #   ["lpsk","sampl","k","#","lim","minW","maxW","minL","mxL"],
-    ["true","false","2","1","600","4750","5000","-400","400"],
-    ["true","false","2","1","600","4750","5000","-200","200"],
-    ["true","false","2","1","600","4750","5000","-100","100"],
-    ["true","false","2","1","600","4500","5000","-400","400"],
-    ["true","false","2","1","600","4500","5000","-200","200"],
-    ["true","false","2","1","600","4500","5000","-100","100"],
-    ["true","false","2","1","600","4000","5000","-400","400"],
-    ["true","false","2","1","600","4000","5000","-200","200"],
-    ["true","false","2","1","600","4000","5000","-100","100"],
+    ["true","false","2","1","600","1750","2250","-400","-300"],
+    ["true","false","2","1","600","1750","2250","-200","-100"],
+    ["true","false","2","1","600","1750","2250","100","200"],
+    ["true","false","2","1","600","2750","3250","-400","-300"],
+    ["true","false","2","1","600","2750","3250","-200","-100"],
+    ["true","false","2","1","600","2750","3250","100","200"],
+    ["true","false","2","1","600","3750","4250","-400","-300"],
+    ["true","false","2","1","600","3750","4250","-200","-100"],
+    ["true","false","2","1","600","3750","4250","100","200"],
 ]
 
 methods = [
-    "domWdeg",
+    # "domWdeg",
     # "domWdegLDS",
     # "domWdegRandom",
-    "domWdegMaxMarginalValue",
+    # "domWdegMaxMarginalValue",
     # "dom-random",
-    "maxMarginal",
+    # "maxMarginal",
     # "maxMarginalRestart",
     # "maxMarginalLDS",
-    "maxMarginalStrength",
+    # "maxMarginalStrength",
     "maxMarginalStrengthLDS",
-    "maxMarginalStrengthBiasedWheelSelectVal",
-    "firstFailMaxMarginalValue",
+    # "maxMarginalStrengthBiasedWheelSelectVal",
+    # "firstFailMaxMarginalValue",
     # "lexicoMarginal",
     # "impact",
     # "impactRestart",
     # "impactLDS",
-    "minEntropy",
+    # "minEntropy",
     # "minEntropyLDS",
     # "impactMinVal",
     # "impactMinValRestart",
@@ -164,7 +164,8 @@ methods = [
 
 cc_heuristic_runner(methods, test_cases, size=40)
 cc_random_runner(test_cases, method='domWdegRandom', size=40)
-cc_random_runner(test_cases, method='dom-random', size=40)
+# cc_random_runner(test_cases, method='dom-random', size=40)
+cc_random_runner(test_cases, method='maxMarginalStrengthBiasedWheelSelectVal', size=40)
 
 failed = []
 

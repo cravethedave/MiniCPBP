@@ -60,8 +60,27 @@ for method in array_results.keys():
 
 print("Done creating results dict")
 column_names = list(results.keys())
-print(results)
+# print(results)
 column_sizes = max(max(len(iter) for iter in column_names),26)
+
+# Write to a csv
+data = 'instance'
+for iter in column_names:
+    data += f',{iter},{iter}'
+for lipinski in [False,True]:
+    for c in [1,2,3]:
+        for b in [2,3,4]:
+            instance = (lipinski,c,b)
+            data += f"\nlip{lipinski}_c{c}b{b}"
+            for iter in column_names:
+                if instance not in results[iter].keys():
+                    data += ',?,?'
+                    continue
+                t,f = results[iter][instance]
+                t,f = str(t), str(f)
+                data += f',{t},{f}'
+with open("syntax_data.csv", 'w') as f:
+    f.write(data)
 
 if column_sizes % 2 == 0:
     column_sizes += 1
@@ -75,7 +94,6 @@ formatted_table += '|' + '_' * column_sizes + '|'
 for iter in column_names:
     formatted_table += '_' * column_sizes + '|'
 formatted_table += '\n'
-
 
 formatted_table += '|' + ''.center(column_sizes) + '|'
 column_sizes //= 2
