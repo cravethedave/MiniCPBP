@@ -18,20 +18,7 @@ import java.util.Collections;
 public class TestGrammarV12 {
     public static void main(String[] args) {
         // GenConstraints.goingRndTest();
-        generateMoleculesSyntax(
-            "data/moleculeCNF_v12.txt",
-            Integer.valueOf(args[0]),
-            args[1],
-            Boolean.valueOf(args[2]),
-            Boolean.valueOf(args[3]),
-            Integer.valueOf(args[4]),
-            Integer.valueOf(args[5]),
-            Integer.valueOf(args[6]),
-            Integer.valueOf(args[7]),
-            Integer.valueOf(args[8])
-        );
-
-        // generateMoleculesLipinski(
+        // generateMoleculesSyntax(
         //     "data/moleculeCNF_v12.txt",
         //     Integer.valueOf(args[0]),
         //     args[1],
@@ -41,10 +28,23 @@ public class TestGrammarV12 {
         //     Integer.valueOf(args[5]),
         //     Integer.valueOf(args[6]),
         //     Integer.valueOf(args[7]),
-        //     Integer.valueOf(args[8]),
-        //     Integer.valueOf(args[9]),
-        //     Integer.valueOf(args[10])
+        //     Integer.valueOf(args[8])
         // );
+
+        generateMoleculesLipinski(
+            "data/moleculeCNF_v12.txt",
+            Integer.valueOf(args[0]),
+            args[1],
+            Boolean.valueOf(args[2]),
+            Boolean.valueOf(args[3]),
+            Integer.valueOf(args[4]),
+            Integer.valueOf(args[5]),
+            Integer.valueOf(args[6]),
+            Integer.valueOf(args[7]),
+            Integer.valueOf(args[8]),
+            Integer.valueOf(args[9]),
+            Integer.valueOf(args[10])
+        );
     }
 
     private static void generateMoleculesSyntax(
