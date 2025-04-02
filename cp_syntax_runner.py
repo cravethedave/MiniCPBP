@@ -16,13 +16,13 @@ def call_maven(method: str, cycle_count: int, branch_count: int, thread_number: 
     ],)
 
 deterministic_methods = [
-    "firstFailMaxMarginalValue",
+    # "firstFailMaxMarginalValue",
     "domWdegMaxMarginalValue",
-    "domWdeg",
-    "maxMarginal",
-    "maxMarginalStrength",
-    "maxMarginalStrengthLDS",
-    "minEntropy"
+    # "domWdeg",
+    # "maxMarginal",
+    # "maxMarginalStrength",
+    # "maxMarginalStrengthLDS",
+    # "minEntropy"
 ]
 instances_to_run: list[tuple[str,int,int]] = []
 for method in deterministic_methods:
@@ -31,8 +31,9 @@ for method in deterministic_methods:
             instances_to_run.append((method,c,b))
             
 random_methods = [
-    "dom-random",
-    "domWdegRandom",
+    # "dom-random",
+    # "domWdegRandom",
+    "maxMarginalStrengthBiasedWheelSelectVal",
 ]
 for method in random_methods:
     for c in [1,2,3]:

@@ -3,7 +3,7 @@ import threading
 import subprocess
 from threading import Thread
 
-THREAD_COUNT = 7
+THREAD_COUNT = 5
 
 # mvn exec:java -Dexec.mainClass='minicpbp.examples.molecules.TestGrammarV12' -Dexec.args="40 maxMarginalStrength false false 2 1 600 3 4"
 
@@ -31,10 +31,10 @@ logP_combos = [
 deterministic_methods = [
     # "firstFailMaxMarginalValue",
     # "domWdegMaxMarginalValue",
-    "domWdeg",
+    # "domWdeg",
     # "maxMarginal",
     # "maxMarginalStrength",
-    # "maxMarginalStrengthLDS",
+    "maxMarginalStrengthLDS",
     # "minEntropy"
 ]
 instances_to_run: list[tuple[str,int,int]] = []
@@ -45,12 +45,13 @@ for method in deterministic_methods:
             
 random_methods = [
     # "dom-random",
-    # "domWdegRandom",
+    "domWdegRandom",
+    "maxMarginalStrengthBiasedWheelSelectVal"
 ]
 for method in random_methods:
     for a,b in weight_combos:
         for c,d in logP_combos:
-            for _ in range(11):
+            for _ in range(5):
                 instances_to_run.append((method,a,b,c,d))
 
 random.shuffle(instances_to_run)

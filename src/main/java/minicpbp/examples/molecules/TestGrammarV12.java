@@ -18,20 +18,7 @@ import java.util.Collections;
 public class TestGrammarV12 {
     public static void main(String[] args) {
         // GenConstraints.goingRndTest();
-        // generateMoleculesSyntax(
-        //     "data/moleculeCNF_v12.txt",
-        //     Integer.valueOf(args[0]),
-        //     args[1],
-        //     Boolean.valueOf(args[2]),
-        //     Boolean.valueOf(args[3]),
-        //     Integer.valueOf(args[4]),
-        //     Integer.valueOf(args[5]),
-        //     Integer.valueOf(args[6]),
-        //     Integer.valueOf(args[7]),
-        //     Integer.valueOf(args[8])
-        // );
-
-        generateMoleculesLipinski(
+        generateMoleculesSyntax(
             "data/moleculeCNF_v12.txt",
             Integer.valueOf(args[0]),
             args[1],
@@ -41,10 +28,23 @@ public class TestGrammarV12 {
             Integer.valueOf(args[5]),
             Integer.valueOf(args[6]),
             Integer.valueOf(args[7]),
-            Integer.valueOf(args[8]),
-            Integer.valueOf(args[9]),
-            Integer.valueOf(args[10])
+            Integer.valueOf(args[8])
         );
+
+        // generateMoleculesLipinski(
+        //     "data/moleculeCNF_v12.txt",
+        //     Integer.valueOf(args[0]),
+        //     args[1],
+        //     Boolean.valueOf(args[2]),
+        //     Boolean.valueOf(args[3]),
+        //     Integer.valueOf(args[4]),
+        //     Integer.valueOf(args[5]),
+        //     Integer.valueOf(args[6]),
+        //     Integer.valueOf(args[7]),
+        //     Integer.valueOf(args[8]),
+        //     Integer.valueOf(args[9]),
+        //     Integer.valueOf(args[10])
+        // );
     }
 
     private static void generateMoleculesSyntax(
@@ -246,6 +246,7 @@ public class TestGrammarV12 {
             if (limitInSeconds != 0) {
                 fileName += "_" + limitInSeconds + "secs";
             }
+            fileName += "_" + String.valueOf(minWeight) + "-" + String.valueOf(maxWeight) + "_" + String.valueOf(minLogP) + "-" + String.valueOf(maxLogP);
             fileName += ".txt";
             cp.setTraceSearchFlag(false);
             cp.setTraceBPFlag(false);
@@ -342,18 +343,18 @@ public class TestGrammarV12 {
                 sumWeight += tokenWeights[i].min();
             }
             System.out.println(word + " weight of " + sumWeight + " logP of " + logPEstimate.min());
-            // try {
-            //     FileWriter resultsWriter = new FileWriter(fileName, true);
-            //     resultsWriter.write(
-            //         word + "," +
-            //         String.valueOf(sumWeight) + "," +
-            //         String.valueOf(logPEstimate.min()) + "," +
-            //         "\n"
-            //     );
-            //     resultsWriter.close();
-            // } catch (IOException e) {
-            //     System.out.println("[ERROR] File not writing ********************");
-            // }
+            try {
+                FileWriter resultsWriter = new FileWriter(fileName, true);
+                resultsWriter.write(
+                    word + "," +
+                    String.valueOf(sumWeight) + "," +
+                    String.valueOf(logPEstimate.min()) + "," +
+                    "\n"
+                );
+                resultsWriter.close();
+            } catch (IOException e) {
+                System.out.println("[ERROR] File not writing ********************");
+            }
         });
 
         System.out.println("[INFO] Now solving");
@@ -525,14 +526,14 @@ public class TestGrammarV12 {
                 }
         }
 
-        // try {
-        //     FileWriter resultsWriter = new FileWriter(fileName, true);
-        //     resultsWriter.write("\n\n");
-        //     resultsWriter.write(stats.toString());
-        //     resultsWriter.close();
-        // } catch (IOException e) {
-        //     System.out.println("[ERROR] File not writing ********************");
-        // }
+        try {
+            FileWriter resultsWriter = new FileWriter(fileName, true);
+            resultsWriter.write("\n\n");
+            resultsWriter.write(stats.toString());
+            resultsWriter.close();
+        } catch (IOException e) {
+            System.out.println("[ERROR] File not writing ********************");
+        }
         System.out.println(stats);
     }
 

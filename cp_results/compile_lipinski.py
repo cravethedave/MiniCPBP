@@ -1,16 +1,16 @@
 import os
 
-file_names = [iter for iter in os.listdir("./cp_results_lipinski/") if iter.startswith("slout") and iter.endswith('.txt')]
+file_names = [iter for iter in os.listdir("./cp_results/") if iter.endswith('.txt')]
 
 # slout_40_domWdegRandom_1sols_600secs_c1_b3_10.txt
 # dict of method name to dict of (c,b) to (time,fail)
 array_results: dict[str,dict[tuple[bool,int,int],list[tuple[int,int]]]] = {}
 for name in file_names:
-    with open(f"./cp_results_lipinski/{name}", 'r') as f:
+    with open(f"./cp_results/{name}", 'r') as f:
         lines = f.readlines()
 
     identifier_line = lines[1]
-    n, method, _, _, _, _, _, min_weight, _, min_logP, max_logP = identifier_line.split(' ')
+    n, method, _, _, _, _, _, min_weight, max_weight, min_logP, max_logP = identifier_line.split(' ')
     min_weight = int(min_weight)
     min_logP = int(min_logP)
     max_logP = int(max_logP)

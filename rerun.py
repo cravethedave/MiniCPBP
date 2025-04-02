@@ -6,14 +6,11 @@ def rerun(name: str):
     subprocess.Popen([
         "/bin/sh",
         "-c",
-        f"sbatch --output={name} --mem=1G --time=1:00:00 {job_name}"
+        f"sbatch --output={name} --mem=8G --time=0:15:00 {job_name}"
     ])
 
-slouts = []
-for file in os.listdir():
-    if file.startswith('slout_'):
-        slouts.append(file)
-        
+slouts = [file for file in os.listdir() if file.startswith('slout_')]
+
 for file in slouts:
     with open(file,'r') as f:
         if f.readlines()[-1].startswith('[ERROR]'):
