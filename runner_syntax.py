@@ -121,27 +121,48 @@ def run_failed(test_cases):
 # Results are domWdeg and maxMarginal ??m??s - ??????, ??.??s - ?????
 test_cases = [
 #   ["00000","00001","2","3","004","5","6"],
-#   ["lpnsk","sampl","k","#","lim","c","b"],
-    # ["false","false","2","1","600","1","2"],
-    # ["false","false","2","1","600","1","3"],
-    # ["false","false","2","1","600","1","4"],
-    # ["false","false","2","1","600","2","2"],
-    # ["false","false","2","1","600","2","3"],
-    # ["false","false","2","1","600","2","4"],
-    # ["false","false","2","1","600","3","2"],
-    # ["false","false","2","1","600","3","3"],
-    # ["false","false","2","1","600","3","4"],
-    
-    # ["true","false","2","1","600","1","2"],
-    # ["true","false","2","1","600","1","3"],
-    # ["true","false","2","1","600","1","4"],
-    # ["true","false","2","1","600","2","2"],
-    # ["true","false","2","1","600","2","3"],
-    # ["true","false","2","1","600","2","4"],
+#   ["lpnsk","sampl","k","#","lim","c","b"],    
+    ["true","false","2","1","1800","1","2"],
+    ["true","false","2","1","1800","1","3"],
+    ["true","false","2","1","1800","1","4"],
+    ["true","false","2","1","1800","2","2"],
+    ["true","false","2","1","1800","2","3"],
+    ["true","false","2","1","1800","2","4"],
+    # ["true","false","2","1","1800","3","2"],
+    # ["true","false","2","1","1800","3","3"],
+    # ["true","false","2","1","1800","3","4"],
+]
+cc_heuristic_runner(["maxMarginalLDS"], test_cases, size=40)
+
+test_cases = [
+#   ["00000","00001","2","3","004","5","6"],
+#   ["lpnsk","sampl","k","#","lim","c","b"],    
+    # ["true","false","2","1","1800","1","2"],
+    # ["true","false","2","1","1800","1","3"],
+    # ["true","false","2","1","1800","1","4"],
+    ["true","false","2","1","1800","2","2"],
+    # ["true","false","2","1","1800","2","3"],
+    # ["true","false","2","1","1800","2","4"],
     ["true","false","2","1","1800","3","2"],
     ["true","false","2","1","1800","3","3"],
     ["true","false","2","1","1800","3","4"],
 ]
+cc_heuristic_runner(["maxMarginalStrength"], test_cases, size=40)
+
+test_cases = [
+#   ["00000","00001","2","3","004","5","6"],
+#   ["lpnsk","sampl","k","#","lim","c","b"],    
+    # ["true","false","2","1","1800","1","2"],
+    # ["true","false","2","1","1800","1","3"],
+    # ["true","false","2","1","1800","1","4"],
+    # ["true","false","2","1","1800","2","2"],
+    # ["true","false","2","1","1800","2","3"],
+    # ["true","false","2","1","1800","2","4"],
+    # ["true","false","2","1","1800","3","2"],
+    ["true","false","2","1","1800","3","3"],
+    # ["true","false","2","1","1800","3","4"],
+]
+cc_heuristic_runner(["maxMarginalStrengthLDS"], test_cases, size=40)
 
 methods = [
     # "domWdeg",
@@ -151,7 +172,7 @@ methods = [
     # "dom-random",
     # "maxMarginal",
     # "maxMarginalRestart",
-    "maxMarginalLDS",
+    # "maxMarginalLDS",
     # "maxMarginalStrength",
     # "maxMarginalStrengthLDS",
     # "maxMarginalStrengthBiasedWheelSelectVal",
@@ -167,8 +188,8 @@ methods = [
     # "minEntropyBiasedWheel",
 ]
 
-cc_heuristic_runner(methods, test_cases, size=40)
-cc_random_runner(test_cases, method='maxMarginalStrengthBiasedWheelSelectVal', size=40)
+# cc_heuristic_runner(methods, test_cases, size=40)
+# cc_random_runner(test_cases, method='maxMarginalStrengthBiasedWheelSelectVal', size=40)
 
 failed = []
 

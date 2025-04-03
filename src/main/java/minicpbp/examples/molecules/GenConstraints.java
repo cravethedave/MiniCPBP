@@ -575,7 +575,7 @@ public class GenConstraints {
 
         // Adding the constraints to the model
         // System.out.println("Starting");            
-        IntVar[] logPValues = makeIntVarArray(cp, w.length - 3, -800, 800);
+        IntVar[] logPValues = makeIntVarArray(cp, w.length - 3, -200, 200);
         for (int i = 0; i < logPValues.length; i++) {
             cp.post(new ShortTableCT(
                 new IntVar[] {w[i],w[i+1],w[i+2],w[i+3],logPValues[i]},
@@ -583,6 +583,7 @@ public class GenConstraints {
                 STAR
             ));
         }
+        // CCCC(C(=C(C=CC(C1OCNC1(S))(S))NC=N))C
         // System.out.println("Survived");
         IntVar logPEstimate = makeIntVar(cp, minValue, maxValue);
         cp.post(sum(logPValues, logPEstimate));
