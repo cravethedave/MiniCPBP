@@ -56,7 +56,7 @@ def cc_random_runner(test_cases, method='rnd', size=20, diff=''):
         command = f"{BASE_COMMAND}'{arguments}'"
         file_content = BASE_LINE+info_print+command
         
-        for i in range(5):
+        for i in range(11):
             identifier = f"{size}_{method}"
             if test[0] == "true":
                 identifier += "_lip"
@@ -142,20 +142,20 @@ methods = [
     # "domWdeg",
     # "domWdegLDS",
     # "domWdegRandom",
-    # "domWdegMaxMarginalValue",
+    "domWdegMaxMarginalValue",
     # "dom-random",
-    # "maxMarginal",
+    "maxMarginal",
     # "maxMarginalRestart",
     # "maxMarginalLDS",
-    # "maxMarginalStrength",
+    "maxMarginalStrength",
     "maxMarginalStrengthLDS",
     # "maxMarginalStrengthBiasedWheelSelectVal",
-    # "firstFailMaxMarginalValue",
+    "firstFailMaxMarginalValue",
     # "lexicoMarginal",
     # "impact",
     # "impactRestart",
     # "impactLDS",
-    # "minEntropy",
+    "minEntropy",
     # "minEntropyLDS",
     # "impactMinVal",
     # "impactMinValRestart",
@@ -164,7 +164,7 @@ methods = [
 
 cc_heuristic_runner(methods, test_cases, size=40)
 cc_random_runner(test_cases, method='domWdegRandom', size=40)
-# cc_random_runner(test_cases, method='dom-random', size=40)
+cc_random_runner(test_cases, method='dom-random', size=40)
 cc_random_runner(test_cases, method='maxMarginalStrengthBiasedWheelSelectVal', size=40)
 
 failed = []

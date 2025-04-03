@@ -1,0 +1,31 @@
+CN(c1nnn(Oc2[nH]c(SX)cc2)c1c3ccccc3)C=NR,-1600,0,
+CN(c1nnn(Oc2[nH]c(SX)cc2c3ccccc3)c1)C=NR,-1600,0,
+CN(c1nnn(Oc2[nH]c(SR)cc2)c1c3ccccc3)C=NR,-1600,0,
+CN(c1nnn(Oc2[nH]c(SR)cc2c3ccccc3)c1)C=NR,-1600,0,
+CN(c1nnn(Oc2[nH]c(SI)cc2c3ccccc3)c1)C=NR,-1600,0,
+CN(c1nnn(Oc2[nH]c(SI)cc2)c1c3ccccc3)C=NR,-1600,0,
+
+
+
+	#choice: 10519
+	#fail: 5247
+	execution time (ms): 600051
+	#sols : 0
+	completed : false
+ROCO\N=[C@](c1onnc1c2cccc3c2cccc3)/[TH+],-1600,0,
+
+
+
+	#choice: 3071
+	#fail: 569
+	execution time (ms): 600067
+	#sols : 0
+	completed : false
+
+
+
+	#choice: 16500
+	#fail: 8137
+	execution time (ms): 600093
+	#sols : 7
+	completed : true

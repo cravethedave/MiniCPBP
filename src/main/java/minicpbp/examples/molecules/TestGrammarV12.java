@@ -18,20 +18,7 @@ import java.util.Collections;
 public class TestGrammarV12 {
     public static void main(String[] args) {
         // GenConstraints.goingRndTest();
-        generateMoleculesSyntax(
-            "data/moleculeCNF_v12.txt",
-            Integer.valueOf(args[0]),
-            args[1],
-            Boolean.valueOf(args[2]),
-            Boolean.valueOf(args[3]),
-            Integer.valueOf(args[4]),
-            Integer.valueOf(args[5]),
-            Integer.valueOf(args[6]),
-            Integer.valueOf(args[7]),
-            Integer.valueOf(args[8])
-        );
-
-        // generateMoleculesLipinski(
+        // generateMoleculesSyntax(
         //     "data/moleculeCNF_v12.txt",
         //     Integer.valueOf(args[0]),
         //     args[1],
@@ -41,10 +28,108 @@ public class TestGrammarV12 {
         //     Integer.valueOf(args[5]),
         //     Integer.valueOf(args[6]),
         //     Integer.valueOf(args[7]),
-        //     Integer.valueOf(args[8]),
-        //     Integer.valueOf(args[9]),
-        //     Integer.valueOf(args[10])
+        //     Integer.valueOf(args[8])
         // );
+
+        generateMoleculesLipinski(
+            "data/moleculeCNF_v12.txt",
+            Integer.valueOf(args[0]),
+            args[1],
+            Boolean.valueOf(args[2]),
+            Boolean.valueOf(args[3]),
+            Integer.valueOf(args[4]),
+            Integer.valueOf(args[5]),
+            Integer.valueOf(args[6]),
+            Integer.valueOf(args[7]),
+            Integer.valueOf(args[8]),
+            Integer.valueOf(args[9]),
+            Integer.valueOf(args[10])
+        );
+
+        // completeMolecule(
+        //     "data/moleculeCNF_v12.txt",
+        //     Integer.valueOf(args[0]),
+        //     "c1c2(C(c3ccccc3)=NCC(=O)N(******)c2ccc1*",
+        //     Boolean.valueOf(args[1]),
+        //     Integer.valueOf(args[2]),
+        //     Integer.valueOf(args[3]),
+        //     Integer.valueOf(args[4]),
+        //     Integer.valueOf(args[5]),
+        //     Integer.valueOf(args[6]),
+        //     Integer.valueOf(args[7])
+        // );
+
+        // customGeneration(
+        //     "data/moleculeCNF_v12.txt",
+        //     40,
+        //     "domWdegRandom",
+        //     false,
+        //     10,
+        //     600
+        // );
+    }
+
+    private static void updateSolver(Solver cp) {
+        cp.fixPoint();
+        // cp.beliefPropa();
+        cp.vanillaBP(4);
+    }
+
+    private static void customGeneration(
+        String filePath,
+        int wordLength,
+        String method,
+        boolean doLipinski,
+        int numSolutions,
+        int limitInSeconds
+    ) {
+        long startTime = System.currentTimeMillis()/1000;
+        try {
+            //#region Base initialization
+            Solver cp = makeSolver(false);
+            CFG g = new CFG(filePath);
+            // g.printTokens();
+            IntVar[] w = makeIntVarArray(cp, wordLength, 0, g.terminalCount()-1);
+            for (int i = 0; i < wordLength; i++) {
+                w[i].setName("token_" + i);
+            }
+
+            int minAtomWeight = Collections.min(g.tokenWeight.values());
+            int maxAtomWeight = Collections.max(g.tokenWeight.values());
+            IntVar[] tokenWeights = makeIntVarArray(cp, wordLength, minAtomWeight, maxAtomWeight);
+            for (int i = 0; i < wordLength; i++) {
+                tokenWeights[i].setName("weight_" + i);
+            }
+            //#endregion
+            
+            // Smiles Validity
+            GenConstraints.grammarConstraint(cp,w,g);
+            GenConstraints.cycleCountingConstraint(cp,w,g,1,6);
+            GenConstraints.cycleParityConstraint(cp,w,g,1,6);
+            // Other constraints
+            IntVar logPEstimate = makeIntVar(cp, 0, 0);
+            logPEstimate.setName("LogP estimate");
+            
+            // GenConstraints.limitCycleConstraint(cp, w, g, 3);
+            // cp.post(among(w, g.tokenEncoder.get("c"), makeIntVar(cp, 12, 12)));
+
+            String fileName = "custom_molecule.txt";
+            cp.setTraceSearchFlag(false);
+            cp.setTraceBPFlag(false);
+            switch (method) {
+                case "maxMarginalStrengthLDS":
+                case "domWdegLDS":
+                case "impactLDS":
+                case "minEntropyLDS":
+                case "maxMarginalLDS":
+                    solveLDS(cp, w, g, method, tokenWeights, logPEstimate, numSolutions, limitInSeconds, fileName);
+                    break;
+                default:
+                    solveDFS(cp, w, g, method, tokenWeights, logPEstimate, numSolutions, limitInSeconds, fileName);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     private static void generateMoleculesSyntax(
@@ -222,11 +307,11 @@ public class TestGrammarV12 {
                 weightTarget.setName("Weight target");
                 GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
                 // H Donors
-                IntVar donorTarget = makeIntVar(cp, 0, 5);
+                IntVar donorTarget = makeIntVar(cp, 2, 5);
                 donorTarget.setName("Donor target");
                 GenConstraints.limitDonors(cp, w, g, donorTarget);
                 // H Acceptors
-                IntVar acceptorTarget = makeIntVar(cp, 0, 10);
+                IntVar acceptorTarget = makeIntVar(cp, 5, 10);
                 acceptorTarget.setName("Acceptor target");
                 GenConstraints.limitAcceptors(cp, w, g, acceptorTarget);
                 // LogP
@@ -287,6 +372,110 @@ public class TestGrammarV12 {
             //     }
             //     counter++;
             // }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private static void completeMolecule(
+        String filePath,
+        int wordLength,
+        String moleculeString,
+        boolean doLipinski,
+        int numSolutions,
+        int limitInSeconds,
+        int minWeight,
+        int maxWeight,
+        int minLogP,
+        int maxLogP
+    ) {
+        try {
+            //#region Base initialization
+            Solver cp = makeSolver(false);
+            CFG g = new CFG(filePath);
+            // g.printTokens();
+            IntVar[] w = makeIntVarArray(cp, wordLength, 0, g.terminalCount()-1);
+            for (int i = 0; i < wordLength; i++) {
+                w[i].setName("token_" + i);
+            }
+
+            int minAtomWeight = Collections.min(g.tokenWeight.values());
+            int maxAtomWeight = Collections.max(g.tokenWeight.values());
+            IntVar[] tokenWeights = makeIntVarArray(cp, wordLength, minAtomWeight, maxAtomWeight);
+            for (int i = 0; i < wordLength; i++) {
+                tokenWeights[i].setName("weight_" + i);
+            }
+            //#endregion
+            
+            // Smiles Validity
+            GenConstraints.grammarConstraint(cp,w,g);
+            GenConstraints.cycleCountingConstraint(cp,w,g,1,6);
+            GenConstraints.cycleParityConstraint(cp,w,g,1,6);
+            // Other constraints
+            IntVar logPEstimate = makeIntVar(cp, 0, 0);
+            logPEstimate.setName("LogP estimate");
+            if (doLipinski) {
+                // Fix to the grammar to reduce donor/acceptor error
+                // GenConstraints.avoidBranchOnEnd(cp, w, g);
+                // Molecular weight
+                IntVar weightTarget = makeIntVar(cp, minWeight, maxWeight);
+                weightTarget.setName("Weight target");
+                // GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
+                // H Donors
+                IntVar donorTarget = makeIntVar(cp, 0, 5);
+                donorTarget.setName("Donor target");
+                // GenConstraints.limitDonors(cp, w, g, donorTarget);
+                // H Acceptors
+                IntVar acceptorTarget = makeIntVar(cp, 0, 10);
+                acceptorTarget.setName("Acceptor target");
+                // GenConstraints.limitAcceptors(cp, w, g, acceptorTarget);
+                // LogP
+                // logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_changed.txt", minLogP, maxLogP);
+            }
+
+            String[] tokenizedMolecule = new String[0];
+            tokenizedMolecule = Tokenizers.tokenizeV7(moleculeString).toArray(tokenizedMolecule);
+            for (int i = 0; i < tokenizedMolecule.length; i++) {
+                if (tokenizedMolecule[i].equals("*")) {
+                    continue;
+                }
+                System.out.println(tokenizedMolecule[i]);
+                System.out.println(g.tokenEncoder.get(tokenizedMolecule[i]));
+                System.out.println(w[i].toString());
+                System.out.println();
+                w[i].assign(g.tokenEncoder.get(tokenizedMolecule[i]));
+                updateSolver(cp);
+            }
+
+            System.out.println("Molecule recognized");
+   
+            String fileName = "results_sz" + wordLength;
+            if (doLipinski) {
+                fileName += "_lip";
+            }
+            if (numSolutions != 0) {
+                fileName += "_" + numSolutions + "sols";
+            }
+            if (limitInSeconds != 0) {
+                fileName += "_" + limitInSeconds + "secs";
+            }
+            fileName += "_" + String.valueOf(minWeight) + "-" + String.valueOf(maxWeight) + "_" + String.valueOf(minLogP) + "-" + String.valueOf(maxLogP);
+            fileName += ".txt";
+            cp.setTraceSearchFlag(false);
+            cp.setTraceBPFlag(false);
+
+            String method = "maxMarginalStrengthLDS";
+            switch (method) {
+                case "maxMarginalStrengthLDS":
+                case "domWdegLDS":
+                case "impactLDS":
+                case "minEntropyLDS":
+                case "maxMarginalLDS":
+                    solveLDS(cp, w, g, method, tokenWeights, logPEstimate, numSolutions, limitInSeconds, fileName);
+                    break;
+                default:
+                    solveDFS(cp, w, g, method, tokenWeights, logPEstimate, numSolutions, limitInSeconds, fileName);
+            }
         } catch (Exception e) {
             System.out.println(e);
         }

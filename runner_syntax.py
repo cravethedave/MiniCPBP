@@ -5,8 +5,8 @@ import time
 BASE_LINE = "#!/bin/bash\nmodule load maven\nexport JAVA_TOOL_OPTIONS=-Xmx1g\nmvn compile -q\n"
 # BASE_COMMAND = "mvn exec:java -Dexec.mainClass='minicpbp.examples.molecules.TestGrammarV7' -q -Dexec.args="
 BASE_COMMAND = "mvn exec:java -q -Dexec.args="
-TIME = '0:15:00'
-MEM = '1G'
+TIME = '0:35:00'
+MEM = '2G'
 
 # minWt, maxWt, minC, maxC, #cycles, #branches
 def cc_heuristic_runner(methods, test_cases, size=20, diff=''):
@@ -122,36 +122,36 @@ def run_failed(test_cases):
 test_cases = [
 #   ["00000","00001","2","3","004","5","6"],
 #   ["lpnsk","sampl","k","#","lim","c","b"],
-    ["false","false","2","1","600","1","2"],
-    ["false","false","2","1","600","1","3"],
-    ["false","false","2","1","600","1","4"],
-    ["false","false","2","1","600","2","2"],
-    ["false","false","2","1","600","2","3"],
-    ["false","false","2","1","600","2","4"],
-    ["false","false","2","1","600","3","2"],
-    ["false","false","2","1","600","3","3"],
-    ["false","false","2","1","600","3","4"],
+    # ["false","false","2","1","600","1","2"],
+    # ["false","false","2","1","600","1","3"],
+    # ["false","false","2","1","600","1","4"],
+    # ["false","false","2","1","600","2","2"],
+    # ["false","false","2","1","600","2","3"],
+    # ["false","false","2","1","600","2","4"],
+    # ["false","false","2","1","600","3","2"],
+    # ["false","false","2","1","600","3","3"],
+    # ["false","false","2","1","600","3","4"],
     
-    ["true","false","2","1","600","1","2"],
-    ["true","false","2","1","600","1","3"],
-    ["true","false","2","1","600","1","4"],
-    ["true","false","2","1","600","2","2"],
-    ["true","false","2","1","600","2","3"],
-    ["true","false","2","1","600","2","4"],
-    ["true","false","2","1","600","3","2"],
-    ["true","false","2","1","600","3","3"],
-    ["true","false","2","1","600","3","4"],
+    # ["true","false","2","1","600","1","2"],
+    # ["true","false","2","1","600","1","3"],
+    # ["true","false","2","1","600","1","4"],
+    # ["true","false","2","1","600","2","2"],
+    # ["true","false","2","1","600","2","3"],
+    # ["true","false","2","1","600","2","4"],
+    ["true","false","2","1","1800","3","2"],
+    ["true","false","2","1","1800","3","3"],
+    ["true","false","2","1","1800","3","4"],
 ]
 
 methods = [
     # "domWdeg",
     # "domWdegLDS",
     # "domWdegRandom",
-    "domWdegMaxMarginalValue",
+    # "domWdegMaxMarginalValue",
     # "dom-random",
     # "maxMarginal",
     # "maxMarginalRestart",
-    # "maxMarginalLDS",
+    "maxMarginalLDS",
     # "maxMarginalStrength",
     # "maxMarginalStrengthLDS",
     # "maxMarginalStrengthBiasedWheelSelectVal",
