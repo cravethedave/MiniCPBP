@@ -18,20 +18,7 @@ import java.util.Collections;
 public class TestGrammarV12 {
     public static void main(String[] args) {
         // GenConstraints.goingRndTest();
-        generateMoleculesSyntax(
-            "data/moleculeCNF_v12.txt",
-            Integer.valueOf(args[0]),
-            args[1],
-            Boolean.valueOf(args[2]),
-            Boolean.valueOf(args[3]),
-            Integer.valueOf(args[4]),
-            Integer.valueOf(args[5]),
-            Integer.valueOf(args[6]),
-            Integer.valueOf(args[7]),
-            Integer.valueOf(args[8])
-        );
-
-        // generateMoleculesLipinski(
+        // generateMoleculesSyntax(
         //     "data/moleculeCNF_v12.txt",
         //     Integer.valueOf(args[0]),
         //     args[1],
@@ -41,17 +28,32 @@ public class TestGrammarV12 {
         //     Integer.valueOf(args[5]),
         //     Integer.valueOf(args[6]),
         //     Integer.valueOf(args[7]),
-        //     Integer.valueOf(args[8]),
-        //     Integer.valueOf(args[9]),
-        //     Integer.valueOf(args[10])
+        //     Integer.valueOf(args[8])
         // );
 
+        generateMoleculesLipinski(
+            "data/moleculeCNF_v12.txt",
+            Integer.valueOf(args[0]),
+            args[1],
+            Boolean.valueOf(args[2]),
+            Boolean.valueOf(args[3]),
+            Integer.valueOf(args[4]),
+            Integer.valueOf(args[5]),
+            Integer.valueOf(args[6]),
+            Integer.valueOf(args[7]),
+            Integer.valueOf(args[8]),
+            Integer.valueOf(args[9]),
+            Integer.valueOf(args[10])
+        );
+
         // C1(=O)CN=C(c2ccccc2)c3cc(_)ccc3N1___
-        //"C1(=O)CN=C(c2ccccc2)*3*c******3**"
+        // "C1(=O)CN=C(c2ccccc2)*3*c******3**"
+        // CCC1(C(=O)TC(=O)TC1=O)c2ccccc2
+        // O=C1TC(=O)TC(=O)C1(c2ccccc2)CC
         // completeMolecule(
-        //     "data/moleculeCNF_v12.txt",
+        //     "data/moleculeCNF_v1.txt",
         //     Integer.valueOf(args[0]),
-        //     "c1ccccc1C2=NCC(=O)Nc3c2cc(Cl)cc3",
+        //     "O=C1NC(=O)NC(=O)C1(c2ccccc2)CC",
         //     Boolean.valueOf(args[1]),
         //     Integer.valueOf(args[2]),
         //     Integer.valueOf(args[3]),
@@ -309,11 +311,11 @@ public class TestGrammarV12 {
                 weightTarget.setName("Weight target");
                 GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
                 // H Donors
-                IntVar donorTarget = makeIntVar(cp, 2, 5);
+                IntVar donorTarget = makeIntVar(cp, 0, 5);
                 donorTarget.setName("Donor target");
                 GenConstraints.limitDonors(cp, w, g, donorTarget);
                 // H Acceptors
-                IntVar acceptorTarget = makeIntVar(cp, 5, 10);
+                IntVar acceptorTarget = makeIntVar(cp, 0, 10);
                 acceptorTarget.setName("Acceptor target");
                 GenConstraints.limitAcceptors(cp, w, g, acceptorTarget);
                 // LogP
