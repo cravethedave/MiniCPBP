@@ -31,20 +31,20 @@ public class TestGrammarV12 {
         //     Integer.valueOf(args[8])
         // );
 
-        generateMoleculesLipinski(
-            "data/moleculeCNF_v12.txt",
-            Integer.valueOf(args[0]),
-            args[1],
-            Boolean.valueOf(args[2]),
-            Boolean.valueOf(args[3]),
-            Integer.valueOf(args[4]),
-            Integer.valueOf(args[5]),
-            Integer.valueOf(args[6]),
-            Integer.valueOf(args[7]),
-            Integer.valueOf(args[8]),
-            Integer.valueOf(args[9]),
-            Integer.valueOf(args[10])
-        );
+        // generateMoleculesLipinski(
+        //     "data/moleculeCNF_v12.txt",
+        //     Integer.valueOf(args[0]),
+        //     args[1],
+        //     Boolean.valueOf(args[2]),
+        //     Boolean.valueOf(args[3]),
+        //     Integer.valueOf(args[4]),
+        //     Integer.valueOf(args[5]),
+        //     Integer.valueOf(args[6]),
+        //     Integer.valueOf(args[7]),
+        //     Integer.valueOf(args[8]),
+        //     Integer.valueOf(args[9]),
+        //     Integer.valueOf(args[10])
+        // );
 
         // C1(=O)CN=C(c2ccccc2)c3cc(_)ccc3N1___
         // "C1(=O)CN=C(c2ccccc2)*3*c******3**"
@@ -63,14 +63,14 @@ public class TestGrammarV12 {
         //     Integer.valueOf(args[7])
         // );
 
-        // customGeneration(
-        //     "data/moleculeCNF_v12.txt",
-        //     40,
-        //     "domWdegRandom",
-        //     false,
-        //     10,
-        //     600
-        // );
+        customGeneration(
+            "data/moleculeCNF_v12.txt",
+            40,
+            "maxMarginalStrengthLDS",
+            false,
+            50,
+            600
+        );
     }
 
     private static void updateSolver(Solver cp) {
@@ -282,6 +282,7 @@ public class TestGrammarV12 {
             //#region Base initialization
             Solver cp = makeSolver(false);
             CFG g = new CFG(filePath);
+            System.out.println(g.nonTerminalCount());
             // g.printTokens();
             IntVar[] w = makeIntVarArray(cp, wordLength, 0, g.terminalCount()-1);
             for (int i = 0; i < wordLength; i++) {
@@ -535,7 +536,8 @@ public class TestGrammarV12 {
                 word += g.tokenDecoder.get(targetArray[i].min());
                 sumWeight += tokenWeights[i].min();
             }
-            System.out.println(word + " weight of " + sumWeight + " logP of " + logPEstimate.min());
+            // System.out.println(word + " weight of " + sumWeight + " logP of " + logPEstimate.min());
+            System.out.println("\"" + word + "\",");
             try {
                 FileWriter resultsWriter = new FileWriter(fileName, true);
                 resultsWriter.write(
@@ -669,7 +671,8 @@ public class TestGrammarV12 {
                 word += g.tokenDecoder.get(targetArray[i].min());
                 sumWeight += tokenWeights[i].min();
             }
-            System.out.println(word + " weight of " + sumWeight + " logP of " + logPEstimate.min());
+            // System.out.println(word + " weight of " + sumWeight + " logP of " + logPEstimate.min());
+            System.out.println("\"" + word + "\",");
             try {
                 FileWriter resultsWriter = new FileWriter(fileName, true);
                 resultsWriter.write(
