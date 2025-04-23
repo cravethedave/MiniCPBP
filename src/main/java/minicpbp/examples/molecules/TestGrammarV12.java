@@ -113,7 +113,7 @@ public class TestGrammarV12 {
             // Other constraints
             IntVar logPEstimate = makeIntVar(cp, 0, 0);
             logPEstimate.setName("LogP estimate");
-            
+            GenConstraints.lingoConstraint(cp, w, g, "data/lingo_changed.txt", 2000, 5000);
             // GenConstraints.limitCycleConstraint(cp, w, g, 3);
             // cp.post(among(w, g.tokenEncoder.get("c"), makeIntVar(cp, 12, 12)));
 

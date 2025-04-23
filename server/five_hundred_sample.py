@@ -17,7 +17,7 @@ from math import floor, log, exp
 
 oracle_weights = [0.5, 1.0, 1.5]
 molecule_weights = [(4750,5000),(3157,3445)] # 3301 +- 144
-MOLECULE_LENGTH = 40
+MOLECULE_LENGTH = 45
 
 def fill_masked_zinc(num_mol, oracle_weight, molecule_weights, remove_percent):
     with open("./perplexity.txt", 'w') as perplexity:
@@ -131,7 +131,7 @@ def generate_entropy_nncpbp(num_mol, molecule_weights):
         subprocess.call([
             "mvn",
             "exec:java",
-            f"-Dexec.args=40 minEntropyBiasedWheel {molecule_weights[0]} {molecule_weights[1]}"
+            f"-Dexec.args={MOLECULE_LENGTH} maxMarginalStrength {molecule_weights[0]} {molecule_weights[1]}"
         ],)
 
 def parallel_entropy(num_runs, num_mol_per_run, molecule_weights):
@@ -222,7 +222,7 @@ def read_results_file(filename = "./results.txt"):
         f.write(','.join(str(iter) for iter in position_loss))
     
     perplexity = sum(molecule_perplexity)/len(molecules)
-    print(f"Success rate: {success_rate}\nAvg PPL: {perplexity}\nAvg time: {duration/60}")
+    print(f"Success rate: {success_rate}\nAvg PPL: {perplexity}\nAvg time: {duration} secs")
 
 def perplexity_grapher(filename: str):
     with open(filename, 'r') as f:
@@ -247,11 +247,11 @@ def perplexity_grapher(filename: str):
 # From 300 to 325 there are 12% of molecules in ZINC
 # generate_entropy(num_mol=1, molecule_weights=[2000,2750], run_nb=3)
 # start = time.time()
-# parallel_entropy(num_runs=5,num_mol_per_run=10,molecule_weights=[2000,2750])
+# parallel_entropy(num_runs=5,num_mol_per_run=2,molecule_weights=[2000,2750])
 # print("\n\n\n\n\This took " + str(time.time()-start) + " seconds")
 
 start = time.time()
-read_results_file("./server/data/results_nncpbp_15.txt")
+read_results_file("./results.txt")
 print("\n\n\n\n\This took " + str(time.time()-start) + " seconds")
 # perplexity_grapher("server/token_perplexity.txt")
 # run_all(molecule_weights=[0,6000], remove_percent=0)

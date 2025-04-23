@@ -3,12 +3,18 @@ package minicpbp.examples.molecules;
 import minicpbp.engine.core.Constraint;
 import minicpbp.engine.core.IntVar;
 import minicpbp.engine.core.Solver;
+import minicpbp.engine.core.Solver.PropaMode;
+import minicpbp.search.DFSearch;
+import minicpbp.search.LDSearch;
+import minicpbp.search.SearchStatistics;
 import minicpbp.util.CFG;
 import minicpbp.util.exception.InconsistencyException;
 
 import static minicpbp.cp.Factory.*;
+import static minicpbp.cp.BranchingScheme.*;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
@@ -65,12 +71,12 @@ public class TestGenOracle {
         // );
 
         setWeightGenerationModel_NNCPBP(
-            "data/moleculeCNF_v8.txt",
+            "data/moleculeCNF_v7.txt",
             Integer.valueOf(args[0]),
             args[1],
             Integer.valueOf(args[2]),
             Integer.valueOf(args[3]),
-            1.5
+            1.0
         );
     }
 
@@ -117,8 +123,8 @@ public class TestGenOracle {
         }
         //#endregion
 
-        tokenToScoreNLP.put(g.tokenEncoder.get("T"), tokenToScoreNLP.get(g.tokenEncoder.get("N")));
-        tokenToScoreNLP.put(g.tokenEncoder.get("X"), tokenToScoreNLP.get(g.tokenEncoder.get("O")));
+        // tokenToScoreNLP.put(g.tokenEncoder.get("T"), tokenToScoreNLP.get(g.tokenEncoder.get("N")));
+        // tokenToScoreNLP.put(g.tokenEncoder.get("X"), tokenToScoreNLP.get(g.tokenEncoder.get("O")));
         
         // return tokenToScoreNLP;
         
@@ -677,8 +683,9 @@ public class TestGenOracle {
                 }
 
                 // Makes the request
+                // System.out.println("here");
                 HashMap<Integer, Double> flattenedNLPScores = getSmoothedProbabilities(g, moleculeSoFar);
-                System.out.println(flattenedNLPScores.toString());
+                // System.out.println(flattenedNLPScores.toString());
 
                 // Propagates constraints to determine current varialbe's values
                 cp.fixPoint();
@@ -690,7 +697,7 @@ public class TestGenOracle {
                     }
                     flattenedNLPScores.remove(j);
                 }
-                System.out.println(w[i].toString());
+                // System.out.println(w[i].toString());
 
                 // Manually throw an error if there are no possible choices left
                 if (flattenedNLPScores.size() == 0) {
@@ -861,6 +868,330 @@ public class TestGenOracle {
         }
     }
     
+    private static void setWeightGenerationModel_CPBPBackTrack(
+        String filePath,
+        int wordLength,
+        String method,
+        int minWeight,
+        int maxWeight,
+        int numSolutions,
+        int limitInSeconds
+    ) {
+        long startTime = System.currentTimeMillis()/1000;
+        try {
+            //#region Base initialization
+            Solver cp = makeSolver(false);
+            CFG g = new CFG(filePath);
+            // g.printTokens();
+            IntVar[] w = makeIntVarArray(cp, wordLength, 0, g.terminalCount()-1);
+            for (int i = 0; i < wordLength; i++) {
+                w[i].setName("token_" + i);
+            }
+
+            int minAtomWeight = Collections.min(g.tokenWeight.values());
+            int maxAtomWeight = Collections.max(g.tokenWeight.values());
+            IntVar[] tokenWeights = makeIntVarArray(cp, wordLength, minAtomWeight, maxAtomWeight);
+            for (int i = 0; i < wordLength; i++) {
+                tokenWeights[i].setName("weight_" + i);
+            }
+            //#endregion
+            
+            // Smiles Validity
+            GenConstraints.grammarConstraint(cp,w,g);
+            GenConstraints.cycleCountingConstraint(cp,w,g,1,6);
+            GenConstraints.cycleParityConstraint(cp,w,g,1,6);
+            GenConstraints.moleculeWeightConstraint(cp, w, tokenWeights, makeIntVar(cp, minWeight, maxWeight), g);
+            // Other constraints
+            IntVar logPEstimate = makeIntVar(cp, 0, 0);
+            logPEstimate.setName("LogP estimate");
+   
+            String fileName = "results_" + method + "_sz" + wordLength;
+            if (numSolutions != 0) {
+                fileName += "_" + numSolutions + "sols";
+            }
+            if (limitInSeconds != 0) {
+                fileName += "_" + limitInSeconds + "secs";
+            }
+            fileName += ".txt";
+            cp.setTraceSearchFlag(false);
+            cp.setTraceBPFlag(false);
+            switch (method) {
+                case "maxMarginalStrengthLDS":
+                case "domWdegLDS":
+                case "impactLDS":
+                case "minEntropyLDS":
+                case "maxMarginalLDS":
+                    solveLDS(cp, w, g, method, tokenWeights, logPEstimate, numSolutions, limitInSeconds, fileName);
+                    break;
+                default:
+                    solveDFS(cp, w, g, method, tokenWeights, logPEstimate, numSolutions, limitInSeconds, fileName);
+            }
+
+            // This shows the marginals for each token
+            // cp.fixPoint();
+            // cp.vanillaBP(1);
+            // int counter = 1;
+            // for (IntVar iter : w) {
+            //     System.out.println(String.format("Position %d", counter));
+            //     for (int i = iter.min(); i <= iter.max(); i++) {
+            //         if (iter.contains(i)) {
+            //             System.out.println(String.format("%s %f", g.tokenDecoder.get(i), iter.marginal(i)));
+            //         }
+            //     }
+            //     counter++;
+            // }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private static void solveLDS(
+        Solver cp,
+        IntVar[] targetArray,
+        CFG g,
+        String method,
+        IntVar[] tokenWeights,
+        IntVar logPEstimate,
+        int numSolutions,
+        int limitInSeconds,
+        String fileName
+    ) {
+        // try {
+        //     FileWriter resultsWriter = new FileWriter(fileName, false);
+        //     resultsWriter.write("");
+        //     resultsWriter.close();
+        // } catch (IOException e) {
+        //     System.out.println("[ERROR] File not writing ********************");
+        // }
+
+        LDSearch lds;
+        switch (method) {
+            case "maxMarginalStrengthLDS":
+                cp.setMode(PropaMode.SBP);
+                lds = makeLds(cp, maxMarginalStrength(targetArray));
+                break;
+            case "domWdegLDS":
+                cp.setMode(PropaMode.SP);
+                lds = makeLds(cp, domWdeg(targetArray));
+                break;
+            case "impactLDS":
+                cp.setMode(PropaMode.SP);
+                lds = makeLds(cp, impactBasedSearch(targetArray));
+                break;
+            case "minEntropyLDS":
+                cp.setMode(PropaMode.SBP);
+                lds = makeLds(cp, minEntropy(targetArray));
+                break;
+            case "maxMarginalLDS":
+            default:
+                cp.setMode(PropaMode.SBP);
+                lds = makeLds(cp, maxMarginal(targetArray));
+        }
+        
+        lds.onSolution(() -> {
+            String word = "";
+            int sumWeight = 0;
+            for (int i = 0; i < targetArray.length; i++) {
+                word += g.tokenDecoder.get(targetArray[i].min());
+                sumWeight += tokenWeights[i].min();
+            }
+            // System.out.println(word + " weight of " + sumWeight + " logP of " + logPEstimate.min());
+            System.out.println("\"" + word + "\",");
+            try {
+                FileWriter resultsWriter = new FileWriter(fileName, true);
+                resultsWriter.write(
+                    word + "," +
+                    String.valueOf(sumWeight) + "," +
+                    String.valueOf(logPEstimate.min()) + "," +
+                    "\n"
+                );
+                resultsWriter.close();
+            } catch (IOException e) {
+                System.out.println("[ERROR] File not writing ********************");
+            }
+        });
+
+        System.out.println("[INFO] Now solving");
+        SearchStatistics stats;
+        if (numSolutions == 0 && limitInSeconds == 0) {
+            stats = lds.solve();
+        } else if (limitInSeconds == 0) {
+            stats = lds.solve(stat -> stat.numberOfSolutions() == numSolutions);
+        } else if (numSolutions == 0) {
+            stats = lds.solve(stat -> stat.timeElapsed() >= limitInSeconds * 1000);
+        } else {
+            stats = lds.solve(stat -> stat.numberOfSolutions() == numSolutions || stat.timeElapsed() >= limitInSeconds * 1000);
+        }
+
+        try {
+            FileWriter resultsWriter = new FileWriter(fileName, true);
+            resultsWriter.write("\n\n");
+            resultsWriter.write(stats.toString());
+            resultsWriter.close();
+        } catch (IOException e) {
+            System.out.println("[ERROR] File not writing ********************");
+        }
+        System.out.println(stats);
+    }
+
+    private static void solveDFS(
+        Solver cp,
+        IntVar[] targetArray,
+        CFG g,
+        String method,
+        IntVar[] tokenWeights,
+        IntVar logPEstimate,
+        int numSolutions,
+        int limitInSeconds,
+        String fileName
+    ) {
+        // try {
+        //     FileWriter resultsWriter = new FileWriter(fileName, false);
+        //     resultsWriter.write("");
+        //     resultsWriter.close();
+        // } catch (IOException e) {
+        //     System.out.println("[ERROR] File not writing ********************");
+        // }
+
+        DFSearch dfs;
+        switch (method) {
+            case "maxMarginalStrengthBiasedWheelSelectVal":
+                cp.setMode(PropaMode.SBP);
+                dfs = makeDfs(cp, maxMarginalStrengthBiasedWheelSelectVal(targetArray));
+                break;
+            case "domWdegMaxMarginalValue":
+                cp.setMode(PropaMode.SBP);
+                dfs = makeDfs(cp, domWdegMaxMarginalValue(targetArray));
+                break;
+            case "firstFailMaxMarginalValue":
+                cp.setMode(PropaMode.SBP);
+                dfs = makeDfs(cp, firstFailMaxMarginalValue(targetArray));
+                break;
+            case "minEntropy":
+                cp.setMode(PropaMode.SBP);
+                dfs = makeDfs(cp, minEntropy(targetArray));
+                break;
+            case "lexicoMarginal":
+                cp.setMode(PropaMode.SBP);
+                dfs = makeDfs(cp, lexicoMaxMarginalValue(targetArray));
+                break;
+            case "minEntropyBiasedWheel":
+                cp.setMode(PropaMode.SBP);
+                dfs = makeDfs(cp, minEntropyBiasedWheelSelectVal(targetArray));
+                break;
+            case "maxMarginalRestart":
+                cp.setMode(PropaMode.SBP);
+                dfs = makeDfs(cp, maxMarginalRandomTieBreak(targetArray));
+                break;
+            case "maxMarginalStrength":
+                cp.setMode(PropaMode.SBP);
+                dfs = makeDfs(cp, maxMarginalStrength(targetArray));
+                break;
+            case "maxMarginal":
+                cp.setMode(PropaMode.SBP);
+                dfs = makeDfs(cp, maxMarginal(targetArray));
+                break;
+            case "rnd":
+                cp.setMode(PropaMode.SP);
+                dfs = makeDfs(cp, randomVarRandomVal(targetArray));
+                break;
+            case "impactMinVal":
+            case "impactMinValRestart":
+                cp.setMode(PropaMode.SBP);
+                dfs = makeDfs(cp, impactMinVal(targetArray));
+                break;
+            case "domWdegRandom":
+                cp.setMode(PropaMode.SBP);
+                dfs = makeDfs(cp, domWdegRandom(targetArray));
+                break;
+            case "domRaw":
+                cp.setMode(PropaMode.SBP);
+                dfs = makeDfs(cp, domRaw(targetArray));
+                break;
+            case "dom-random":
+                cp.setMode(PropaMode.SP);
+                dfs = makeDfs(cp, firstFailRandomVal(targetArray));
+                break;
+            case "impact":
+            case "impactRestart":
+                cp.setMode(PropaMode.SBP);
+                dfs = makeDfs(cp, impactBasedSearch(targetArray));
+                break;
+            case "domWdeg":
+            default:
+                cp.setMode(PropaMode.SP);
+                dfs = makeDfs(cp, domWdeg(targetArray));
+        }
+
+        dfs.onSolution(() -> {
+            String word = "";
+            int sumWeight = 0;
+            for (int i = 0; i < targetArray.length; i++) {
+                word += g.tokenDecoder.get(targetArray[i].min());
+                sumWeight += tokenWeights[i].min();
+            }
+            // System.out.println(word + " weight of " + sumWeight + " logP of " + logPEstimate.min());
+            System.out.println("\"" + word + "\",");
+            try {
+                FileWriter resultsWriter = new FileWriter(fileName, true);
+                resultsWriter.write(
+                    word + "," +
+                    String.valueOf(sumWeight) + "," +
+                    String.valueOf(logPEstimate.min()) + "," +
+                    "\n"
+                );
+                resultsWriter.close();
+            } catch (IOException e) {
+                System.out.println("[ERROR] File not writing ********************");
+            }
+        });
+
+        System.out.println("[INFO] Now solving");
+
+        SearchStatistics stats;
+        switch (method) {
+            // case "minEntropyBiasedWheel":
+            case "maxMarginalRestart":
+            case "impactRestart":
+            case "domWdeg":
+            case "domWdegRandom":
+            case "domWdegMaxMarginalValue":
+            case "impactMinValRestart":
+                System.out.println("Restarts");
+                if (numSolutions == 0 && limitInSeconds == 0) {
+                    stats = dfs.solveRestarts();
+                } else if (limitInSeconds == 0) {
+                    stats = dfs.solveRestarts(stat -> stat.numberOfSolutions() == numSolutions);
+                } else if (numSolutions == 0) {
+                    stats = dfs.solveRestarts(stat -> stat.timeElapsed() >= limitInSeconds * 1000);
+                } else {
+                    stats = dfs.solveRestarts(stat -> stat.numberOfSolutions() == numSolutions || stat.timeElapsed() >= limitInSeconds * 1000);
+                }
+                break;
+            default:
+                System.out.println("No restarts");
+                if (numSolutions == 0 && limitInSeconds == 0) {
+                    stats = dfs.solve();
+                } else if (limitInSeconds == 0) {
+                    stats = dfs.solve(stat -> stat.numberOfSolutions() == numSolutions);
+                } else if (numSolutions == 0) {
+                    stats = dfs.solve(stat -> stat.timeElapsed() >= limitInSeconds * 1000);
+                } else {
+                    stats = dfs.solve(stat -> stat.numberOfSolutions() == numSolutions || stat.timeElapsed() >= limitInSeconds * 1000);
+                }
+        }
+
+        try {
+            FileWriter resultsWriter = new FileWriter(fileName, true);
+            resultsWriter.write("\n\n");
+            resultsWriter.write(stats.toString());
+            resultsWriter.close();
+        } catch (IOException e) {
+            System.out.println("[ERROR] File not writing ********************");
+        }
+        System.out.println(stats);
+    }
+
     private static void variableWeightGenerationModel(
         String filePath,
         int wordLength,

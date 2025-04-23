@@ -15,7 +15,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <argLine></argLine>
         <checkstyle.config.location>${basedir}/checkstyle.xml</checkstyle.config.location>
-        <exec.mainClass>minicpbp.examples.molecules.TestGrammarV12</exec.mainClass>
+        <exec.mainClass>minicpbp.examples.molecules.TestGenOracle</exec.mainClass>
     </properties>
     <repositories>
         <repository>

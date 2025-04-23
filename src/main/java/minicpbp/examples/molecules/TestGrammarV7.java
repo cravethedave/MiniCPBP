@@ -68,7 +68,7 @@ public class TestGrammarV7 {
             GenConstraints.grammarConstraint(cp,w,g);
             GenConstraints.cycleCountingConstraint(cp,w,g,1,8);
             GenConstraints.cycleParityConstraint(cp,w,g,1,8);
-            // GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
+            GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
             // GenConstraints.limitCycleConstraint(cp, w, g, nCycles);
             // GenConstraints.limitBranchConstraint(cp, w, g, nBranches);
             IntVar logPEstimate = makeIntVar(cp, 0, 0);
@@ -282,7 +282,7 @@ public class TestGrammarV7 {
                     break;
                 default:
                     System.out.println("No restarts");
-                    stats = dfs.solve();
+                    stats = dfs.solve(stat -> stat.numberOfSolutions() == 100);
                     // stats = dfs.solve(stat -> stat.numberOfSolutions() == 1 || stat.timeElapsed()/1000 > 900);
             }
             System.out.println(stats);

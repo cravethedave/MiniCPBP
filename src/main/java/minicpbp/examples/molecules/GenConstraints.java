@@ -15,6 +15,7 @@ import static minicpbp.cp.Factory.table;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -568,6 +569,23 @@ public class GenConstraints {
 
         int[][] elementTable = new int[elementVector.size()][5];
         elementTable = elementVector.toArray(elementTable);
+
+        FileWriter file = new FileWriter("fullLingos.txt");
+        for (int[] iter : elementVector) {
+            for (int i = 0; i < iter.length; i++) {
+                if (i == iter.length - 1) {
+                    file.append(String.valueOf(iter[i]) + "\n");
+                    continue;
+                }
+                if (iter[i] == -1) {
+                    file.append("*,");
+                    continue;
+                }
+                file.append(g.tokenDecoder.get(iter[i]) + ",");
+            }
+        }
+        file.close();
+        System.out.println("Wrote to file");
 
         // System.out.println("Original size: " + Math.pow(g.terminalCount(), 4));
         // System.out.println("Current size: " + elementTable.length);
