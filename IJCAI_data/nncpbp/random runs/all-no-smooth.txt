@@ -1,7 +1,0 @@
-Failures: 5
-molecule                                          |weight    |perplexity          |time      
-<s>C=C(C)C(C)C(C)C(C)C(C)CO[C@H]1C(O)N(C)C1       |2670      |2.374356609254599   |221.6790955066681
-<s>C#C[C@H]1C(C(C)C)C(C(C)C)C(C(C)C)C[C@H]1       |2320      |1.5566889171881748  |220.4927887916565
-<s>C=C(C)C(C)C(N)C(C)C[N+](C)C(C)C(C)C(C)C_       |2670      |Infinity            |221.50741410255432
-<s>C=C(C)C(C)C(C)C(C)C(C(C)C)C(C)C(C)C(C)__       |2640      |Infinity            |231.16872596740723
-<s>C=C(C)C(C)C(C)C(C)C(C)C(C)C(C)C(C(C)C)__       |2640      |Infinity            |224.79334592819214

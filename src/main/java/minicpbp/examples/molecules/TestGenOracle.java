@@ -81,9 +81,12 @@ public class TestGenOracle {
     }
 
     /**
-     * Gets the nlp model's probabilities and flattens them to avoid zeros
+     * 
+     * @param g The grammar, while called CFG it is in Chomsky's Normal Form
+     * @param moleculeSoFar The molecule as a string
+     * @return a HashMap linking each token's int id to a probability as a double
      */
-    private static HashMap<Integer, Double> getSmoothedProbabilities(
+    private static HashMap<Integer, Double> getModelProbabilities(
         CFG g,
         String moleculeSoFar
     ) {
@@ -122,15 +125,10 @@ public class TestGenOracle {
             tokenToScoreNLP.put(token, score);
         }
         //#endregion
-
-        // tokenToScoreNLP.put(g.tokenEncoder.get("T"), tokenToScoreNLP.get(g.tokenEncoder.get("N")));
-        // tokenToScoreNLP.put(g.tokenEncoder.get("X"), tokenToScoreNLP.get(g.tokenEncoder.get("O")));
         
-        // return tokenToScoreNLP;
         
+        //#region Flattens values to ensure a sum of 1. Should be redundant
         HashMap<Integer, Double> tokenToScoreMap = new HashMap<>();
-
-        //#region Flattens values to ensure a sum of 1
         double scoreSum = 0;
         for (double v : tokenToScoreNLP.values()) {
             scoreSum += v;
@@ -142,49 +140,6 @@ public class TestGenOracle {
         //#endregion
 
         return tokenToScoreMap;
-    }
-
-    private static HashMap<Integer, Double> getRawProbabilities(
-        CFG g,
-        String moleculeSoFar
-    ) {
-        //#region Makes the request
-        HttpClient client = HttpClient.newHttpClient();
-
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(SERVER_ADDRESS))
-            .POST(HttpRequest.BodyPublishers.ofString(moleculeSoFar))
-            .build();
-        String response = client.sendAsync(request, BodyHandlers.ofString()).thenApply(HttpResponse::body).join();
-        //#endregion
-
-        //#region Parse the response into a HashMap
-        response = response.replace("}", "");
-
-        HashMap<Integer, Double> tokenToScoreNLP = new HashMap<>();
-        double minScore = Double.MAX_VALUE;
-        for (String line : response.split(",")) {
-            String[] lineValues = line.split(":");
-            String tokenString = lineValues[0].split("\"")[1];
-            if (tokenString.equals("\\\\")) {
-                tokenString = "\\";
-            }
-            if (!g.tokenEncoder.containsKey(tokenString)) {
-                System.out.println("Token not in grammar " + tokenString);
-                continue;
-            }
-            int token = g.tokenEncoder.get(tokenString);
-            double score = Double.parseDouble(lineValues[1]);
-
-            if (score < minScore) {
-                minScore = score;
-            }
-
-            tokenToScoreNLP.put(token, score);
-        }
-        //#endregion
-
-        return tokenToScoreNLP;
     }
 
     private static void constraintOnlyModel(
@@ -226,7 +181,7 @@ public class TestGenOracle {
             int realLength = wordLength;
             Double logSumProbs = 0.0;
             for (int i = 0; i < wordLength; i++) {
-                HashMap<Integer, Double> flattenedNLPScores = getSmoothedProbabilities(g, moleculeSoFar);
+                HashMap<Integer, Double> flattenedNLPScores = getModelProbabilities(g, moleculeSoFar);
 
                 cp.fixPoint();
                 cp.beliefPropa();
@@ -312,7 +267,7 @@ public class TestGenOracle {
             Double logSumProbs = 0.0;
             for (int i = 0; i < wordLength; i++) {
                 // Makes the request
-                HashMap<Integer, Double> flattenedNLPScores = getSmoothedProbabilities(g, moleculeSoFar);
+                HashMap<Integer, Double> flattenedNLPScores = getModelProbabilities(g, moleculeSoFar);
 
                 int[] tokens = new int[g.terminalCount()];
                 double[] scores = new double[g.terminalCount()];
@@ -444,7 +399,7 @@ public class TestGenOracle {
                 if (!splitMol[i].equals("<mask>")) continue;
 
                 // Makes the request
-                HashMap<Integer, Double> flattenedNLPScores = getSmoothedProbabilities(g, moleculeSoFar);
+                HashMap<Integer, Double> flattenedNLPScores = getModelProbabilities(g, moleculeSoFar);
 
                 int[] tokens = new int[g.terminalCount()];
                 double[] scores = new double[g.terminalCount()];
@@ -574,7 +529,7 @@ public class TestGenOracle {
                 }
 
                 // Makes the request
-                HashMap<Integer, Double> flattenedNLPScores = getSmoothedProbabilities(g, moleculeSoFar);
+                HashMap<Integer, Double> flattenedNLPScores = getModelProbabilities(g, moleculeSoFar);
                 // System.out.println(flattenedNLPScores.toString());
 
                 int[] tokens = new int[flattenedNLPScores.size()];
@@ -684,7 +639,7 @@ public class TestGenOracle {
 
                 // Makes the request
                 // System.out.println("here");
-                HashMap<Integer, Double> flattenedNLPScores = getSmoothedProbabilities(g, moleculeSoFar);
+                HashMap<Integer, Double> flattenedNLPScores = getModelProbabilities(g, moleculeSoFar);
                 // System.out.println(flattenedNLPScores.toString());
 
                 // Propagates constraints to determine current varialbe's values
@@ -827,7 +782,7 @@ public class TestGenOracle {
 
             for (int i = 0; i < wordLength; i++) {
                 System.out.println(moleculeSoFar);
-                HashMap<Integer, Double> flattenedNLPScores = getSmoothedProbabilities(g, moleculeSoFar);
+                HashMap<Integer, Double> flattenedNLPScores = getModelProbabilities(g, moleculeSoFar);
                 int chosen = w[i].min();
                 if (chosen == g.tokenEncoder.get("_")) {
                     realLength = i;
@@ -1232,7 +1187,7 @@ public class TestGenOracle {
 
             for (int i = 0; i < wordLength; i++) {
                 // Makes the request
-                HashMap<Integer, Double> flattenedNLPScores = getSmoothedProbabilities(g, moleculeSoFar);
+                HashMap<Integer, Double> flattenedNLPScores = getModelProbabilities(g, moleculeSoFar);
 
                 int[] tokens = new int[g.terminalCount()];
                 double[] scores = new double[g.terminalCount()];
