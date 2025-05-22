@@ -1,1 +1,0 @@
-molecule count: 10, target weight: [2000, 2750]

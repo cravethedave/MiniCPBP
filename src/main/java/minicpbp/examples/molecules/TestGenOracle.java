@@ -1265,13 +1265,4 @@ public class TestGenOracle {
             System.out.println(e);
         }
     }
-
-    private static CompletableFuture<String> testRequest() throws Exception {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("http://localhost:5000/token"))
-            .POST(HttpRequest.BodyPublishers.ofString("Hello World"))
-            .build();
-        return client.sendAsync(request, BodyHandlers.ofString()).thenApply(HttpResponse::body);
-    }
 }

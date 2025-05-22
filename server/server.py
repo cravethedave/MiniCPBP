@@ -46,64 +46,6 @@ TOKENS = {
 
 app = Flask(__name__)
 
-# fill_mask = pipeline(
-#     "fill-mask",
-#     model='seyonec/ChemBERTa-zinc-base-v1',
-#     tokenizer='seyonec/ChemBERTa-zinc-base-v1'
-# )
-
-@app.route('/')
-def testing():
-    return "hei"
-
-@app.route('/ngrams', methods=['POST'])
-def ngrams():
-    pass
-
-# @app.route('/token', methods=['POST'])
-def next_token():
-    # print("##################### New Request #####################")
-    current_mol = request.data.decode("utf-8")
-    print(current_mol)
-    inputs = torch.tensor([tokenizer(current_mol)['input_ids']])
-    outputs = model.generate(
-        inputs,
-        do_sample=True,
-        max_length=40,
-        temperature=1.5,
-        max_new_tokens=1,
-        # early_stopping=True,
-        return_dict_in_generate=True,
-        output_scores=True,
-        pad_token_id=tokenizer.pad_token_id,
-        num_return_sequences=512
-    )
-    transition_scores = torch.exp(model.compute_transition_scores(outputs.sequences, outputs.scores, normalize_logits=True)).flatten().tolist()
-    generated_tokens = [tokenizer.decode(token) for token in outputs.sequences[:, -1:].flatten()]
-    big_token_prob = {generated_tokens[i]:transition_scores[i] for i in range(len(generated_tokens))}
-    real_token_prob = {}
-
-    for k,v in big_token_prob.items():
-        token = tokenize(k)[0]
-        # if token.isdigit():
-        #     if token not in real_token_prob.keys():
-        #         for i in range(1,9):
-        #             real_token_prob[str(i)] = 0
-        #     for i in range(1,9):
-        #         real_token_prob[str(i)] += v
-        #     continue
-        if token.startswith('</s'):
-            token = '_'
-        if token not in real_token_prob.keys():
-            real_token_prob[token] = 0
-        real_token_prob[token] += v
-    
-    summed_prob = sum(real_token_prob.values())
-    for k,v in real_token_prob.items():
-        real_token_prob[k] = v/summed_prob
-    
-    return real_token_prob
-
 @app.route('/token', methods=['POST'])
 def new_token():
     molecule = request.data.decode("utf-8")
@@ -131,23 +73,3 @@ def new_token():
     probs = {k:v/summed_values for k,v in probs.items()}
     probs['_'] = probs.pop('</s>') # replace end token by our padding
     return probs
-
-# raw_probs = fill_mask("<s>CCCC<mask>",top_k=100)
-# raw_probs = {p['token_str']:p['score'] for p in raw_probs}
-
-# prob_dict = {}
-# for k,v in raw_probs.items():
-#     token = tokenize(k)[0]
-#     if token not in TOKENS:
-#         print(f"WARNING Unknown token {token}")
-#         continue
-#     if token not in prob_dict.keys():
-#         prob_dict[token] = 0
-#     prob_dict[token] += v
-
-# biggest_keys = sorted(prob_dict.keys(), key=lambda x: prob_dict[x], reverse=True)
-# biggest_keys = biggest_keys[:max(100,len(biggest_keys))]
-
-# final_dict = {k:prob_dict[k] for k in biggest_keys}
-# print(final_dict)
-# Traitement
