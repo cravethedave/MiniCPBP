@@ -3,8 +3,6 @@ import subprocess
 from math import ceil
 from threading import Thread
 
-MOLECULE_LENGTH = 40
-
 def one_run(id, n, method, oracle_weight, run_results):
     for i in range(n):
         proc = subprocess.run(
