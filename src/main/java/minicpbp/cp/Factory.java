@@ -1655,6 +1655,10 @@ public final class Factory {
         return new Grammar(x, g);
     }
 
+    public static Constraint testing(IntVar[] x, CFG g) {
+        return new IncreasingValue(x, g);
+    }
+
     /**
      * Returns a constraint to describe a fully-observable, finite, discrete Markov Decision Process (MDP) of order 1 with deterministic rewards.
      * <p> This constraint holds iff the sequence of actions and states (start,a0,s0,...,an-1,sn-1) may occur with non-zero probability and collects a sum of rewards (undiscounted) equal to totalReward.

@@ -168,6 +168,7 @@ public class TableCT extends AbstractConstraint {
                 // there is no intersection between supportedTuples and the support[i][v]
                 int v = domainValues[j];
                 if (!supports[i][v - ofs[i]].intersects(supportedTuples)) {
+                    // System.out.println("");;
                     x[i].remove(v);
                 }
             }

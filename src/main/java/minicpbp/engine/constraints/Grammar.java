@@ -16,7 +16,7 @@
  * Copyright (c)  2019. by Gilles Pesant
  */
 
-package minicpbp.engine.constraints;
+ package minicpbp.engine.constraints;
 
 import minicpbp.engine.core.AbstractConstraint;
 import minicpbp.engine.core.IntVar;

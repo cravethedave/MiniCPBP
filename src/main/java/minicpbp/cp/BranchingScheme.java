@@ -68,6 +68,7 @@ public final class BranchingScheme {
     static int nbTied;
     // static final int precisionForTie = 10000; // 4 decimal places
     static final int precisionForTie = 100; // 2 decimal places
+    // static final int precisionForTie = 10; // 1 decimal places
 
     private BranchingScheme() {
         throw new UnsupportedOperationException();
@@ -215,6 +216,7 @@ public final class BranchingScheme {
      * @see Factory#makeDfs(Solver, Supplier)
      */
     public static Supplier<Procedure[]> lexicoMaxMarginalValue(IntVar... x) {
+        System.out.println("lexicoMaxMarginal");
 	    boolean tracing = x[0].getSolver().tracingSearch();
         Belief beliefRep = x[0].getSolver().getBeliefRep();
         for(IntVar a: x)
@@ -371,6 +373,7 @@ public final class BranchingScheme {
      * @see Factory#makeDfs(Solver, Supplier)
      */
     public static Supplier<Procedure[]> firstFailRandomVal(IntVar... x) {
+        System.out.println("firstFailRandomVal");
         boolean tracing = x[0].getSolver().tracingSearch();
         for(IntVar a: x)
             a.setForBranching(true);
@@ -531,6 +534,7 @@ public final class BranchingScheme {
      * @see Factory#makeDfs(Solver, Supplier)
      */
     public static Supplier<Procedure[]> randomVarRandomVal(IntVar... x) {
+        System.out.println("randomVarRandomVal");
         boolean tracing = x[0].getSolver().tracingSearch();
         Random rand = x[0].getSolver().getRandomNbGenerator();
         for(IntVar a: x)
@@ -572,6 +576,7 @@ public final class BranchingScheme {
      * @see Factory#makeDfs(Solver, Supplier)
      */
     public static Supplier<Procedure[]> minEntropy(IntVar[] x) {
+        System.out.println("minEntropy");
         boolean tracing = x[0].getSolver().tracingSearch();
         Belief beliefRep = x[0].getSolver().getBeliefRep();
         for(IntVar a: x)
@@ -689,6 +694,7 @@ public final class BranchingScheme {
     }
 
     public static Supplier<Procedure[]> impactBasedSearch(IntVar[] x) {
+        System.out.println("impactBasedSearch");
         boolean tracing = x[0].getSolver().tracingSearch();
         Belief beliefRep = x[0].getSolver().getBeliefRep();
         for(IntVar a: x)
@@ -703,6 +709,37 @@ public final class BranchingScheme {
                 return EMPTY;
             else {
                 int v = xs.valueWithMinImpact();
+                return branch(
+                        () -> {
+                            if (tracing)
+                                System.out.println("### branching on " + xs.getName() + "=" + v + "; marginal=" + beliefRep.rep2std(xs.marginal(v)) + "; entropy=" + xs.entropy());
+                            branchEqualRegisterImpactOnDomains(xs, v);
+                        },
+                        () -> {
+                            if (tracing)
+                                System.out.println("### branching on " + xs.getName() + "!=" + v);
+                            branchNotEqual(xs, v);
+                        });
+            }
+        };
+    }
+
+    public static Supplier<Procedure[]> impactMinVal(IntVar[] x) {
+        System.out.println("impactMinVal");
+        boolean tracing = x[0].getSolver().tracingSearch();
+        Belief beliefRep = x[0].getSolver().getBeliefRep();
+        for(IntVar a: x)
+            a.setForBranching(true);
+        if(x[0].getSolver().getWeighingScheme() == ConstraintWeighingScheme.ARITY)
+            x[0].getSolver().computeMinArity();
+        return () -> {
+            IntVar xs = selectMin(x,
+                    xi -> xi.size() > 1,
+                    xi -> xi.impact());
+            if (xs == null)
+                return EMPTY;
+            else {
+                int v = xs.min();
                 return branch(
                         () -> {
                             if (tracing)
@@ -761,6 +798,7 @@ public final class BranchingScheme {
      * @see Factory#makeDfs(Solver, Supplier)
      */
     public static Supplier<Procedure[]> minEntropyBiasedWheelSelectVal(IntVar[] x) {
+        System.out.println("minEntropyBiasedWheelSelectVal");
         boolean tracing = x[0].getSolver().tracingSearch();
         Belief beliefRep = x[0].getSolver().getBeliefRep();
         for(IntVar a: x)
@@ -803,6 +841,7 @@ public final class BranchingScheme {
      * @see Factory#makeDfs(Solver, Supplier)
      */
     public static Supplier<Procedure[]> maxMarginalStrength(IntVar[] x) {
+        System.out.println("maxMarginalStrength");
         boolean tracing = x[0].getSolver().tracingSearch();
         Belief beliefRep = x[0].getSolver().getBeliefRep();
         for(IntVar a: x)
@@ -1016,6 +1055,7 @@ public final class BranchingScheme {
      * @see Factory#makeDfs(Solver, Supplier)
      */
     public static Supplier<Procedure[]> domWdeg(IntVar... x) {
+        System.out.println("domWdeg");
         boolean tracing = x[0].getSolver().tracingSearch();
         for(IntVar a: x)
             a.setForBranching(true);
@@ -1027,6 +1067,62 @@ public final class BranchingScheme {
                     return EMPTY;
                 else {
                     int v = xs.min();
+                    return branch(
+                            () -> {
+                                if (tracing)
+                                    System.out.println("### branching on " + xs.getName() + "=" + v);
+                                branchEqual(xs, v);
+                            },
+                            () -> {
+                                if (tracing)
+                                    System.out.println("### branching on " + xs.getName() + "!=" + v);
+                                branchNotEqual(xs, v);
+                            });
+                }
+            };
+    };
+
+    public static Supplier<Procedure[]> domRaw(IntVar... x) {
+        System.out.println("domRaw");
+        boolean tracing = x[0].getSolver().tracingSearch();
+        for(IntVar a: x)
+            a.setForBranching(true);
+            return () -> {
+                IntVar xs = selectMin(x,
+                        xi -> xi.size() > 1,
+                        xi -> ((double) xi.size()));
+                if (xs == null)
+                    return EMPTY;
+                else {
+                    int v = xs.min();
+                    return branch(
+                            () -> {
+                                if (tracing)
+                                    System.out.println("### branching on " + xs.getName() + "=" + v);
+                                branchEqual(xs, v);
+                            },
+                            () -> {
+                                if (tracing)
+                                    System.out.println("### branching on " + xs.getName() + "!=" + v);
+                                branchNotEqual(xs, v);
+                            });
+                }
+            };
+    };
+
+    public static Supplier<Procedure[]> domWdegRandom(IntVar... x) {
+        System.out.println("domWdegRandom");
+        boolean tracing = x[0].getSolver().tracingSearch();
+        for(IntVar a: x)
+            a.setForBranching(true);
+            return () -> {
+                IntVar xs = selectMin(x,
+                        xi -> xi.size() > 1,
+                        xi -> ((double) xi.size())/((double) xi.wDeg()));
+                if (xs == null)
+                    return EMPTY;
+                else {
+                    int v = xs.randomValue();
                     return branch(
                             () -> {
                                 if (tracing)
@@ -1054,6 +1150,7 @@ public final class BranchingScheme {
      * @see Factory#makeDfs(Solver, Supplier)
      */
     public static Supplier<Procedure[]> domWdegMaxMarginalValue(IntVar... x) {
+        System.out.println("domWdegMaxMarginalValue");
         boolean tracing = x[0].getSolver().tracingSearch();
         for (IntVar a : x)
             a.setForBranching(true);
@@ -1093,6 +1190,50 @@ public final class BranchingScheme {
      * @see Factory#makeDfs(Solver, Supplier)
      */
     public static Supplier<Procedure[]> maxMarginal(IntVar... x) {
+        System.out.println("maxMarginal");
+        boolean tracing = x[0].getSolver().tracingSearch();
+        Belief beliefRep = x[0].getSolver().getBeliefRep();
+        for(IntVar a: x)
+            a.setForBranching(true);
+        if(x[0].getSolver().getWeighingScheme() == ConstraintWeighingScheme.ARITY)
+            x[0].getSolver().computeMinArity();
+        return () -> {
+            IntVar xs = selectMin(x,
+                    xi -> xi.size() > 1,
+                    xi -> -beliefRep.rep2std(xi.maxMarginal()));
+            if (xs == null)
+                return EMPTY;
+            else {
+                int v = xs.valueWithMaxMarginal();
+                return branch(
+                        () -> {
+                            if (tracing)
+                                System.out.println("### branching on " + xs.getName() + "=" + v + " marginal=" + beliefRep.rep2std(xs.maxMarginal()));
+                            branchEqual(xs, v);
+                        },
+                        () -> {
+                            if (tracing)
+                                System.out.println("### branching on " + xs.getName() + "!=" + v);
+                            branchNotEqual(xs, v);
+                        });
+            }
+        };
+    }
+
+    /**
+     * Maximum Marginal biased wheel strategy.
+     * It selects an unbound variable with the largest marginal
+     * on one of the values in its domain.
+     * Then it creates two branches:
+     * the left branch assigning the variable to that value;
+     * the right branch removing this value from the domain.
+     *
+     * @param x the variable on which the max marginal strategy is applied.
+     * @return maxMarginal branching strategy
+     * @see Factory#makeDfs(Solver, Supplier)
+     */
+    public static Supplier<Procedure[]> maxMarginalBiasedWheel(IntVar... x) {
+        System.out.println("maxMarginalBiasedWheel");
         boolean tracing = x[0].getSolver().tracingSearch();
         Belief beliefRep = x[0].getSolver().getBeliefRep();
         for(IntVar a: x)
@@ -1177,6 +1318,7 @@ public final class BranchingScheme {
      * @see Factory#makeDfs(Solver, Supplier)
      */
     public static Supplier<Procedure[]> maxMarginalRandomTieBreak(IntVar... x) {
+        System.out.println("maxMarginalRandomTieBreak");
         boolean tracing = x[0].getSolver().tracingSearch();
         Belief beliefRep = x[0].getSolver().getBeliefRep();
         Random rand = x[0].getSolver().getRandomNbGenerator();

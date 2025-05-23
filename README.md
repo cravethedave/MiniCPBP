@@ -1,13 +1,34 @@
 
 
+# IJCAI 2025 #
+
+To run this project and get the results observed in IJCAI 2025, first follow the steps below to install maven.
+You can then generate one molecule using the command:
+```
+mvn exec:java -Dexec.mainClass='minicpbp.examples.molecules.TestGenOracle' -Dexec.args="$METHOD $ORACLE_WEIGHT"
+```
+You can also generate multiple molecules using the command:
+```
+python3 server/parallel_run.py $METHOD $MOL_COUNT $THREAD_COUNT $ORACLE_WEIGHT
+```
+
+`$METHOD` is a required argument. Accepted values are: `gpt`, `gpt_cp`, `gpt_cpbp`, `cpbp`, `cpbp_back`.
+
+`$MOL_COUNT` is a required argument for the second command. It must be an integer.
+
+`$THREAD_COUNT` is an optional argument for the second command. It defaults to 1 and must be an integer.
+
+`$ORACLE_WEIGHT` is an optional parameter for the second command, but is required for the first. It defaults to 1.0 and must be a float.
+
+In the case where `$MOL_COUNT` is not divisible by `$THREAD_COUNT`, the program will generate the smallest multiple of `$THREAD_COUNT` that is greater than `$MOL_COUNT`.
+
+
 # README #
 
 * MiniCPBP: Replacing classic propagation by belief propagation in MiniCPv1.0
 * A paper describing the CP-BP framework  <https://jair.org/index.php/jair/article/view/11487>.
 * Infos on MiniCP can be found <http://minicp.org>.
 * MiniCPBP is a Java project built with Maven (<https://maven.apache.org>).
-
-
 
 
 System Requirements
@@ -117,7 +138,7 @@ The output of build process ends with lines like this, which indicates a success
 
 ## Running MiniCPBP
 
-Let's firts test the built code:
+Let's first test the built code:
 
 ```
 $ java -jar target/minicpbp-1.0.jar

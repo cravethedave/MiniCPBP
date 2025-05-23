@@ -15,6 +15,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <argLine></argLine>
         <checkstyle.config.location>${basedir}/checkstyle.xml</checkstyle.config.location>
+        <exec.mainClass>minicpbp.examples.molecules.TestGenOracle</exec.mainClass>
     </properties>
     <repositories>
         <repository>
@@ -83,6 +84,7 @@
                 <version>3.0.0-M3</version>
                 <configuration>
                     <skipTests>true</skipTests>
+                    <argLine>-Xmx2048m</argLine>
                 </configuration>
             </plugin>
             <plugin>

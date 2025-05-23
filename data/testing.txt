@@ -1,0 +1,13 @@
+S -> A H0
+H0 -> B C
+A -> a
+A -> C Z0
+A -> Z0 H1
+Z0 -> b
+H1 -> C Z1
+Z1 -> a
+B -> C Z0
+B -> Z0 H1
+C -> c
+C -> Z1 Z2
+Z2 -> c

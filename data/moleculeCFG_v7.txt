@@ -1,0 +1,734 @@
+// Starting symbol to add empty token
+    empty_smiles -> smiles
+    empty_smiles -> smiles void
+    void -> _ void
+    void -> _
+// Starting symbol
+    smiles -> nonH_bond
+    smiles -> atom_valence_1 nonH_bond
+    smiles -> atom_valence_2 double_bond
+    smiles -> atom_valence_3 triple_bond
+// Considered atoms and ions
+    atom_valence_1 -> 'F'
+    atom_valence_1 -> 'Cl'
+    atom_valence_1 -> 'Br'
+    atom_valence_1 -> 'I'
+    atom_valence_1 -> '[' 'O' '-' ']'
+    atom_valence_1 -> '[' 'N' hydrogen_3 '+' ']'
+    atom_valence_2 -> 'O'
+    atom_valence_2 -> 'S'
+    atom_valence_3 -> 'N'
+    atom_valence_3 -> '[' 'C' '@' hydrogen_1 ']'
+    atom_valence_3 -> '[' 'C' '@' '@' hydrogen_1 ']'
+    atom_valence_3 -> '[' 'N' hydrogen_1 '+' ']'
+    atom_valence_4 -> 'C'
+    atom_valence_4 -> '[' 'C' '@' ']'
+    atom_valence_4 -> '[' 'C' '@' '@' ']'
+    atom_valence_4 -> '[' 'N' '+' ']'
+// Hydrogens
+    hydrogen_1 -> 'H'
+    hydrogen_3 -> 'H3'
+// nonH_bond
+    nonH_bond -> valence_1
+    nonH_bond -> valence_2 nonH_bond
+    nonH_bond -> valence_3 double_bond
+    nonH_bond -> valence_4 triple_bond
+// Allows some semblance of 3D
+    nonH_bond -> valence_2 slash valence_3 '=' valence_3 slash valence_2
+    slash -> '/'
+    slash -> '\'
+// Simple valence rules
+    valence_1 -> atom_valence_1
+    valence_1 -> valence_2
+    valence_1 -> valence_2 '(' nonH_bond ')'
+    valence_1 -> valence_3 '(' double_bond ')'
+    valence_1 -> valence_4 '(' triple_bond ')'
+    valence_2 -> atom_valence_2
+    valence_2 -> 'S' '(' '=' 'O' ')' '(' '=' 'O' ')'
+    valence_2 -> valence_3
+    valence_2 -> valence_3 '(' nonH_bond ')'
+    valence_2 -> valence_4 '(' double_bond ')'
+    valence_3 -> atom_valence_3
+    valence_3 -> valence_4
+    valence_3 -> valence_4 '(' nonH_bond ')'
+    valence_4 -> atom_valence_4
+// Simple bond rules
+    double_bond -> '=' valence_2
+    double_bond -> '=' valence_3 nonH_bond
+    double_bond -> '=' valence_4 double_bond
+    triple_bond -> '#' valence_3
+    triple_bond -> '#' valence_4 nonH_bond
+// Ring start
+    nonH_bond -> valence_3_num1 cycle1_n_bond
+    nonH_bond -> valence_3_num2 cycle2_n_bond
+    nonH_bond -> valence_3_num3 cycle3_n_bond
+    nonH_bond -> valence_3_num4 cycle4_n_bond
+    nonH_bond -> valence_3_num5 cycle5_n_bond
+    nonH_bond -> valence_3_num6 cycle6_n_bond
+    nonH_bond -> valence_3_num7 cycle7_n_bond
+    nonH_bond -> valence_3_num8 cycle8_n_bond
+    nonH_bond -> valence_4_num1 cycle1_n_double_bond
+    nonH_bond -> valence_4_num2 cycle2_n_double_bond
+    nonH_bond -> valence_4_num3 cycle3_n_double_bond
+    nonH_bond -> valence_4_num4 cycle4_n_double_bond
+    nonH_bond -> valence_4_num5 cycle5_n_double_bond
+    nonH_bond -> valence_4_num6 cycle6_n_double_bond
+    nonH_bond -> valence_4_num7 cycle7_n_double_bond
+    nonH_bond -> valence_4_num8 cycle8_n_double_bond
+    nonH_bond -> ring_n_segment
+    nonH_bond -> ring_n_segment nonH_bond
+    valence_2 -> valence_4_num1 '(' cycle1_n_bond ')'
+    valence_2 -> valence_4_num2 '(' cycle2_n_bond ')'
+    valence_2 -> valence_4_num3 '(' cycle3_n_bond ')'
+    valence_2 -> valence_4_num4 '(' cycle4_n_bond ')'
+    valence_2 -> valence_4_num5 '(' cycle5_n_bond ')'
+    valence_2 -> valence_4_num6 '(' cycle6_n_bond ')'
+    valence_2 -> valence_4_num7 '(' cycle7_n_bond ')'
+    valence_2 -> valence_4_num8 '(' cycle8_n_bond ')'
+// Cycle #1
+    cycle1_n_bond -> cycle1_7_bond
+    cycle1_n_double_bond -> cycle1_7_double_bond
+    cycle1_n-1_bond -> cycle1_6_bond
+    cycle1_n-1_double_bond -> cycle1_6_double_bond
+    cycle1_n-2_bond -> cycle1_5_bond
+    cycle1_n-2_double_bond -> cycle1_5_double_bond
+    cycle1_7_bond -> cycle1_6_bond
+    cycle1_6_bond -> cycle1_5_bond
+    cycle1_5_bond -> cycle1_4_bond
+    cycle1_4_bond -> cycle1_3_bond
+    cycle1_3_bond -> cycle1_2_bond
+    cycle1_7_double_bond -> cycle1_6_double_bond
+    cycle1_6_double_bond -> cycle1_5_double_bond
+    cycle1_5_double_bond -> cycle1_4_double_bond
+    cycle1_4_double_bond -> cycle1_3_double_bond
+    cycle1_3_double_bond -> cycle1_2_double_bond
+    cycle1_7_bond -> valence_2 cycle1_6_bond
+    cycle1_7_bond -> valence_3 cycle1_6_double_bond
+    cycle1_7_bond -> ring_n_segment cycle1_6_bond
+    cycle1_7_double_bond -> '=' valence_3 cycle1_6_bond
+    cycle1_6_bond -> valence_2 cycle1_5_bond
+    cycle1_6_bond -> valence_3 cycle1_5_double_bond
+    cycle1_6_bond -> ring_n_segment cycle1_5_bond
+    cycle1_6_double_bond -> '=' valence_3 cycle1_5_bond
+    cycle1_5_bond -> valence_2 cycle1_4_bond
+    cycle1_5_bond -> valence_3 cycle1_4_double_bond
+    cycle1_5_bond -> ring_n_segment cycle1_4_bond
+    cycle1_5_double_bond -> '=' valence_3 cycle1_4_bond
+    cycle1_4_bond -> valence_2 cycle1_3_bond
+    cycle1_4_bond -> valence_3 cycle1_3_double_bond
+    cycle1_4_bond -> ring_n_segment cycle1_3_bond
+    cycle1_4_double_bond -> '=' valence_3 cycle1_3_bond
+    cycle1_3_bond -> valence_2 cycle1_2_bond
+    cycle1_3_bond -> valence_3 cycle1_2_double_bond
+    cycle1_3_bond -> ring_n_segment cycle1_2_bond
+    cycle1_3_double_bond -> '=' valence_3 cycle1_2_bond
+    cycle1_2_bond -> valence_2 valence_2_num1
+    cycle1_2_bond -> valence_3 '=' valence_3_num1
+    cycle1_2_bond -> ring_n_segment valence_2_num1
+    cycle1_2_double_bond -> '=' valence_3 valence_2_num1
+// Cycle #2
+    cycle2_n_bond -> cycle2_7_bond
+    cycle2_n_double_bond -> cycle2_7_double_bond
+    cycle2_n-1_bond -> cycle2_6_bond
+    cycle2_n-1_double_bond -> cycle2_6_double_bond
+    cycle2_n-2_bond -> cycle2_5_bond
+    cycle2_n-2_double_bond -> cycle2_5_double_bond
+    cycle2_7_bond -> cycle2_6_bond
+    cycle2_6_bond -> cycle2_5_bond
+    cycle2_5_bond -> cycle2_4_bond
+    cycle2_4_bond -> cycle2_3_bond
+    cycle2_3_bond -> cycle2_2_bond
+    cycle2_7_double_bond -> cycle2_6_double_bond
+    cycle2_6_double_bond -> cycle2_5_double_bond
+    cycle2_5_double_bond -> cycle2_4_double_bond
+    cycle2_4_double_bond -> cycle2_3_double_bond
+    cycle2_3_double_bond -> cycle2_2_double_bond
+    cycle2_7_bond -> valence_2 cycle2_6_bond
+    cycle2_7_bond -> valence_3 cycle2_6_double_bond
+    cycle2_7_bond -> ring_n_segment cycle2_6_bond
+    cycle2_7_double_bond -> '=' valence_3 cycle2_6_bond
+    cycle2_6_bond -> valence_2 cycle2_5_bond
+    cycle2_6_bond -> valence_3 cycle2_5_double_bond
+    cycle2_6_bond -> ring_n_segment cycle2_5_bond
+    cycle2_6_double_bond -> '=' valence_3 cycle2_5_bond
+    cycle2_5_bond -> valence_2 cycle2_4_bond
+    cycle2_5_bond -> valence_3 cycle2_4_double_bond
+    cycle2_5_bond -> ring_n_segment cycle2_4_bond
+    cycle2_5_double_bond -> '=' valence_3 cycle2_4_bond
+    cycle2_4_bond -> valence_2 cycle2_3_bond
+    cycle2_4_bond -> valence_3 cycle2_3_double_bond
+    cycle2_4_bond -> ring_n_segment cycle2_3_bond
+    cycle2_4_double_bond -> '=' valence_3 cycle2_3_bond
+    cycle2_3_bond -> valence_2 cycle2_2_bond
+    cycle2_3_bond -> valence_3 cycle2_2_double_bond
+    cycle2_3_bond -> ring_n_segment cycle2_2_bond
+    cycle2_3_double_bond -> '=' valence_3 cycle2_2_bond
+    cycle2_2_bond -> valence_2 valence_2_num2
+    cycle2_2_bond -> valence_3 '=' valence_3_num2
+    cycle2_2_bond -> ring_n_segment valence_2_num2
+    cycle2_2_double_bond -> '=' valence_3 valence_2_num2
+// Cycle #3
+    cycle3_n_bond -> cycle3_7_bond
+    cycle3_n_double_bond -> cycle3_7_double_bond
+    cycle3_n-1_bond -> cycle3_6_bond
+    cycle3_n-1_double_bond -> cycle3_6_double_bond
+    cycle3_n-2_bond -> cycle3_5_bond
+    cycle3_n-2_double_bond -> cycle3_5_double_bond
+    cycle3_7_bond -> cycle3_6_bond
+    cycle3_6_bond -> cycle3_5_bond
+    cycle3_5_bond -> cycle3_4_bond
+    cycle3_4_bond -> cycle3_3_bond
+    cycle3_3_bond -> cycle3_2_bond
+    cycle3_7_double_bond -> cycle3_6_double_bond
+    cycle3_6_double_bond -> cycle3_5_double_bond
+    cycle3_5_double_bond -> cycle3_4_double_bond
+    cycle3_4_double_bond -> cycle3_3_double_bond
+    cycle3_3_double_bond -> cycle3_2_double_bond
+    cycle3_7_bond -> valence_2 cycle3_6_bond
+    cycle3_7_bond -> valence_3 cycle3_6_double_bond
+    cycle3_7_bond -> ring_n_segment cycle3_6_bond
+    cycle3_7_double_bond -> '=' valence_3 cycle3_6_bond
+    cycle3_6_bond -> valence_2 cycle3_5_bond
+    cycle3_6_bond -> valence_3 cycle3_5_double_bond
+    cycle3_6_bond -> ring_n_segment cycle3_5_bond
+    cycle3_6_double_bond -> '=' valence_3 cycle3_5_bond
+    cycle3_5_bond -> valence_2 cycle3_4_bond
+    cycle3_5_bond -> valence_3 cycle3_4_double_bond
+    cycle3_5_bond -> ring_n_segment cycle3_4_bond
+    cycle3_5_double_bond -> '=' valence_3 cycle3_4_bond
+    cycle3_4_bond -> valence_2 cycle3_3_bond
+    cycle3_4_bond -> valence_3 cycle3_3_double_bond
+    cycle3_4_bond -> ring_n_segment cycle3_3_bond
+    cycle3_4_double_bond -> '=' valence_3 cycle3_3_bond
+    cycle3_3_bond -> valence_2 cycle3_2_bond
+    cycle3_3_bond -> valence_3 cycle3_2_double_bond
+    cycle3_3_bond -> ring_n_segment cycle3_2_bond
+    cycle3_3_double_bond -> '=' valence_3 cycle3_2_bond
+    cycle3_2_bond -> valence_2 valence_2_num3
+    cycle3_2_bond -> valence_3 '=' valence_3_num3
+    cycle3_2_bond -> ring_n_segment valence_2_num3
+    cycle3_2_double_bond -> '=' valence_3 valence_2_num3
+// Cycle #4
+    cycle4_n_bond -> cycle4_7_bond
+    cycle4_n_double_bond -> cycle4_7_double_bond
+    cycle4_n-1_bond -> cycle4_6_bond
+    cycle4_n-1_double_bond -> cycle4_6_double_bond
+    cycle4_n-2_bond -> cycle4_5_bond
+    cycle4_n-2_double_bond -> cycle4_5_double_bond
+    cycle4_7_bond -> cycle4_6_bond
+    cycle4_6_bond -> cycle4_5_bond
+    cycle4_5_bond -> cycle4_4_bond
+    cycle4_4_bond -> cycle4_3_bond
+    cycle4_3_bond -> cycle4_2_bond
+    cycle4_7_double_bond -> cycle4_6_double_bond
+    cycle4_6_double_bond -> cycle4_5_double_bond
+    cycle4_5_double_bond -> cycle4_4_double_bond
+    cycle4_4_double_bond -> cycle4_3_double_bond
+    cycle4_3_double_bond -> cycle4_2_double_bond
+    cycle4_7_bond -> valence_2 cycle4_6_bond
+    cycle4_7_bond -> valence_3 cycle4_6_double_bond
+    cycle4_7_bond -> ring_n_segment cycle4_6_bond
+    cycle4_7_double_bond -> '=' valence_3 cycle4_6_bond
+    cycle4_6_bond -> valence_2 cycle4_5_bond
+    cycle4_6_bond -> valence_3 cycle4_5_double_bond
+    cycle4_6_bond -> ring_n_segment cycle4_5_bond
+    cycle4_6_double_bond -> '=' valence_3 cycle4_5_bond
+    cycle4_5_bond -> valence_2 cycle4_4_bond
+    cycle4_5_bond -> valence_3 cycle4_4_double_bond
+    cycle4_5_bond -> ring_n_segment cycle4_4_bond
+    cycle4_5_double_bond -> '=' valence_3 cycle4_4_bond
+    cycle4_4_bond -> valence_2 cycle4_3_bond
+    cycle4_4_bond -> valence_3 cycle4_3_double_bond
+    cycle4_4_bond -> ring_n_segment cycle4_3_bond
+    cycle4_4_double_bond -> '=' valence_3 cycle4_3_bond
+    cycle4_3_bond -> valence_2 cycle4_2_bond
+    cycle4_3_bond -> valence_3 cycle4_2_double_bond
+    cycle4_3_bond -> ring_n_segment cycle4_2_bond
+    cycle4_3_double_bond -> '=' valence_3 cycle4_2_bond
+    cycle4_2_bond -> valence_2 valence_2_num4
+    cycle4_2_bond -> valence_3 '=' valence_3_num4
+    cycle4_2_bond -> ring_n_segment valence_2_num4
+    cycle4_2_double_bond -> '=' valence_3 valence_2_num4
+// Cycle #5
+    cycle5_n_bond -> cycle5_7_bond
+    cycle5_n_double_bond -> cycle5_7_double_bond
+    cycle5_n-1_bond -> cycle5_6_bond
+    cycle5_n-1_double_bond -> cycle5_6_double_bond
+    cycle5_n-2_bond -> cycle5_5_bond
+    cycle5_n-2_double_bond -> cycle5_5_double_bond
+    cycle5_7_bond -> cycle5_6_bond
+    cycle5_6_bond -> cycle5_5_bond
+    cycle5_5_bond -> cycle5_4_bond
+    cycle5_4_bond -> cycle5_3_bond
+    cycle5_3_bond -> cycle5_2_bond
+    cycle5_7_double_bond -> cycle5_6_double_bond
+    cycle5_6_double_bond -> cycle5_5_double_bond
+    cycle5_5_double_bond -> cycle5_4_double_bond
+    cycle5_4_double_bond -> cycle5_3_double_bond
+    cycle5_3_double_bond -> cycle5_2_double_bond
+    cycle5_7_bond -> valence_2 cycle5_6_bond
+    cycle5_7_bond -> valence_3 cycle5_6_double_bond
+    cycle5_7_bond -> ring_n_segment cycle5_6_bond
+    cycle5_7_double_bond -> '=' valence_3 cycle5_6_bond
+    cycle5_6_bond -> valence_2 cycle5_5_bond
+    cycle5_6_bond -> valence_3 cycle5_5_double_bond
+    cycle5_6_bond -> ring_n_segment cycle5_5_bond
+    cycle5_6_double_bond -> '=' valence_3 cycle5_5_bond
+    cycle5_5_bond -> valence_2 cycle5_4_bond
+    cycle5_5_bond -> valence_3 cycle5_4_double_bond
+    cycle5_5_bond -> ring_n_segment cycle5_4_bond
+    cycle5_5_double_bond -> '=' valence_3 cycle5_4_bond
+    cycle5_4_bond -> valence_2 cycle5_3_bond
+    cycle5_4_bond -> valence_3 cycle5_3_double_bond
+    cycle5_4_bond -> ring_n_segment cycle5_3_bond
+    cycle5_4_double_bond -> '=' valence_3 cycle5_3_bond
+    cycle5_3_bond -> valence_2 cycle5_2_bond
+    cycle5_3_bond -> valence_3 cycle5_2_double_bond
+    cycle5_3_bond -> ring_n_segment cycle5_2_bond
+    cycle5_3_double_bond -> '=' valence_3 cycle5_2_bond
+    cycle5_2_bond -> valence_2 valence_2_num5
+    cycle5_2_bond -> valence_3 '=' valence_3_num5
+    cycle5_2_bond -> ring_n_segment valence_2_num5
+    cycle5_2_double_bond -> '=' valence_3 valence_2_num5
+// Cycle #6
+    cycle6_n_bond -> cycle6_7_bond
+    cycle6_n_double_bond -> cycle6_7_double_bond
+    cycle6_n-1_bond -> cycle6_6_bond
+    cycle6_n-1_double_bond -> cycle6_6_double_bond
+    cycle6_n-2_bond -> cycle6_5_bond
+    cycle6_n-2_double_bond -> cycle6_5_double_bond
+    cycle6_7_bond -> cycle6_6_bond
+    cycle6_6_bond -> cycle6_5_bond
+    cycle6_5_bond -> cycle6_4_bond
+    cycle6_4_bond -> cycle6_3_bond
+    cycle6_3_bond -> cycle6_2_bond
+    cycle6_7_double_bond -> cycle6_6_double_bond
+    cycle6_6_double_bond -> cycle6_5_double_bond
+    cycle6_5_double_bond -> cycle6_4_double_bond
+    cycle6_4_double_bond -> cycle6_3_double_bond
+    cycle6_3_double_bond -> cycle6_2_double_bond
+    cycle6_7_bond -> valence_2 cycle6_6_bond
+    cycle6_7_bond -> valence_3 cycle6_6_double_bond
+    cycle6_7_bond -> ring_n_segment cycle6_6_bond
+    cycle6_7_double_bond -> '=' valence_3 cycle6_6_bond
+    cycle6_6_bond -> valence_2 cycle6_5_bond
+    cycle6_6_bond -> valence_3 cycle6_5_double_bond
+    cycle6_6_bond -> ring_n_segment cycle6_5_bond
+    cycle6_6_double_bond -> '=' valence_3 cycle6_5_bond
+    cycle6_5_bond -> valence_2 cycle6_4_bond
+    cycle6_5_bond -> valence_3 cycle6_4_double_bond
+    cycle6_5_bond -> ring_n_segment cycle6_4_bond
+    cycle6_5_double_bond -> '=' valence_3 cycle6_4_bond
+    cycle6_4_bond -> valence_2 cycle6_3_bond
+    cycle6_4_bond -> valence_3 cycle6_3_double_bond
+    cycle6_4_bond -> ring_n_segment cycle6_3_bond
+    cycle6_4_double_bond -> '=' valence_3 cycle6_3_bond
+    cycle6_3_bond -> valence_2 cycle6_2_bond
+    cycle6_3_bond -> valence_3 cycle6_2_double_bond
+    cycle6_3_bond -> ring_n_segment cycle6_2_bond
+    cycle6_3_double_bond -> '=' valence_3 cycle6_2_bond
+    cycle6_2_bond -> valence_2 valence_2_num6
+    cycle6_2_bond -> valence_3 '=' valence_3_num6
+    cycle6_2_bond -> ring_n_segment valence_2_num6
+    cycle6_2_double_bond -> '=' valence_3 valence_2_num6
+// Cycle #7
+    cycle7_n_bond -> cycle7_7_bond
+    cycle7_n_double_bond -> cycle7_7_double_bond
+    cycle7_n-1_bond -> cycle7_6_bond
+    cycle7_n-1_double_bond -> cycle7_6_double_bond
+    cycle7_n-2_bond -> cycle7_5_bond
+    cycle7_n-2_double_bond -> cycle7_5_double_bond
+    cycle7_7_bond -> cycle7_6_bond
+    cycle7_6_bond -> cycle7_5_bond
+    cycle7_5_bond -> cycle7_4_bond
+    cycle7_4_bond -> cycle7_3_bond
+    cycle7_3_bond -> cycle7_2_bond
+    cycle7_7_double_bond -> cycle7_6_double_bond
+    cycle7_6_double_bond -> cycle7_5_double_bond
+    cycle7_5_double_bond -> cycle7_4_double_bond
+    cycle7_4_double_bond -> cycle7_3_double_bond
+    cycle7_3_double_bond -> cycle7_2_double_bond
+    cycle7_7_bond -> valence_2 cycle7_6_bond
+    cycle7_7_bond -> valence_3 cycle7_6_double_bond
+    cycle7_7_bond -> ring_n_segment cycle7_6_bond
+    cycle7_7_double_bond -> '=' valence_3 cycle7_6_bond
+    cycle7_6_bond -> valence_2 cycle7_5_bond
+    cycle7_6_bond -> valence_3 cycle7_5_double_bond
+    cycle7_6_bond -> ring_n_segment cycle7_5_bond
+    cycle7_6_double_bond -> '=' valence_3 cycle7_5_bond
+    cycle7_5_bond -> valence_2 cycle7_4_bond
+    cycle7_5_bond -> valence_3 cycle7_4_double_bond
+    cycle7_5_bond -> ring_n_segment cycle7_4_bond
+    cycle7_5_double_bond -> '=' valence_3 cycle7_4_bond
+    cycle7_4_bond -> valence_2 cycle7_3_bond
+    cycle7_4_bond -> valence_3 cycle7_3_double_bond
+    cycle7_4_bond -> ring_n_segment cycle7_3_bond
+    cycle7_4_double_bond -> '=' valence_3 cycle7_3_bond
+    cycle7_3_bond -> valence_2 cycle7_2_bond
+    cycle7_3_bond -> valence_3 cycle7_2_double_bond
+    cycle7_3_bond -> ring_n_segment cycle7_2_bond
+    cycle7_3_double_bond -> '=' valence_3 cycle7_2_bond
+    cycle7_2_bond -> valence_2 valence_2_num7
+    cycle7_2_bond -> valence_3 '=' valence_3_num7
+    cycle7_2_bond -> ring_n_segment valence_2_num7
+    cycle7_2_double_bond -> '=' valence_3 valence_2_num7
+// Cycle #8
+    cycle8_n_bond -> cycle8_7_bond
+    cycle8_n_double_bond -> cycle8_7_double_bond
+    cycle8_n-1_bond -> cycle8_6_bond
+    cycle8_n-1_double_bond -> cycle8_6_double_bond
+    cycle8_n-2_bond -> cycle8_5_bond
+    cycle8_n-2_double_bond -> cycle8_5_double_bond
+    cycle8_7_bond -> cycle8_6_bond
+    cycle8_6_bond -> cycle8_5_bond
+    cycle8_5_bond -> cycle8_4_bond
+    cycle8_4_bond -> cycle8_3_bond
+    cycle8_3_bond -> cycle8_2_bond
+    cycle8_7_double_bond -> cycle8_6_double_bond
+    cycle8_6_double_bond -> cycle8_5_double_bond
+    cycle8_5_double_bond -> cycle8_4_double_bond
+    cycle8_4_double_bond -> cycle8_3_double_bond
+    cycle8_3_double_bond -> cycle8_2_double_bond
+    cycle8_7_bond -> valence_2 cycle8_6_bond
+    cycle8_7_bond -> valence_3 cycle8_6_double_bond
+    cycle8_7_bond -> ring_n_segment cycle8_6_bond
+    cycle8_7_double_bond -> '=' valence_3 cycle8_6_bond
+    cycle8_6_bond -> valence_2 cycle8_5_bond
+    cycle8_6_bond -> valence_3 cycle8_5_double_bond
+    cycle8_6_bond -> ring_n_segment cycle8_5_bond
+    cycle8_6_double_bond -> '=' valence_3 cycle8_5_bond
+    cycle8_5_bond -> valence_2 cycle8_4_bond
+    cycle8_5_bond -> valence_3 cycle8_4_double_bond
+    cycle8_5_bond -> ring_n_segment cycle8_4_bond
+    cycle8_5_double_bond -> '=' valence_3 cycle8_4_bond
+    cycle8_4_bond -> valence_2 cycle8_3_bond
+    cycle8_4_bond -> valence_3 cycle8_3_double_bond
+    cycle8_4_bond -> ring_n_segment cycle8_3_bond
+    cycle8_4_double_bond -> '=' valence_3 cycle8_3_bond
+    cycle8_3_bond -> valence_2 cycle8_2_bond
+    cycle8_3_bond -> valence_3 cycle8_2_double_bond
+    cycle8_3_bond -> ring_n_segment cycle8_2_bond
+    cycle8_3_double_bond -> '=' valence_3 cycle8_2_bond
+    cycle8_2_bond -> valence_2 valence_2_num8
+    cycle8_2_bond -> valence_3 '=' valence_3_num8
+    cycle8_2_bond -> ring_n_segment valence_2_num8
+    cycle8_2_double_bond -> '=' valence_3 valence_2_num8
+// Ring segments
+    ring_n_segment -> valence_3 '(' cycle1_n-2_bond ')' valence_3_num1
+    ring_n_segment -> valence_4 '(' cycle1_n-2_bond ')' '=' valence_4_num1
+    ring_n_segment -> valence_4 '(' cycle1_n-2_double_bond ')' valence_3_num1
+    ring_n_segment -> valence_3 '(' cycle2_n-2_bond ')' valence_3_num2
+    ring_n_segment -> valence_4 '(' cycle2_n-2_bond ')' '=' valence_4_num2
+    ring_n_segment -> valence_4 '(' cycle2_n-2_double_bond ')' valence_3_num2
+    ring_n_segment -> valence_3 '(' cycle3_n-2_bond ')' valence_3_num3
+    ring_n_segment -> valence_4 '(' cycle3_n-2_bond ')' '=' valence_4_num3
+    ring_n_segment -> valence_4 '(' cycle3_n-2_double_bond ')' valence_3_num3
+    ring_n_segment -> valence_3 '(' cycle4_n-2_bond ')' valence_3_num4
+    ring_n_segment -> valence_4 '(' cycle4_n-2_bond ')' '=' valence_4_num4
+    ring_n_segment -> valence_4 '(' cycle4_n-2_double_bond ')' valence_3_num4
+    ring_n_segment -> valence_3 '(' cycle5_n-2_bond ')' valence_3_num5
+    ring_n_segment -> valence_4 '(' cycle5_n-2_bond ')' '=' valence_4_num5
+    ring_n_segment -> valence_4 '(' cycle5_n-2_double_bond ')' valence_3_num5
+    ring_n_segment -> valence_3 '(' cycle6_n-2_bond ')' valence_3_num6
+    ring_n_segment -> valence_4 '(' cycle6_n-2_bond ')' '=' valence_4_num6
+    ring_n_segment -> valence_4 '(' cycle6_n-2_double_bond ')' valence_3_num6
+    ring_n_segment -> valence_3 '(' cycle7_n-2_bond ')' valence_3_num7
+    ring_n_segment -> valence_4 '(' cycle7_n-2_bond ')' '=' valence_4_num7
+    ring_n_segment -> valence_4 '(' cycle7_n-2_double_bond ')' valence_3_num7    
+    ring_n_segment -> valence_3 '(' cycle8_n-2_bond ')' valence_3_num8
+    ring_n_segment -> valence_4 '(' cycle8_n-2_bond ')' '=' valence_4_num8
+    ring_n_segment -> valence_4 '(' cycle8_n-2_double_bond ')' valence_3_num8
+// Numbered cycle #1 valence atoms
+    valence_2_num1 -> atom_valence_2 '1'
+    valence_2_num1 -> 'S' '1' '(' '=' 'O' ')' '(' '=' 'O' ')'
+    valence_2_num1 -> valence_3_num1
+    valence_2_num1 -> valence_3_num1 '(' nonH_bond ')'
+    valence_2_num1 -> valence_4_num1 '(' double_bond ')'
+    valence_3_num1 -> atom_valence_3 '1'
+    valence_3_num1 -> valence_4_num1
+    valence_3_num1 -> valence_4_num1 '(' nonH_bond ')'
+    valence_4_num1 -> atom_valence_4 '1'
+// Numbered cycle #2 valence atoms
+    valence_2_num2 -> atom_valence_2 '2'
+    valence_2_num2 -> 'S' '2' '(' '=' 'O' ')' '(' '=' 'O' ')'
+    valence_2_num2 -> valence_3_num2
+    valence_2_num2 -> valence_3_num2 '(' nonH_bond ')'
+    valence_2_num2 -> valence_4_num2 '(' double_bond ')'
+    valence_3_num2 -> atom_valence_3 '2'
+    valence_3_num2 -> valence_4_num2
+    valence_3_num2 -> valence_4_num2 '(' nonH_bond ')'
+    valence_4_num2 -> atom_valence_4 '2'
+// Numbered cycle #3 valence atoms
+    valence_2_num3 -> atom_valence_2 '3'
+    valence_2_num3 -> 'S' '3' '(' '=' 'O' ')' '(' '=' 'O' ')'
+    valence_2_num3 -> valence_3_num3
+    valence_2_num3 -> valence_3_num3 '(' nonH_bond ')'
+    valence_2_num3 -> valence_4_num3 '(' double_bond ')'
+    valence_3_num3 -> atom_valence_3 '3'
+    valence_3_num3 -> valence_4_num3
+    valence_3_num3 -> valence_4_num3 '(' nonH_bond ')'
+    valence_4_num3 -> atom_valence_4 '3'
+// Numbered cycle #4 valence atoms
+    valence_2_num4 -> atom_valence_2 '4'
+    valence_2_num4 -> 'S' '4' '(' '=' 'O' ')' '(' '=' 'O' ')'
+    valence_2_num4 -> valence_3_num4
+    valence_2_num4 -> valence_3_num4 '(' nonH_bond ')'
+    valence_2_num4 -> valence_4_num4 '(' double_bond ')'
+    valence_3_num4 -> atom_valence_3 '4'
+    valence_3_num4 -> valence_4_num4
+    valence_3_num4 -> valence_4_num4 '(' nonH_bond ')'
+    valence_4_num4 -> atom_valence_4 '4'
+// Numbered cycle #5 valence atoms
+    valence_2_num5 -> atom_valence_2 '5'
+    valence_2_num5 -> 'S' '5' '(' '=' 'O' ')' '(' '=' 'O' ')'
+    valence_2_num5 -> valence_3_num5
+    valence_2_num5 -> valence_3_num5 '(' nonH_bond ')'
+    valence_2_num5 -> valence_4_num5 '(' double_bond ')'
+    valence_3_num5 -> atom_valence_3 '5'
+    valence_3_num5 -> valence_4_num5
+    valence_3_num5 -> valence_4_num5 '(' nonH_bond ')'
+    valence_4_num5 -> atom_valence_4 '5'
+// Numbered cycle #6 valence atoms
+    valence_2_num6 -> atom_valence_2 '6'
+    valence_2_num6 -> 'S' '6' '(' '=' 'O' ')' '(' '=' 'O' ')'
+    valence_2_num6 -> valence_3_num6
+    valence_2_num6 -> valence_3_num6 '(' nonH_bond ')'
+    valence_2_num6 -> valence_4_num6 '(' double_bond ')'
+    valence_3_num6 -> atom_valence_3 '6'
+    valence_3_num6 -> valence_4_num6
+    valence_3_num6 -> valence_4_num6 '(' nonH_bond ')'
+    valence_4_num6 -> atom_valence_4 '6'
+// Numbered cycle #7 valence atoms
+    valence_2_num7 -> atom_valence_2 '7'
+    valence_2_num7 -> 'S' '7' '(' '=' 'O' ')' '(' '=' 'O' ')'
+    valence_2_num7 -> valence_3_num7
+    valence_2_num7 -> valence_3_num7 '(' nonH_bond ')'
+    valence_2_num7 -> valence_4_num7 '(' double_bond ')'
+    valence_3_num7 -> atom_valence_3 '7'
+    valence_3_num7 -> valence_4_num7
+    valence_3_num7 -> valence_4_num7 '(' nonH_bond ')'
+    valence_4_num7 -> atom_valence_4 '7'
+// Numbered cycle #8 valence atoms
+    valence_2_num8 -> atom_valence_2 '8'
+    valence_2_num8 -> 'S' '8' '(' '=' 'O' ')' '(' '=' 'O' ')'
+    valence_2_num8 -> valence_3_num8
+    valence_2_num8 -> valence_3_num8 '(' nonH_bond ')'
+    valence_2_num8 -> valence_4_num8 '(' double_bond ')'
+    valence_3_num8 -> atom_valence_3 '8'
+    valence_3_num8 -> valence_4_num8
+    valence_3_num8 -> valence_4_num8 '(' nonH_bond ')'
+    valence_4_num8 -> atom_valence_4 '8'
+// Aromatic rings
+    nonH_bond -> aromatic_ring1_5
+    nonH_bond -> aromatic_ring2_5
+    nonH_bond -> aromatic_ring3_5
+    nonH_bond -> aromatic_ring4_5
+    nonH_bond -> aromatic_ring5_5
+    nonH_bond -> aromatic_ring6_5
+    nonH_bond -> aromatic_ring7_5
+    nonH_bond -> aromatic_ring8_5
+    nonH_bond -> aromatic_ring1_6
+    nonH_bond -> aromatic_ring2_6
+    nonH_bond -> aromatic_ring3_6
+    nonH_bond -> aromatic_ring4_6
+    nonH_bond -> aromatic_ring5_6
+    nonH_bond -> aromatic_ring6_6
+    nonH_bond -> aromatic_ring7_6
+    nonH_bond -> aromatic_ring8_6
+    nonH_bond -> double_aromatic_ring1
+    nonH_bond -> double_aromatic_ring2
+    nonH_bond -> double_aromatic_ring3
+    nonH_bond -> double_aromatic_ring4
+    nonH_bond -> double_aromatic_ring5
+    nonH_bond -> double_aromatic_ring6
+    nonH_bond -> double_aromatic_ring7
+    aromatic_os -> side_aliphatic_ring1
+    aromatic_os -> side_aliphatic_ring2
+    aromatic_os -> side_aliphatic_ring3
+    aromatic_os -> side_aliphatic_ring4
+    aromatic_os -> side_aliphatic_ring5
+    aromatic_os -> side_aliphatic_ring6
+    aromatic_os -> side_aliphatic_ring7
+    aromatic_os -> side_aliphatic_ring8
+    full_aromatic_segment -> side_aliphatic_ring1_segment
+    full_aromatic_segment -> side_aliphatic_ring2_segment
+    full_aromatic_segment -> side_aliphatic_ring3_segment
+    full_aromatic_segment -> side_aliphatic_ring4_segment
+    full_aromatic_segment -> side_aliphatic_ring5_segment
+    full_aromatic_segment -> side_aliphatic_ring6_segment
+    full_aromatic_segment -> side_aliphatic_ring7_segment
+    full_aromatic_segment -> side_aliphatic_ring8_segment
+    full_aromatic_segment -> aromatic_atom aromatic_atom
+// Aromatic atoms
+    aromatic_atom -> 'n'
+    aromatic_atom -> 'c'
+    aromatic_atom -> 'c' '(' nonH_bond ')'
+    aromatic_os -> 'o'
+    aromatic_os -> 's'
+    aromatic_os -> 'n' '(' nonH_bond ')'
+    aromatic_os -> '[' 'n' hydrogen_1 ']'
+// Aromatic cycle #1
+    starting_aromatic_c_num1 -> 'c' '1'
+    aromatic_atom_num1 -> 'n' '1'
+    aromatic_atom_num1 -> 'c' '1'
+    aromatic_atom_num1 -> 'c' '1' nonH_bond
+    aromatic_os_num1 -> 'o' '1'
+    aromatic_os_num1 -> 's' '1'
+    aromatic_os_num1 -> 'n' '1' nonH_bond
+    aromatic_ring1_6 -> starting_aromatic_c_num1 aromatic_atom full_aromatic_segment aromatic_atom aromatic_atom_num1
+    aromatic_ring1_6 -> starting_aromatic_c_num1 full_aromatic_segment full_aromatic_segment aromatic_atom_num1
+    aromatic_ring1_5 -> starting_aromatic_c_num1 aromatic_os full_aromatic_segment aromatic_atom_num1
+    aromatic_ring1_5 -> starting_aromatic_c_num1 aromatic_atom aromatic_os aromatic_atom aromatic_atom_num1
+    aromatic_ring1_5 -> starting_aromatic_c_num1 full_aromatic_segment aromatic_os aromatic_atom_num1
+    aromatic_ring1_5 -> starting_aromatic_c_num1 full_aromatic_segment aromatic_atom aromatic_os_num1
+    aromatic_ring1_5 -> starting_aromatic_c_num1 aromatic_atom full_aromatic_segment aromatic_os_num1
+    double_aromatic_ring1 -> 'c' '1' aromatic_atom aromatic_atom aromatic_atom 'c' '2' 'c' '1' aromatic_atom aromatic_atom aromatic_atom aromatic_atom_num2
+    double_aromatic_ring1 -> 'c' '1' aromatic_atom aromatic_atom aromatic_atom 'c' '2' 'n' '1' aromatic_atom aromatic_atom aromatic_atom_num2
+    double_aromatic_ring1 -> 'c' '1' aromatic_atom aromatic_atom aromatic_atom 'n' '2' 'c' '1' aromatic_atom aromatic_atom aromatic_atom_num2
+    side_aliphatic_ring1 -> 'c' '1' '(' cycle1_n_bond ')'
+    side_aliphatic_ring1_segment -> 'c' '1' 'c' '(' cycle1_n-1_bond ')'
+    side_aliphatic_ring1_segment -> 'c' '(' cycle1_n-1_bond ')' 'c' '1'
+// Aromatic cycle #2
+    starting_aromatic_c_num2 -> 'c' '2'
+    aromatic_atom_num2 -> 'n' '2'
+    aromatic_atom_num2 -> 'c' '2'
+    aromatic_atom_num2 -> 'c' '2' nonH_bond
+    aromatic_os_num2 -> 'o' '2'
+    aromatic_os_num2 -> 's' '2'
+    aromatic_os_num2 -> 'n' '2' nonH_bond
+    aromatic_ring2_6 -> starting_aromatic_c_num2 aromatic_atom full_aromatic_segment aromatic_atom aromatic_atom_num2
+    aromatic_ring2_6 -> starting_aromatic_c_num2 full_aromatic_segment full_aromatic_segment aromatic_atom_num2
+    aromatic_ring2_5 -> starting_aromatic_c_num2 aromatic_os full_aromatic_segment aromatic_atom_num2
+    aromatic_ring2_5 -> starting_aromatic_c_num2 aromatic_atom aromatic_os aromatic_atom aromatic_atom_num2
+    aromatic_ring2_5 -> starting_aromatic_c_num2 full_aromatic_segment aromatic_os aromatic_atom_num2
+    aromatic_ring2_5 -> starting_aromatic_c_num2 full_aromatic_segment aromatic_atom aromatic_os_num2
+    aromatic_ring2_5 -> starting_aromatic_c_num2 aromatic_atom full_aromatic_segment aromatic_os_num2
+    double_aromatic_ring2 -> 'c' '2' aromatic_atom aromatic_atom aromatic_atom 'c' '3' 'c' '2' aromatic_atom aromatic_atom aromatic_atom aromatic_atom_num3
+    double_aromatic_ring2 -> 'c' '2' aromatic_atom aromatic_atom aromatic_atom 'c' '3' 'n' '2' aromatic_atom aromatic_atom aromatic_atom_num3
+    double_aromatic_ring2 -> 'c' '2' aromatic_atom aromatic_atom aromatic_atom 'n' '3' 'c' '2' aromatic_atom aromatic_atom aromatic_atom_num3
+    side_aliphatic_ring2 -> 'c' '2' '(' cycle2_n_bond ')'
+    side_aliphatic_ring2_segment -> 'c' '2' 'c' '(' cycle2_n-1_bond ')'
+    side_aliphatic_ring2_segment -> 'c' '(' cycle2_n-1_bond ')' 'c' '2'
+// Aromatic cycle #3
+    starting_aromatic_c_num3 -> 'c' '3'
+    aromatic_atom_num3 -> 'n' '3'
+    aromatic_atom_num3 -> 'c' '3'
+    aromatic_atom_num3 -> 'c' '3' nonH_bond
+    aromatic_os_num3 -> 'o' '3'
+    aromatic_os_num3 -> 's' '3'
+    aromatic_os_num3 -> 'n' '3' nonH_bond
+    aromatic_ring3_6 -> starting_aromatic_c_num3 aromatic_atom full_aromatic_segment aromatic_atom aromatic_atom_num3
+    aromatic_ring3_6 -> starting_aromatic_c_num3 full_aromatic_segment full_aromatic_segment aromatic_atom_num3
+    aromatic_ring3_5 -> starting_aromatic_c_num3 aromatic_os full_aromatic_segment aromatic_atom_num3
+    aromatic_ring3_5 -> starting_aromatic_c_num3 aromatic_atom aromatic_os aromatic_atom aromatic_atom_num3
+    aromatic_ring3_5 -> starting_aromatic_c_num3 full_aromatic_segment aromatic_os aromatic_atom_num3
+    aromatic_ring3_5 -> starting_aromatic_c_num3 full_aromatic_segment aromatic_atom aromatic_os_num3
+    aromatic_ring3_5 -> starting_aromatic_c_num3 aromatic_atom full_aromatic_segment aromatic_os_num3
+    double_aromatic_ring3 -> 'c' '3' aromatic_atom aromatic_atom aromatic_atom 'c' '4' 'c' '3' aromatic_atom aromatic_atom aromatic_atom aromatic_atom_num4
+    double_aromatic_ring3 -> 'c' '3' aromatic_atom aromatic_atom aromatic_atom 'c' '4' 'n' '3' aromatic_atom aromatic_atom aromatic_atom_num4
+    double_aromatic_ring3 -> 'c' '3' aromatic_atom aromatic_atom aromatic_atom 'n' '4' 'c' '3' aromatic_atom aromatic_atom aromatic_atom_num4
+    side_aliphatic_ring3 -> 'c' '3' '(' cycle3_n_bond ')'
+    side_aliphatic_ring3_segment -> 'c' '3' 'c' '(' cycle3_n-1_bond ')'
+    side_aliphatic_ring3_segment -> 'c' '(' cycle3_n-1_bond ')' 'c' '3'
+// Aromatic cycle #4
+    starting_aromatic_c_num4 -> 'c' '4'
+    aromatic_atom_num4 -> 'n' '4'
+    aromatic_atom_num4 -> 'c' '4'
+    aromatic_atom_num4 -> 'c' '4' nonH_bond
+    aromatic_os_num4 -> 'o' '4'
+    aromatic_os_num4 -> 's' '4'
+    aromatic_os_num4 -> 'n' '4' nonH_bond
+    aromatic_ring4_6 -> starting_aromatic_c_num4 aromatic_atom full_aromatic_segment aromatic_atom aromatic_atom_num4
+    aromatic_ring4_6 -> starting_aromatic_c_num4 full_aromatic_segment full_aromatic_segment aromatic_atom_num4
+    aromatic_ring4_5 -> starting_aromatic_c_num4 aromatic_os full_aromatic_segment aromatic_atom_num4
+    aromatic_ring4_5 -> starting_aromatic_c_num4 aromatic_atom aromatic_os aromatic_atom aromatic_atom_num4
+    aromatic_ring4_5 -> starting_aromatic_c_num4 full_aromatic_segment aromatic_os aromatic_atom_num4
+    aromatic_ring4_5 -> starting_aromatic_c_num4 full_aromatic_segment aromatic_atom aromatic_os_num4
+    aromatic_ring4_5 -> starting_aromatic_c_num4 aromatic_atom full_aromatic_segment aromatic_os_num4
+    double_aromatic_ring4 -> 'c' '4' aromatic_atom aromatic_atom aromatic_atom 'c' '5' 'c' '4' aromatic_atom aromatic_atom aromatic_atom aromatic_atom_num5
+    double_aromatic_ring4 -> 'c' '4' aromatic_atom aromatic_atom aromatic_atom 'c' '5' 'n' '4' aromatic_atom aromatic_atom aromatic_atom_num5
+    double_aromatic_ring4 -> 'c' '4' aromatic_atom aromatic_atom aromatic_atom 'n' '5' 'c' '4' aromatic_atom aromatic_atom aromatic_atom_num5
+    side_aliphatic_ring4 -> 'c' '4' '(' cycle4_n_bond ')'
+    side_aliphatic_ring4_segment -> 'c' '4' 'c' '(' cycle4_n-1_bond ')'
+    side_aliphatic_ring4_segment -> 'c' '(' cycle4_n-1_bond ')' 'c' '4'
+// Aromatic cycle #5
+    starting_aromatic_c_num5 -> 'c' '5'
+    aromatic_atom_num5 -> 'n' '5'
+    aromatic_atom_num5 -> 'c' '5'
+    aromatic_atom_num5 -> 'c' '5' nonH_bond
+    aromatic_os_num5 -> 'o' '5'
+    aromatic_os_num5 -> 's' '5'
+    aromatic_os_num5 -> 'n' '5' nonH_bond
+    aromatic_ring5_6 -> starting_aromatic_c_num5 aromatic_atom full_aromatic_segment aromatic_atom aromatic_atom_num5
+    aromatic_ring5_6 -> starting_aromatic_c_num5 full_aromatic_segment full_aromatic_segment aromatic_atom_num5
+    aromatic_ring5_5 -> starting_aromatic_c_num5 aromatic_os full_aromatic_segment aromatic_atom_num5
+    aromatic_ring5_5 -> starting_aromatic_c_num5 aromatic_atom aromatic_os aromatic_atom aromatic_atom_num5
+    aromatic_ring5_5 -> starting_aromatic_c_num5 full_aromatic_segment aromatic_os aromatic_atom_num5
+    aromatic_ring5_5 -> starting_aromatic_c_num5 full_aromatic_segment aromatic_atom aromatic_os_num5
+    aromatic_ring5_5 -> starting_aromatic_c_num5 aromatic_atom full_aromatic_segment aromatic_os_num5
+    double_aromatic_ring5 -> 'c' '5' aromatic_atom aromatic_atom aromatic_atom 'c' '6' 'c' '5' aromatic_atom aromatic_atom aromatic_atom aromatic_atom_num6
+    double_aromatic_ring5 -> 'c' '5' aromatic_atom aromatic_atom aromatic_atom 'c' '6' 'n' '5' aromatic_atom aromatic_atom aromatic_atom_num6
+    double_aromatic_ring5 -> 'c' '5' aromatic_atom aromatic_atom aromatic_atom 'n' '6' 'c' '5' aromatic_atom aromatic_atom aromatic_atom_num6
+    side_aliphatic_ring5 -> 'c' '5' '(' cycle5_n_bond ')'
+    side_aliphatic_ring5_segment -> 'c' '5' 'c' '(' cycle5_n-1_bond ')'
+    side_aliphatic_ring5_segment -> 'c' '(' cycle5_n-1_bond ')' 'c' '5'
+// Aromatic cycle #6
+    starting_aromatic_c_num6 -> 'c' '6'
+    aromatic_atom_num6 -> 'n' '6'
+    aromatic_atom_num6 -> 'c' '6'
+    aromatic_atom_num6 -> 'c' '6' nonH_bond
+    aromatic_os_num6 -> 'o' '6'
+    aromatic_os_num6 -> 's' '6'
+    aromatic_os_num6 -> 'n' '6' nonH_bond
+    aromatic_ring6_6 -> starting_aromatic_c_num6 aromatic_atom full_aromatic_segment aromatic_atom aromatic_atom_num6
+    aromatic_ring6_6 -> starting_aromatic_c_num6 full_aromatic_segment full_aromatic_segment aromatic_atom_num6
+    aromatic_ring6_5 -> starting_aromatic_c_num6 aromatic_os full_aromatic_segment aromatic_atom_num6
+    aromatic_ring6_5 -> starting_aromatic_c_num6 aromatic_atom aromatic_os aromatic_atom aromatic_atom_num6
+    aromatic_ring6_5 -> starting_aromatic_c_num6 full_aromatic_segment aromatic_os aromatic_atom_num6
+    aromatic_ring6_5 -> starting_aromatic_c_num6 full_aromatic_segment aromatic_atom aromatic_os_num6
+    aromatic_ring6_5 -> starting_aromatic_c_num6 aromatic_atom full_aromatic_segment aromatic_os_num6
+    double_aromatic_ring6 -> 'c' '6' aromatic_atom aromatic_atom aromatic_atom 'c' '7' 'c' '6' aromatic_atom aromatic_atom aromatic_atom aromatic_atom_num7
+    double_aromatic_ring6 -> 'c' '6' aromatic_atom aromatic_atom aromatic_atom 'c' '7' 'n' '6' aromatic_atom aromatic_atom aromatic_atom_num7
+    double_aromatic_ring6 -> 'c' '6' aromatic_atom aromatic_atom aromatic_atom 'n' '7' 'c' '6' aromatic_atom aromatic_atom aromatic_atom_num7
+    side_aliphatic_ring6 -> 'c' '6' '(' cycle6_n_bond ')'
+    side_aliphatic_ring6_segment -> 'c' '6' 'c' '(' cycle6_n-1_bond ')'
+    side_aliphatic_ring6_segment -> 'c' '(' cycle6_n-1_bond ')' 'c' '6'
+// Aromatic cycle #7
+    starting_aromatic_c_num7 -> 'c' '7'
+    aromatic_atom_num7 -> 'n' '7'
+    aromatic_atom_num7 -> 'c' '7'
+    aromatic_atom_num7 -> 'c' '7' nonH_bond
+    aromatic_os_num7 -> 'o' '7'
+    aromatic_os_num7 -> 's' '7'
+    aromatic_os_num7 -> 'n' '7' nonH_bond
+    aromatic_ring7_6 -> starting_aromatic_c_num7 aromatic_atom full_aromatic_segment aromatic_atom aromatic_atom_num7
+    aromatic_ring7_6 -> starting_aromatic_c_num7 full_aromatic_segment full_aromatic_segment aromatic_atom_num7
+    aromatic_ring7_5 -> starting_aromatic_c_num7 aromatic_os full_aromatic_segment aromatic_atom_num7
+    aromatic_ring7_5 -> starting_aromatic_c_num7 aromatic_atom aromatic_os aromatic_atom aromatic_atom_num7
+    aromatic_ring7_5 -> starting_aromatic_c_num7 full_aromatic_segment aromatic_os aromatic_atom_num7
+    aromatic_ring7_5 -> starting_aromatic_c_num7 full_aromatic_segment aromatic_atom aromatic_os_num7
+    aromatic_ring7_5 -> starting_aromatic_c_num7 aromatic_atom full_aromatic_segment aromatic_os_num7
+    double_aromatic_ring7 -> 'c' '7' aromatic_atom aromatic_atom aromatic_atom 'c' '8' 'c' '7' aromatic_atom aromatic_atom aromatic_atom aromatic_atom_num8
+    double_aromatic_ring7 -> 'c' '7' aromatic_atom aromatic_atom aromatic_atom 'c' '8' 'n' '7' aromatic_atom aromatic_atom aromatic_atom_num8
+    double_aromatic_ring7 -> 'c' '7' aromatic_atom aromatic_atom aromatic_atom 'n' '8' 'c' '7' aromatic_atom aromatic_atom aromatic_atom_num8
+    side_aliphatic_ring7 -> 'c' '7' '(' cycle7_n_bond ')'
+    side_aliphatic_ring7_segment -> 'c' '7' 'c' '(' cycle7_n-1_bond ')'
+    side_aliphatic_ring7_segment -> 'c' '(' cycle7_n-1_bond ')' 'c' '7'
+// Aromatic cycle #8
+    starting_aromatic_c_num8 -> 'c' '8'
+    aromatic_atom_num8 -> 'n' '8'
+    aromatic_atom_num8 -> 'c' '8'
+    aromatic_atom_num8 -> 'c' '8' nonH_bond
+    aromatic_os_num8 -> 'o' '8'
+    aromatic_os_num8 -> 's' '8'
+    aromatic_os_num8 -> 'n' '8' nonH_bond
+    aromatic_ring8_6 -> starting_aromatic_c_num8 aromatic_atom full_aromatic_segment aromatic_atom aromatic_atom_num8
+    aromatic_ring8_6 -> starting_aromatic_c_num8 full_aromatic_segment full_aromatic_segment aromatic_atom_num8
+    aromatic_ring8_5 -> starting_aromatic_c_num8 aromatic_os full_aromatic_segment aromatic_atom_num8
+    aromatic_ring8_5 -> starting_aromatic_c_num8 aromatic_atom aromatic_os aromatic_atom aromatic_atom_num8
+    aromatic_ring8_5 -> starting_aromatic_c_num8 full_aromatic_segment aromatic_os aromatic_atom_num8
+    aromatic_ring8_5 -> starting_aromatic_c_num8 full_aromatic_segment aromatic_atom aromatic_os_num8
+    aromatic_ring8_5 -> starting_aromatic_c_num8 aromatic_atom full_aromatic_segment aromatic_os_num8
+    side_aliphatic_ring8 -> 'c' '8' '(' cycle8_n_bond ')'
+    side_aliphatic_ring8_segment -> 'c' '8' 'c' '(' cycle8_n-1_bond ')'
+    side_aliphatic_ring8_segment -> 'c' '(' cycle8_n-1_bond ')' 'c' '8'
