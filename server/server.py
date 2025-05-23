@@ -1,4 +1,5 @@
 import torch
+from math import exp
 from flask import Flask, request
 from sample_creator import tokenize
 from transformers import GPT2TokenizerFast, GPT2LMHeadModel, DataCollatorWithPadding#, pipeline
@@ -47,7 +48,7 @@ TOKENS = {
 app = Flask(__name__)
 
 @app.route('/token', methods=['POST'])
-def new_token():
+def get_next_token_probs():
     molecule = request.data.decode("utf-8")
     # Encode molecule
     inputs = tokenizer.encode(molecule, return_tensors="pt")
@@ -73,3 +74,13 @@ def new_token():
     probs = {k:v/summed_values for k,v in probs.items()}
     probs['_'] = probs.pop('</s>') # replace end token by our padding
     return probs
+
+@app.route('/ppl', methods=['POST'])
+def get_ppl():
+    molecule = request.data.decode("utf-8")
+    molecule = '<s>' + molecule.lstrip('<s>').rstrip('</s>') + '</s>'
+    
+    tokenize_input = tokenizer.tokenize(molecule)
+    tensor_input = torch.tensor([tokenizer.convert_tokens_to_ids(tokenize_input)])
+    out = model(tensor_input, labels=tensor_input)
+    return str(exp(out.loss.item()))
