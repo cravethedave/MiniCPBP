@@ -20,21 +20,19 @@ package minicpbp.engine.constraints;
 
 import minicpbp.engine.core.AbstractConstraint;
 import minicpbp.engine.core.IntVar;
+import minicpbp.engine.core.IntVarImpl;
 import minicpbp.state.StateInt;
-import minicpbp.util.exception.InconsistencyException;
-
-import static minicpbp.cp.Factory.*;
 
 import java.util.Iterator;
 import java.util.stream.IntStream;
 import java.util.Set;
 import java.util.HashSet;
 
-public class Among extends AbstractConstraint {
+
+public class AmongVarBC extends AbstractConstraint {
     private IntVar[] x;
     private Set<Integer> V;
-    private int minOcc;
-    private int maxOcc;
+    private IntVar occurrence;
     private int n; // nb of vars
     private int[] undecided; // indices of vars from x whose domain contains values both inside and outside of V
     private StateInt nUndecided; // current size of undecided
@@ -44,25 +42,23 @@ public class Among extends AbstractConstraint {
     private StateInt nOutside; // number of vars from x decided to be outside V
 
     /**
-     * Creates an among constraint.
+     * Creates an among constraint enforcing bounds consistency on the occurrence variable (contribution of Damien Van Meerbeeck)
      * <p> This constraint holds iff
-     * {@code minOcc <= (x[0] \in V) + (x[1] \in V) + ... + (x[x.length-1] \in V) <= maxOcc}.
+     * {@code occurrence.min() <= (x[0] \in V) + (x[1] \in V) + ... + (x[x.length-1] \in V) <= occurrence.max()}.
      * <p>
      *
-     * @param x         an array of variables whose instantiations belonging to V we count
-     * @param V         an array of values whose occurrences in x we count
-     * @param minOcc    the minimum number of occurrences of values from V in x
-     * @param maxOcc    the maximum number of occurrences of values from V in x
+     * @param x          an array of variables whose instantiations belonging to V we count
+     * @param V          an array of values whose occurrences in x we count
+     * @param occurrence the variable corresponding to the number of occurrences of values from V in x
      */
-    public Among(IntVar[] x, int[] V, int minOcc, int maxOcc) {
+    public AmongVarBC(IntVar[] x, int[] V, IntVar occurrence) {
         super(x[0].getSolver(), x);
-        setName("Among");
+        setName("AmongVarBC");
         this.x = x;
         this.n = x.length;
-        this.minOcc = minOcc;
-        this.maxOcc = maxOcc;
-        if (minOcc > maxOcc)
-            throw InconsistencyException.INCONSISTENCY;
+        this.occurrence = occurrence;
+        this.occurrence.removeBelow(0);
+        this.occurrence.removeAbove(x.length);
         this.V = new HashSet<Integer>();
         for (int i = 0; i < V.length; i++) {
             this.V.add(V[i]);
@@ -90,6 +86,7 @@ public class Among extends AbstractConstraint {
             case SBP:
                 for (IntVar var : x)
                     var.propagateOnDomainChange(this);
+                occurrence.propagateOnBoundChange(this);
         }
         propagate();
     }
@@ -114,11 +111,14 @@ public class Among extends AbstractConstraint {
             nU--;
         }
         nUndecided.setValue(nU);
+
         int nI = nInside.value();
         int nO = nOutside.value();
-        if ((nI+nU < minOcc) || (n-(nO+nU) > maxOcc))
-            throw InconsistencyException.INCONSISTENCY; // unsatisfiable constraint
-        if (nI+nU == minOcc) { // force all undecided vars to be inside V
+
+        occurrence.removeBelow(nI);
+        occurrence.removeAbove(nI+nU);
+
+        if (nI+nU == occurrence.min()) { // force all undecided vars to be inside V
             for (int i = nU - 1; i >= 0; i--) {
                 int idx = undecided[i];
                 int s = x[idx].fillArray(domainValues);
@@ -130,7 +130,7 @@ public class Among extends AbstractConstraint {
                 }
             }
         }
-        if (n-(nO+nU) == maxOcc) { // force all undecided vars to be outside V
+        if (nI == occurrence.max()) { // force all undecided vars to be outside V
             for (int i = nU - 1; i >= 0; i--) {
                 int idx = undecided[i];
                 int s = x[idx].fillArray(domainValues);
@@ -142,8 +142,6 @@ public class Among extends AbstractConstraint {
                 }
             }
         }
-        if ((nI >= minOcc) && (n - nO <= maxOcc))
-            this.setActive(false); // constraint is now satisfied
     }
 
     // returns 0 if var can still take a value inside and outside V
