@@ -297,6 +297,7 @@ public final class BranchingScheme {
      * @see Factory#makeDfs(Solver, Supplier)
      */
     public static Supplier<Procedure[]> lexicoBiasedWheelSelectVal(IntVar... x) {
+        System.out.println("lexicoBiasedWheelSelectVal");
 	    boolean tracing = x[0].getSolver().tracingSearch();
         for(IntVar a: x)
             a.setForBranching(true);

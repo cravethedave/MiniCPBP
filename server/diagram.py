@@ -7,6 +7,8 @@ from math import log
 with open("server/perplexity_graph_data.txt", 'r') as f:
     lines = f.readlines()
 
+lines = [iter for iter in lines if not iter.startswith('//')]
+
 data: list[list[float]] = []
 names = []
 failed = 0
@@ -28,13 +30,17 @@ print(f"failed {failed} out of {failed + len(data)}")
 ax = plt.subplot()
 
 ax.set_yticks(range(len(names)), names)
+FONT_SIZE = 30
+plt.yticks(fontsize=FONT_SIZE)
+plt.xticks(fontsize=FONT_SIZE)
 
 data = np.ma.masked_equal(data, 0)
 # data = np.array(data)
 im = ax.imshow(data,alpha=1,cmap=mpl.colormaps['YlGn'])
 
 divider = make_axes_locatable(ax)
-cax = divider.append_axes("right", size="5%", pad=0.05)
+cax = divider.append_axes("right", size="3%", pad=0.05)
+cax.tick_params(labelsize=FONT_SIZE)
 ax.figure.colorbar(im, cax=cax)
 
 plt.show()

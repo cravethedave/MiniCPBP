@@ -31,20 +31,21 @@ public class TestGrammarV12 {
         //     Integer.valueOf(args[8])
         // );
 
-        // generateMoleculesLipinski(
-        //     "data/moleculeCNF_v12.txt",
-        //     Integer.valueOf(args[0]),
-        //     args[1],
-        //     Boolean.valueOf(args[2]),
-        //     Boolean.valueOf(args[3]),
-        //     Integer.valueOf(args[4]),
-        //     Integer.valueOf(args[5]),
-        //     Integer.valueOf(args[6]),
-        //     Integer.valueOf(args[7]),
-        //     Integer.valueOf(args[8]),
-        //     Integer.valueOf(args[9]),
-        //     Integer.valueOf(args[10])
-        // );
+        generateMoleculesLipinski(
+            "data/moleculeCNF_v12.txt",
+            Integer.valueOf(args[0]),
+            args[1],
+            Boolean.valueOf(args[2]),
+            Boolean.valueOf(args[3]),
+            Integer.valueOf(args[4]),
+            Integer.valueOf(args[5]),
+            Integer.valueOf(args[6]),
+            Integer.valueOf(args[7]),
+            Integer.valueOf(args[8]),
+            Integer.valueOf(args[9]),
+            Integer.valueOf(args[10]),
+            Boolean.valueOf(args[11])
+        );
 
         // C1(=O)CN=C(c2ccccc2)c3cc(_)ccc3N1___
         // "C1(=O)CN=C(c2ccccc2)*3*c******3**"
@@ -63,14 +64,14 @@ public class TestGrammarV12 {
         //     Integer.valueOf(args[7])
         // );
 
-        customGeneration(
-            "data/moleculeCNF_v12.txt",
-            40,
-            "maxMarginalStrengthLDS",
-            false,
-            50,
-            600
-        );
+        // customGeneration(
+        //     "data/moleculeCNF_v12.txt",
+        //     40,
+        //     "maxMarginalStrengthLDS",
+        //     false,
+        //     50,
+        //     600
+        // );
     }
 
     private static void updateSolver(Solver cp) {
@@ -275,7 +276,8 @@ public class TestGrammarV12 {
         int minWeight,
         int maxWeight,
         int minLogP,
-        int maxLogP
+        int maxLogP,
+        boolean regularLogP
     ) {
         long startTime = System.currentTimeMillis()/1000;
         try {
@@ -320,7 +322,11 @@ public class TestGrammarV12 {
                 acceptorTarget.setName("Acceptor target");
                 GenConstraints.limitAcceptors(cp, w, g, acceptorTarget);
                 // LogP
-                logPEstimate = GenConstraints.lingoConstraint(cp, w, g, "data/lingo_changed.txt", minLogP, maxLogP);
+                if (regularLogP) {
+                    logPEstimate = GenConstraints.shortLingo(cp, w, g, "data/lingo_changed.txt", minLogP, maxLogP);
+                } else {
+                    logPEstimate = GenConstraints.regularLingo(cp, w, g, "data/lingo_changed.txt", minLogP, maxLogP);
+                }
             }
    
             String fileName = "results_" + method + "_sz" + wordLength;
@@ -335,6 +341,9 @@ public class TestGrammarV12 {
             }
             if (limitInSeconds != 0) {
                 fileName += "_" + limitInSeconds + "secs";
+            }
+            if (regularLogP) {
+                fileName += "_regular";
             }
             fileName += "_" + String.valueOf(minWeight) + "-" + String.valueOf(maxWeight) + "_" + String.valueOf(minLogP) + "-" + String.valueOf(maxLogP);
             fileName += ".txt";

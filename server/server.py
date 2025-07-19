@@ -5,6 +5,7 @@ from transformers import GPT2TokenizerFast, GPT2LMHeadModel, DataCollatorWithPad
 
 tokenizer = GPT2TokenizerFast.from_pretrained("entropy/gpt2_zinc_87m", max_len=40)
 model = GPT2LMHeadModel.from_pretrained('entropy/gpt2_zinc_87m')
+# model = model.to("cuda:0")
 collator = DataCollatorWithPadding(tokenizer, padding=True, return_tensors='pt')
 
 TOKENS = {
@@ -108,6 +109,7 @@ def next_token():
 def new_token():
     molecule = request.data.decode("utf-8")
     # Encode molecule
+    # inputs = tokenizer.encode(molecule, return_tensors="pt").to("cuda:0")
     inputs = tokenizer.encode(molecule, return_tensors="pt")
 
     # Get probabilities for next tokens

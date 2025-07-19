@@ -374,7 +374,7 @@ public class CostRegular extends AbstractConstraint {
                     allCosts[i][k].clear();
                 }
             }
-	}
+	    }
         // Reach backward and set local beliefs
         Iterator<Integer> itr = finalStates.iterator();
         while (itr.hasNext()) {

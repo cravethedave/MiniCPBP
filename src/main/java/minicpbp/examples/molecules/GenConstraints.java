@@ -2,6 +2,7 @@ package minicpbp.examples.molecules;
 
 import static minicpbp.cp.Factory.among;
 import static minicpbp.cp.Factory.atmost;
+import static minicpbp.cp.Factory.costRegular;
 import static minicpbp.cp.Factory.element;
 import static minicpbp.cp.Factory.equal;
 import static minicpbp.cp.Factory.grammar;
@@ -17,10 +18,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Vector;
 
 import minicpbp.engine.constraints.Equal;
@@ -570,22 +573,22 @@ public class GenConstraints {
         int[][] elementTable = new int[elementVector.size()][5];
         elementTable = elementVector.toArray(elementTable);
 
-        FileWriter file = new FileWriter("fullLingos.txt");
-        for (int[] iter : elementVector) {
-            for (int i = 0; i < iter.length; i++) {
-                if (i == iter.length - 1) {
-                    file.append(String.valueOf(iter[i]) + "\n");
-                    continue;
-                }
-                if (iter[i] == -1) {
-                    file.append("*,");
-                    continue;
-                }
-                file.append(g.tokenDecoder.get(iter[i]) + ",");
-            }
-        }
-        file.close();
-        System.out.println("Wrote to file");
+        // FileWriter file = new FileWriter("fullLingos.txt");
+        // for (int[] iter : elementVector) {
+        //     for (int i = 0; i < iter.length; i++) {
+        //         if (i == iter.length - 1) {
+        //             file.append(String.valueOf(iter[i]) + "\n");
+        //             continue;
+        //         }
+        //         if (iter[i] == -1) {
+        //             file.append("*,");
+        //             continue;
+        //         }
+        //         file.append(g.tokenDecoder.get(iter[i]) + ",");
+        //     }
+        // }
+        // file.close();
+        // System.out.println("Wrote to file");
 
         // System.out.println("Original size: " + Math.pow(g.terminalCount(), 4));
         // System.out.println("Current size: " + elementTable.length);
@@ -679,6 +682,107 @@ public class GenConstraints {
         } catch (IOException e) {
             throw e;
         }
+    }
+
+    public static IntVar regularLingo(
+        Solver cp,
+        IntVar[] w,
+        CFG g,
+        String filePath,
+        int minValue,
+        int maxValue
+    ) throws FileNotFoundException, IOException {
+
+
+        //#region File reading
+        HashMap<String,Integer> weightMap = new HashMap<>();
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));            
+        while (reader.ready()) {
+            // Read, convert to corresponding tokens, compute weight * 100 rounded
+            String[] line = reader.readLine().split(" ");
+            String[] tokens = line[0].split(",");
+            int weight = Math.round(Float.parseFloat(line[1]) * 100);
+
+            // Verify that tokens are present in grammar
+            if (!g.tokenEncoder.keySet().contains(tokens[0])) {
+                System.out.println(tokens[0]);
+                continue;
+            } else if (!g.tokenEncoder.keySet().contains(tokens[1])) {
+                System.out.println(tokens[1]);
+                continue;
+            } else if (!g.tokenEncoder.keySet().contains(tokens[2])) {
+                System.out.println(tokens[2]);
+                continue;
+            } else if (!g.tokenEncoder.keySet().contains(tokens[3])) {
+                System.out.println(tokens[3]);
+                continue;
+            }
+
+            weightMap.put(String.join(",",tokens), weight);
+        }
+        reader.close();
+        //#endregion
+
+
+        // Finds all the needed states and links them to an index in the regular table
+        // Important edge cases: 1-states, 2-states, 3-states
+        //#region Find necessary states
+        HashMap<String, Integer> stateMap = new HashMap<>();
+        // stateMap.put("", 0);
+        int currentIndex = 1;
+        for (String fullId : weightMap.keySet()) {
+            ArrayList<String> partialId = new ArrayList<>();
+            for (String tokenId : fullId.split(",")) {
+                partialId.add(tokenId);
+                String stringId = String.join(",", partialId);
+                if (!stateMap.containsKey(stringId)) {
+                    stateMap.put(stringId, currentIndex);
+                    currentIndex++;
+                }
+            }
+        }
+        System.out.println(stateMap.size());
+        //#endregion
+
+
+        // Each state is mapped to the next one
+        //#region Create table
+        int [][] transitionTable = new int[stateMap.size() + 1][g.terminalCount()];
+        int [][] weightTable = new int[stateMap.size() + 1][g.terminalCount()];
+        for (int terminal = 0; terminal < g.terminalCount(); ++terminal) {
+            String oneDimState = g.tokenDecoder.get(terminal);
+            if (stateMap.containsKey(oneDimState)) {
+                transitionTable[0][terminal] = stateMap.get(oneDimState);
+            }
+        }
+        for (String state : stateMap.keySet()) {
+            for (int terminal = 0; terminal < g.terminalCount(); ++terminal) {
+                ArrayList<String> nextStateId = new ArrayList<>(Arrays.asList(state.split(",")));
+                if (nextStateId.size() == 4) {
+                    nextStateId.remove(0);
+                }
+                nextStateId.add(g.tokenDecoder.get(terminal));
+                while (nextStateId.size() > 0) {
+                    String nextStateIdString = String.join(",",nextStateId);
+                    if (stateMap.containsKey(nextStateIdString)) {
+                        transitionTable[stateMap.get(state)][terminal] = stateMap.get(nextStateIdString);
+                        if (weightMap.containsKey(nextStateIdString)) {
+                            weightTable[stateMap.get(state)][terminal] = weightMap.get(nextStateIdString);
+                        }
+                        break;
+                    }
+                    nextStateId.remove(0);
+                }
+            }
+        }
+        //#endregion
+
+
+        IntVar logPEstimate = makeIntVar(cp, minValue, maxValue);
+        logPEstimate.setName("LogP estimate");
+        cp.post(costRegular(w, transitionTable, weightTable, logPEstimate));
+
+        return logPEstimate;
     }
 
     public static IntVar lingoConstraint(

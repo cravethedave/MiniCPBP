@@ -17,7 +17,7 @@ from math import floor, log, exp
 
 oracle_weights = [0.5, 1.0, 1.5]
 molecule_weights = [(4750,5000),(3157,3445)] # 3301 +- 144
-MOLECULE_LENGTH = 45
+MOLECULE_LENGTH = 40
 
 def fill_masked_zinc(num_mol, oracle_weight, molecule_weights, remove_percent):
     with open("./perplexity.txt", 'w') as perplexity:
@@ -134,6 +134,15 @@ def generate_entropy_nncpbp(num_mol, molecule_weights):
             f"-Dexec.args={MOLECULE_LENGTH} maxMarginalStrength {molecule_weights[0]} {molecule_weights[1]}"
         ],)
 
+def generate_entrop_cpbp(num_mol, molecule_weights):
+    for i in range(num_mol):
+        print(f"###################### {i}th molecule ######################")
+        subprocess.call([
+            "mvn",
+            "exec:java",
+            f"-Dexec.args={MOLECULE_LENGTH} lexicoBiasedWheelSelectValLDS {molecule_weights[0]} {molecule_weights[1]} 1 900"
+        ],)
+
 def parallel_entropy(num_runs, num_mol_per_run, molecule_weights):
     with open("./perplexity.txt", 'w') as f:
         f.write(f"molecule count: {num_runs * num_mol_per_run}, target weight: {molecule_weights}\n")
@@ -143,7 +152,7 @@ def parallel_entropy(num_runs, num_mol_per_run, molecule_weights):
     
     threads: list[Thread] = []
     for i in range(num_runs):
-        threads.append(Thread(target=generate_entropy_nncpbp, args=(num_mol_per_run, molecule_weights, )))
+        threads.append(Thread(target=generate_entrop_cpbp, args=(num_mol_per_run, molecule_weights, )))
         threads[-1].start()
     
     print("threads started")
@@ -224,6 +233,19 @@ def read_results_file(filename = "./results.txt"):
     perplexity = sum(molecule_perplexity)/len(molecules)
     print(f"Success rate: {success_rate}\nAvg PPL: {perplexity}\nAvg time: {duration} secs")
 
+def read_new_results(filename = "./results.txt"):
+    with open(filename, 'r') as f:
+        lines = f.readlines()
+    
+    time_lines = [int(iter.split(': ')[1]) for iter in lines if iter.lstrip().startswith('execution')]
+    mol_lines = [iter for iter in lines if iter.rstrip().endswith(',')]
+    
+    print(f"{len(mol_lines)} successful molecules")
+    print(f"{sum(time_lines)/len(time_lines)} average time in ms")
+    for mol in mol_lines:
+        print(f"\"{mol.split(',')[0]}\",")
+    
+
 def perplexity_grapher(filename: str):
     with open(filename, 'r') as f:
         lines = f.readlines()
@@ -246,9 +268,9 @@ def perplexity_grapher(filename: str):
 
 # From 300 to 325 there are 12% of molecules in ZINC
 # generate_entropy(num_mol=1, molecule_weights=[2000,2750], run_nb=3)
-# start = time.time()
-# parallel_entropy(num_runs=5,num_mol_per_run=2,molecule_weights=[2000,2750])
-# print("\n\n\n\n\This took " + str(time.time()-start) + " seconds")
+start = time.time()
+parallel_entropy(num_runs=5,num_mol_per_run=20,molecule_weights=[2000,2750])
+print("\n\n\n\n\This took " + str(time.time()-start) + " seconds")
 
 start = time.time()
 read_results_file("./results.txt")

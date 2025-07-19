@@ -127,15 +127,24 @@ def run_failed(test_cases):
 test_cases = [
 #   ["00000","00001","2","3","004","5","6"],
 #   ["lpsk","sampl","k","#","lim","minW","maxW","minL","mxL"],
-    ["true","false","2","1","1800","1750","2250","-400","-300"],
-    ["true","false","2","1","1800","1750","2250","-200","-100"],
-    ["true","false","2","1","1800","1750","2250","100","200"],
-    ["true","false","2","1","1800","2750","3250","-400","-300"],
-    ["true","false","2","1","1800","2750","3250","-200","-100"],
-    ["true","false","2","1","1800","2750","3250","100","200"],
-    ["true","false","2","1","1800","3750","4250","-400","-300"],
-    ["true","false","2","1","1800","3750","4250","-200","-100"],
-    ["true","false","2","1","1800","3750","4250","100","200"],
+    ["true","false","2","1","1800","1750","2250","-400","-300", "true"],
+    ["true","false","2","1","1800","1750","2250","-200","-100", "true"],
+    ["true","false","2","1","1800","1750","2250","100","200", "true"],
+    ["true","false","2","1","1800","2750","3250","-400","-300", "true"],
+    ["true","false","2","1","1800","2750","3250","-200","-100", "true"],
+    ["true","false","2","1","1800","2750","3250","100","200", "true"],
+    ["true","false","2","1","1800","3750","4250","-400","-300", "true"],
+    ["true","false","2","1","1800","3750","4250","-200","-100", "true"],
+    ["true","false","2","1","1800","3750","4250","100","200", "true"],
+    # ["true","false","2","1","1800","1750","2250","-400","-300", "false"],
+    # ["true","false","2","1","1800","1750","2250","-200","-100", "false"],
+    # ["true","false","2","1","1800","1750","2250","100","200", "false"],
+    # ["true","false","2","1","1800","2750","3250","-400","-300", "false"],
+    # ["true","false","2","1","1800","2750","3250","-200","-100", "false"],
+    # ["true","false","2","1","1800","2750","3250","100","200", "false"],
+    # ["true","false","2","1","1800","3750","4250","-400","-300", "false"],
+    # ["true","false","2","1","1800","3750","4250","-200","-100", "false"],
+    # ["true","false","2","1","1800","3750","4250","100","200", "false"],
 ]
 
 methods = [
@@ -164,9 +173,9 @@ methods = [
 
 print(methods)
 cc_heuristic_runner(methods, test_cases, size=40)
-# cc_random_runner(test_cases, method='domWdegRandom', size=40)
+cc_random_runner(test_cases, method='domWdegRandom', size=40)
 # cc_random_runner(test_cases, method='dom-random', size=40)
-# cc_random_runner(test_cases, method='maxMarginalStrengthBiasedWheelSelectVal', size=40)
+cc_random_runner(test_cases, method='maxMarginalStrengthBiasedWheelSelectVal', size=40)
 
 failed = []
 

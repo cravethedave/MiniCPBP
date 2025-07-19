@@ -20,6 +20,9 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Vector;
 import java.util.concurrent.CompletableFuture;
+
+import org.antlr.v4.parse.ANTLRParser.wildcard_return;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -70,14 +73,33 @@ public class TestGenOracle {
         //     args[4]
         // );
 
-        setWeightGenerationModel_NNCPBP(
+        // setWeightGenerationModel_NNCPBP(
+        //     "data/moleculeCNF_v7.txt",
+        //     Integer.valueOf(args[0]),
+        //     args[1],
+        //     Integer.valueOf(args[2]),
+        //     Integer.valueOf(args[3]),
+        //     1.0
+        // );
+
+        setWeightGenerationModel_CPBP(
             "data/moleculeCNF_v7.txt",
-            Integer.valueOf(args[0]),
-            args[1],
-            Integer.valueOf(args[2]),
-            Integer.valueOf(args[3]),
+            40,
+            "maxMarginal",
+            1,
+            2,
             1.0
         );
+
+        // setWeightGenerationModel_CPBPBackTrack(
+        //     "data/moleculeCNF_v7.txt",
+        //     Integer.valueOf(args[0]),
+        //     args[1],
+        //     Integer.valueOf(args[2]),
+        //     Integer.valueOf(args[3]),
+        //     Integer.valueOf(args[4]),
+        //     Integer.valueOf(args[5])
+        // );
     }
 
     /**
@@ -109,7 +131,7 @@ public class TestGenOracle {
                 tokenString = "\\";
             }
             if (!g.tokenEncoder.containsKey(tokenString)) {
-                System.out.println("Token not in grammar " + tokenString);
+                // System.out.println("Token not in grammar " + tokenString);
                 continue;
             }
             int token = g.tokenEncoder.get(tokenString);
@@ -543,10 +565,18 @@ public class TestGenOracle {
             //#endregion
             
             GenConstraints.grammarConstraint(cp,w,g);
-            GenConstraints.cycleCountingConstraint(cp,w,g,1,8);
-            GenConstraints.cycleParityConstraint(cp,w,g,1,8);
-            GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
+            GenConstraints.cycleCountingConstraint(cp,w,g,1,9);
+            GenConstraints.cycleParityConstraint(cp,w,g,1,9);
+            // GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
             
+            int[] aromatic_ids = new int[] {
+                g.tokenEncoder.get("c"),
+                g.tokenEncoder.get("o"),
+                g.tokenEncoder.get("n"),
+                g.tokenEncoder.get("s")
+            };
+            cp.post(atleast(w, aromatic_ids, 1));
+
             int realLength = wordLength;
             Double logSumProbs = 0.0;
 
@@ -664,9 +694,9 @@ public class TestGenOracle {
             }
             //#endregion
             
-            GenConstraints.grammarConstraint(cp,w,g);
-            GenConstraints.cycleCountingConstraint(cp,w,g,1,8);
-            GenConstraints.cycleParityConstraint(cp,w,g,1,8);
+            // GenConstraints.grammarConstraint(cp,w,g);
+            // GenConstraints.cycleCountingConstraint(cp,w,g,1,8);
+            // GenConstraints.cycleParityConstraint(cp,w,g,1,8);
             GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
 
             String moleculeSoFar = "<s>";
@@ -684,7 +714,9 @@ public class TestGenOracle {
 
                 // Makes the request
                 // System.out.println("here");
+                // long responseTime = System.currentTimeMillis();
                 HashMap<Integer, Double> flattenedNLPScores = getSmoothedProbabilities(g, moleculeSoFar);
+                // System.out.println("Took " + String.valueOf(System.currentTimeMillis() - responseTime));
                 // System.out.println(flattenedNLPScores.toString());
 
                 // Propagates constraints to determine current varialbe's values
@@ -877,7 +909,7 @@ public class TestGenOracle {
         int numSolutions,
         int limitInSeconds
     ) {
-        long startTime = System.currentTimeMillis()/1000;
+        long startTime = System.currentTimeMillis();
         try {
             //#region Base initialization
             Solver cp = makeSolver(false);
@@ -898,13 +930,17 @@ public class TestGenOracle {
             
             // Smiles Validity
             GenConstraints.grammarConstraint(cp,w,g);
-            GenConstraints.cycleCountingConstraint(cp,w,g,1,6);
-            GenConstraints.cycleParityConstraint(cp,w,g,1,6);
-            GenConstraints.moleculeWeightConstraint(cp, w, tokenWeights, makeIntVar(cp, minWeight, maxWeight), g);
+            GenConstraints.cycleCountingConstraint(cp,w,g,1,8);
+            GenConstraints.cycleParityConstraint(cp,w,g,1,8);
+            // GenConstraints.moleculeWeightConstraint(cp, w, tokenWeights, makeIntVar(cp, minWeight, maxWeight), g);
             // Other constraints
-            IntVar logPEstimate = makeIntVar(cp, 0, 0);
-            logPEstimate.setName("LogP estimate");
+            // IntVar logPEstimate = makeIntVar(cp, 0, 1);
+            // IntVar logPEstimate = GenConstraints.shortLingo(cp, w, g, "data/lingo_weights.txt", 200, 500);
+            IntVar logPEstimate = GenConstraints.regularLingo(cp, w, g, "data/lingo_weights.txt", 200, 500);
+            System.out.println("All constraints placed after " + String.valueOf((System.currentTimeMillis() - startTime) / 1000.0) +" seconds");
    
+            // GenConstraints.setMolecule(cp, w, g, "C(CNNCC)(OCC(SON(NC)NNCSOCSCS)CCSC)SCCC_");
+
             String fileName = "results_" + method + "_sz" + wordLength;
             if (numSolutions != 0) {
                 fileName += "_" + numSolutions + "sols";
@@ -915,7 +951,12 @@ public class TestGenOracle {
             fileName += ".txt";
             cp.setTraceSearchFlag(false);
             cp.setTraceBPFlag(false);
+
+            // IntVar[] sampleVars = cp.sample(0.00001, w);
+
             switch (method) {
+                case "lexicoBiasedWheelSelectValLDS":
+                case "maxMarginalStrengthBiasedWheelSelectValLDS":
                 case "maxMarginalStrengthLDS":
                 case "domWdegLDS":
                 case "impactLDS":
@@ -926,23 +967,10 @@ public class TestGenOracle {
                 default:
                     solveDFS(cp, w, g, method, tokenWeights, logPEstimate, numSolutions, limitInSeconds, fileName);
             }
-
-            // This shows the marginals for each token
-            // cp.fixPoint();
-            // cp.vanillaBP(1);
-            // int counter = 1;
-            // for (IntVar iter : w) {
-            //     System.out.println(String.format("Position %d", counter));
-            //     for (int i = iter.min(); i <= iter.max(); i++) {
-            //         if (iter.contains(i)) {
-            //             System.out.println(String.format("%s %f", g.tokenDecoder.get(i), iter.marginal(i)));
-            //         }
-            //     }
-            //     counter++;
-            // }
         } catch (Exception e) {
             System.out.println(e);
         }
+        System.out.println("Total time was " + String.valueOf((System.currentTimeMillis() - startTime) / 1000.0) +" seconds");
     }
 
     private static void solveLDS(
@@ -964,8 +992,18 @@ public class TestGenOracle {
         //     System.out.println("[ERROR] File not writing ********************");
         // }
 
+        long startTime = System.currentTimeMillis();
+
         LDSearch lds;
         switch (method) {
+            case "lexicoBiasedWheelSelectValLDS":
+                cp.setMode(PropaMode.SBP);
+                lds = makeLds(cp, lexicoBiasedWheelSelectVal(targetArray));
+                break;
+            case "maxMarginalStrengthBiasedWheelSelectValLDS":
+                cp.setMode(PropaMode.SBP);
+                lds = makeLds(cp, maxMarginalStrengthBiasedWheelSelectVal(targetArray));
+                break;
             case "maxMarginalStrengthLDS":
                 cp.setMode(PropaMode.SBP);
                 lds = makeLds(cp, maxMarginalStrength(targetArray));
@@ -996,7 +1034,7 @@ public class TestGenOracle {
                 sumWeight += tokenWeights[i].min();
             }
             // System.out.println(word + " weight of " + sumWeight + " logP of " + logPEstimate.min());
-            System.out.println("\"" + word + "\",");
+            System.out.println("\"" + word + "\", time: " + String.valueOf((System.currentTimeMillis() - startTime)/1000));
             try {
                 FileWriter resultsWriter = new FileWriter(fileName, true);
                 resultsWriter.write(
@@ -1054,7 +1092,12 @@ public class TestGenOracle {
         // }
 
         DFSearch dfs;
+        long start = System.currentTimeMillis();
         switch (method) {
+            case "lexicoBiasedWheelSelectVal":
+                cp.setMode(PropaMode.SBP);
+                dfs = makeDfs(cp, lexicoBiasedWheelSelectVal(targetArray));
+                break;
             case "maxMarginalStrengthBiasedWheelSelectVal":
                 cp.setMode(PropaMode.SBP);
                 dfs = makeDfs(cp, maxMarginalStrengthBiasedWheelSelectVal(targetArray));
@@ -1122,6 +1165,7 @@ public class TestGenOracle {
                 cp.setMode(PropaMode.SP);
                 dfs = makeDfs(cp, domWdeg(targetArray));
         }
+        System.out.println("Made DFS in " + String.valueOf((System.currentTimeMillis()-start)/1000.0) + " seconds");
 
         dfs.onSolution(() -> {
             String word = "";
@@ -1130,7 +1174,7 @@ public class TestGenOracle {
                 word += g.tokenDecoder.get(targetArray[i].min());
                 sumWeight += tokenWeights[i].min();
             }
-            // System.out.println(word + " weight of " + sumWeight + " logP of " + logPEstimate.min());
+            System.out.println(word + " weight of " + sumWeight + " logP of " + logPEstimate.min());
             System.out.println("\"" + word + "\",");
             try {
                 FileWriter resultsWriter = new FileWriter(fileName, true);
