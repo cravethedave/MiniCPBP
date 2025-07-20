@@ -741,7 +741,7 @@ public class GenConstraints {
                 }
             }
         }
-        System.out.println(stateMap.size());
+        System.out.println("stateMap size " + String.valueOf(stateMap.size()));
         //#endregion
 
 

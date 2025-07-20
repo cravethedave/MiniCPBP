@@ -323,9 +323,9 @@ public class TestGrammarV12 {
                 GenConstraints.limitAcceptors(cp, w, g, acceptorTarget);
                 // LogP
                 if (regularLogP) {
-                    logPEstimate = GenConstraints.shortLingo(cp, w, g, "data/lingo_changed.txt", minLogP, maxLogP);
-                } else {
                     logPEstimate = GenConstraints.regularLingo(cp, w, g, "data/lingo_changed.txt", minLogP, maxLogP);
+                } else {
+                    logPEstimate = GenConstraints.shortLingo(cp, w, g, "data/lingo_changed.txt", minLogP, maxLogP);
                 }
             }
    
