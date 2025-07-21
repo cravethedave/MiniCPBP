@@ -82,24 +82,24 @@ public class TestGenOracle {
         //     1.0
         // );
 
-        setWeightGenerationModel_CPBP(
-            "data/moleculeCNF_v7.txt",
-            40,
-            "maxMarginal",
-            1,
-            2,
-            1.0
-        );
-
-        // setWeightGenerationModel_CPBPBackTrack(
+        // setWeightGenerationModel_CPBP(
         //     "data/moleculeCNF_v7.txt",
-        //     Integer.valueOf(args[0]),
-        //     args[1],
-        //     Integer.valueOf(args[2]),
-        //     Integer.valueOf(args[3]),
-        //     Integer.valueOf(args[4]),
-        //     Integer.valueOf(args[5])
+        //     40,
+        //     "maxMarginal",
+        //     1,
+        //     2,
+        //     1.0
         // );
+
+        setWeightGenerationModel_CPBPBackTrack(
+            "data/moleculeCNF_v7.txt",
+            Integer.valueOf(args[0]),
+            args[1],
+            Integer.valueOf(args[2]),
+            Integer.valueOf(args[3]),
+            Integer.valueOf(args[4]),
+            Integer.valueOf(args[5])
+        );
     }
 
     /**
@@ -935,8 +935,8 @@ public class TestGenOracle {
             // GenConstraints.moleculeWeightConstraint(cp, w, tokenWeights, makeIntVar(cp, minWeight, maxWeight), g);
             // Other constraints
             // IntVar logPEstimate = makeIntVar(cp, 0, 1);
-            // IntVar logPEstimate = GenConstraints.shortLingo(cp, w, g, "data/lingo_weights.txt", 200, 500);
-            IntVar logPEstimate = GenConstraints.regularLingo(cp, w, g, "data/lingo_weights.txt", 200, 500);
+            IntVar logPEstimate = GenConstraints.shortLingo(cp, w, g, "data/lingo_weights.txt", 200, 500);
+            // IntVar logPEstimate = GenConstraints.regularLingo(cp, w, g, "data/lingo_weights.txt", 200, 500);
             System.out.println("All constraints placed after " + String.valueOf((System.currentTimeMillis() - startTime) / 1000.0) +" seconds");
    
             // GenConstraints.setMolecule(cp, w, g, "C(CNNCC)(OCC(SON(NC)NNCSOCSCS)CCSC)SCCC_");
@@ -1144,11 +1144,11 @@ public class TestGenOracle {
                 dfs = makeDfs(cp, impactMinVal(targetArray));
                 break;
             case "domWdegRandom":
-                cp.setMode(PropaMode.SBP);
+                cp.setMode(PropaMode.SP);
                 dfs = makeDfs(cp, domWdegRandom(targetArray));
                 break;
             case "domRaw":
-                cp.setMode(PropaMode.SBP);
+                cp.setMode(PropaMode.SP);
                 dfs = makeDfs(cp, domRaw(targetArray));
                 break;
             case "dom-random":

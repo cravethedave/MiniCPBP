@@ -651,11 +651,11 @@ public class TestGrammarV12 {
                 dfs = makeDfs(cp, impactMinVal(targetArray));
                 break;
             case "domWdegRandom":
-                cp.setMode(PropaMode.SBP);
+                cp.setMode(PropaMode.SP);
                 dfs = makeDfs(cp, domWdegRandom(targetArray));
                 break;
             case "domRaw":
-                cp.setMode(PropaMode.SBP);
+                cp.setMode(PropaMode.SP);
                 dfs = makeDfs(cp, domRaw(targetArray));
                 break;
             case "dom-random":
