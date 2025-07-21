@@ -172,10 +172,10 @@ methods = [
 ]
 
 print(methods)
-cc_heuristic_runner(methods, test_cases, size=40)
+# cc_heuristic_runner(methods, test_cases, size=40)
 cc_random_runner(test_cases, method='domWdegRandom', size=40)
 # cc_random_runner(test_cases, method='dom-random', size=40)
-cc_random_runner(test_cases, method='maxMarginalStrengthBiasedWheelSelectVal', size=40)
+# cc_random_runner(test_cases, method='maxMarginalStrengthBiasedWheelSelectVal', size=40)
 
 failed = []
 
