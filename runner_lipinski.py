@@ -209,8 +209,7 @@ for key in arguments.keys():
     tests_to_add = new_tests
 test_cases.extend(tests_to_add)
 
-
-
+print(f"Running {len(test_cases)} test cases")
 
 methods = [
     # "domWdeg",
