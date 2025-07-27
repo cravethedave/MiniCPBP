@@ -44,7 +44,9 @@ public class TestGrammarV12 {
             Integer.valueOf(args[8]),
             Integer.valueOf(args[9]),
             Integer.valueOf(args[10]),
-            Boolean.valueOf(args[11])
+            Integer.valueOf(args[11]),
+            Integer.valueOf(args[12]),
+            Boolean.valueOf(args[13])
         );
 
         // C1(=O)CN=C(c2ccccc2)c3cc(_)ccc3N1___
@@ -277,6 +279,8 @@ public class TestGrammarV12 {
         int maxWeight,
         int minLogP,
         int maxLogP,
+        int nCycles,
+        int nBranches,
         boolean regularLogP
     ) {
         long startTime = System.currentTimeMillis()/1000;
@@ -299,6 +303,8 @@ public class TestGrammarV12 {
             }
             //#endregion
             
+   
+            String fileName = "results_" + method + "_sz" + wordLength;
             // Smiles Validity
             GenConstraints.grammarConstraint(cp,w,g);
             GenConstraints.cycleCountingConstraint(cp,w,g,1,6);
@@ -307,6 +313,7 @@ public class TestGrammarV12 {
             IntVar logPEstimate = makeIntVar(cp, 0, 0);
             logPEstimate.setName("LogP estimate");
             if (doLipinski) {
+                fileName += "_lip_" + String.valueOf(minWeight) + "-" + String.valueOf(maxWeight) + "_" + String.valueOf(minLogP) + "-" + String.valueOf(maxLogP);
                 // Fix to the grammar to reduce donor/acceptor error
                 GenConstraints.avoidBranchOnEnd(cp, w, g);
                 // Molecular weight
@@ -324,15 +331,23 @@ public class TestGrammarV12 {
                 // LogP
                 if (regularLogP) {
                     logPEstimate = GenConstraints.regularLingo(cp, w, g, "data/lingo_changed.txt", minLogP, maxLogP);
+                    fileName += "_regular";
                 } else {
                     logPEstimate = GenConstraints.shortLingo(cp, w, g, "data/lingo_changed.txt", minLogP, maxLogP);
                 }
             }
-   
-            String fileName = "results_" + method + "_sz" + wordLength;
-            if (doLipinski) {
-                fileName += "_lip";
+
+            if (nCycles > -1) {
+                GenConstraints.limitCycleConstraint(cp, w, g, nCycles);
+                fileName += "_c" + nCycles;
             }
+
+            if (nBranches > -1) {
+                GenConstraints.limitBranchConstraint(cp, w, g, nBranches);
+                fileName += "_b" + nBranches;
+            }
+            
+
             if (doSampling) {
                 fileName += "_smpl" + k;
             }
@@ -342,10 +357,6 @@ public class TestGrammarV12 {
             if (limitInSeconds != 0) {
                 fileName += "_" + limitInSeconds + "secs";
             }
-            if (regularLogP) {
-                fileName += "_regular";
-            }
-            fileName += "_" + String.valueOf(minWeight) + "-" + String.valueOf(maxWeight) + "_" + String.valueOf(minLogP) + "-" + String.valueOf(maxLogP);
             fileName += ".txt";
             cp.setTraceSearchFlag(false);
             cp.setTraceBPFlag(false);
@@ -546,19 +557,19 @@ public class TestGrammarV12 {
                 sumWeight += tokenWeights[i].min();
             }
             // System.out.println(word + " weight of " + sumWeight + " logP of " + logPEstimate.min());
-            System.out.println("\"" + word + "\",");
-            try {
-                FileWriter resultsWriter = new FileWriter(fileName, true);
-                resultsWriter.write(
-                    word + "," +
-                    String.valueOf(sumWeight) + "," +
-                    String.valueOf(logPEstimate.min()) + "," +
-                    "\n"
-                );
-                resultsWriter.close();
-            } catch (IOException e) {
-                System.out.println("[ERROR] File not writing ********************");
-            }
+            System.out.println("\"" + word + "\"," + String.valueOf(sumWeight) + "," + String.valueOf(logPEstimate.min()));
+            // try {
+            //     FileWriter resultsWriter = new FileWriter(fileName, true);
+            //     resultsWriter.write(
+            //         word + "," +
+            //         String.valueOf(sumWeight) + "," +
+            //         String.valueOf(logPEstimate.min()) + "," +
+            //         "\n"
+            //     );
+            //     resultsWriter.close();
+            // } catch (IOException e) {
+            //     System.out.println("[ERROR] File not writing ********************");
+            // }
         });
 
         System.out.println("[INFO] Now solving");
@@ -681,19 +692,19 @@ public class TestGrammarV12 {
                 sumWeight += tokenWeights[i].min();
             }
             // System.out.println(word + " weight of " + sumWeight + " logP of " + logPEstimate.min());
-            System.out.println("\"" + word + "\",");
-            try {
-                FileWriter resultsWriter = new FileWriter(fileName, true);
-                resultsWriter.write(
-                    word + "," +
-                    String.valueOf(sumWeight) + "," +
-                    String.valueOf(logPEstimate.min()) + "," +
-                    "\n"
-                );
-                resultsWriter.close();
-            } catch (IOException e) {
-                System.out.println("[ERROR] File not writing ********************");
-            }
+            System.out.println("\"" + word + "\"," + String.valueOf(sumWeight) + "," + String.valueOf(logPEstimate.min()));
+            // try {
+            //     FileWriter resultsWriter = new FileWriter(fileName, true);
+            //     resultsWriter.write(
+            //         word + "," +
+            //         String.valueOf(sumWeight) + "," +
+            //         String.valueOf(logPEstimate.min()) + "," +
+            //         "\n"
+            //     );
+            //     resultsWriter.close();
+            // } catch (IOException e) {
+            //     System.out.println("[ERROR] File not writing ********************");
+            // }
         });
 
         System.out.println("[INFO] Now solving");

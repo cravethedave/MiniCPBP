@@ -1,3 +1,4 @@
+params,molecule,choice,fail,time
 40 maxMarginalStrengthBiasedWheelSelectVal true false 2 1 1800 3750 4250 100 200 true,C(N=COCN1TCC1(OC#CT(C(SOCTSC(F))(Cl))))Br_, 36, 1, 173514
 40 domWdegRandom true false 2 1 1800 3750 4250 -200 -100 true,[C@H]=NOTOC/[TH+]=[N+](O(CC(I)I))\[C@@H], 50, 14, 141749
 40 maxMarginalStrengthBiasedWheelSelectVal true false 2 1 1800 2750 3250 100 200 true,C(CTOT(TC(N(C)STCCC(OC#C)CC)(F)))N1C=CO1, 38, 0, 140873

@@ -125,27 +125,92 @@ def run_failed(test_cases):
 # doLipinski, doSampling, sampleExponent, #sols, limitInSeconds, #cycles, #branches
 # Results are domWdeg and maxMarginal ??m??s - ??????, ??.??s - ?????
 test_cases = [
-#   ["00000","00001","2","3","004","5","6"],
-#   ["lpsk","sampl","k","#","lim","minW","maxW","minL","mxL"],
-    ["true","false","2","1","1800","1750","2250","-400","-300", "true"],
-    ["true","false","2","1","1800","1750","2250","-200","-100", "true"],
-    ["true","false","2","1","1800","1750","2250","100","200", "true"],
-    ["true","false","2","1","1800","2750","3250","-400","-300", "true"],
-    ["true","false","2","1","1800","2750","3250","-200","-100", "true"],
-    ["true","false","2","1","1800","2750","3250","100","200", "true"],
-    ["true","false","2","1","1800","3750","4250","-400","-300", "true"],
-    ["true","false","2","1","1800","3750","4250","-200","-100", "true"],
-    ["true","false","2","1","1800","3750","4250","100","200", "true"],
+    # ["lpsk","sampl","k","#","time","minW","maxW","minL","maxL", "rglr"]
+    # ["true","false","2","1","1800","1750","2250","-400","-300", "true"],
+    # ["true","false","2","1","1800","1750","2250","-200","-100", "true"],
+    # ["true","false","2","1","1800","1750","2250","100" ,"200" , "true"],
+    # ["true","false","2","1","1800","2750","3250","-400","-300", "true"],
+    # ["true","false","2","1","1800","2750","3250","-200","-100", "true"],
+    # ["true","false","2","1","1800","2750","3250","100" ,"200" , "true"],
+    # ["true","false","2","1","1800","3750","4250","-400","-300", "true"],
+    # ["true","false","2","1","1800","3750","4250","-200","-100", "true"],
+    # ["true","false","2","1","1800","3750","4250","100" ,"200" , "true"],
     # ["true","false","2","1","1800","1750","2250","-400","-300", "false"],
     # ["true","false","2","1","1800","1750","2250","-200","-100", "false"],
-    # ["true","false","2","1","1800","1750","2250","100","200", "false"],
+    # ["true","false","2","1","1800","1750","2250","100" ,"200" , "false"],
     # ["true","false","2","1","1800","2750","3250","-400","-300", "false"],
     # ["true","false","2","1","1800","2750","3250","-200","-100", "false"],
-    # ["true","false","2","1","1800","2750","3250","100","200", "false"],
+    # ["true","false","2","1","1800","2750","3250","100" ,"200" , "false"],
     # ["true","false","2","1","1800","3750","4250","-400","-300", "false"],
     # ["true","false","2","1","1800","3750","4250","-200","-100", "false"],
-    # ["true","false","2","1","1800","3750","4250","100","200", "false"],
+    # ["true","false","2","1","1800","3750","4250","100" ,"200" , "false"],
+#   ["lpsk","sampl","k","#","time","minW","maxW","minL","maxL","c","b","rglr"]
+    # ["true","false","2","1","1800","0000","5000","-400","500" ,"1","2","true"],
+    # ["true","false","2","1","1800","0000","5000","-400","500" ,"1","3","true"],
+    # ["true","false","2","1","1800","0000","5000","-400","500" ,"1","4","true"],
+    # ["true","false","2","1","1800","0000","5000","-400","500" ,"2","2","true"],
+    # ["true","false","2","1","1800","0000","5000","-400","500" ,"2","3","true"],
+    # ["true","false","2","1","1800","0000","5000","-400","500" ,"2","4","true"],
+    # ["true","false","2","1","1800","0000","5000","-400","500" ,"3","2","true"],
+    # ["true","false","2","1","1800","0000","5000","-400","500" ,"3","3","true"],
+    # ["true","false","2","1","1800","0000","5000","-400","500" ,"3","4","true"],
 ]
+
+arguments = {
+    'lipinski':         ['true'],
+    'sampling':         ['false'],
+    'k':                ['2'],
+    'solutions':        ['1'],
+    'time':             ['1800'],
+    'weightRange':      [('0','5000')],
+    'lipinskiRange':    [('-400','500')],
+    'cycles':           ['1','2','3'],
+    'branches':         ['2','3','4'],
+    'regular':          ['true']
+}
+tests_to_add = [[]]
+for key in arguments.keys():
+    new_tests = []
+    for test in tests_to_add:
+        for value in arguments[key]:
+            new_tests.append(test)
+            if value is not str and len(value) == 2:
+                new_tests[-1].append(value[0])
+                new_tests[-1].append(value[1])
+            else:
+                new_tests[-1].append(value)
+    tests_to_add = new_tests
+test_cases.extend(tests_to_add)
+
+
+arguments = {
+    'lipinski':         ['true'],
+    'sampling':         ['false'],
+    'k':                ['2'],
+    'solutions':        ['1'],
+    'time':             ['1800'],
+    'weightRange':      [('1750','2250'),('2750','3250'),('3750','4250')],
+    'lipinskiRange':    [('-400','-300'),('-200','-100'),('100','200')],
+    'cycles':           ['1','2','3'],
+    'branches':         ['2','3','4'],
+    'regular':          ['true']
+}
+tests_to_add = [[]]
+for key in arguments.keys():
+    new_tests = []
+    for test in tests_to_add:
+        for value in arguments[key]:
+            new_tests.append(test)
+            if value is not str and len(value) == 2:
+                new_tests[-1].append(value[0])
+                new_tests[-1].append(value[1])
+            else:
+                new_tests[-1].append(value)
+    tests_to_add = new_tests
+test_cases.extend(tests_to_add)
+
+
+
 
 methods = [
     # "domWdeg",
@@ -172,10 +237,10 @@ methods = [
 ]
 
 print(methods)
-# cc_heuristic_runner(methods, test_cases, size=40)
+cc_heuristic_runner(methods, test_cases, size=40)
 cc_random_runner(test_cases, method='domWdegRandom', size=40)
-# cc_random_runner(test_cases, method='dom-random', size=40)
 # cc_random_runner(test_cases, method='maxMarginalStrengthBiasedWheelSelectVal', size=40)
+# cc_random_runner(test_cases, method='dom-random', size=40)
 
 failed = []
 

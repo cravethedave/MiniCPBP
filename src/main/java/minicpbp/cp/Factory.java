@@ -1690,7 +1690,7 @@ public final class Factory {
      * posted by calling this method.
      *
      * @param x an array of variables
-     * @param g a context-free grammar
+     * @param g a grammar in chomsky's normal form
      * @return a constraint so that {@code x is a word recognized by context-free grammar g}
      *
      * NOTE: The grammar must be in its Chomsky form

@@ -49,7 +49,7 @@ public class Grammar extends AbstractConstraint {
      * {@code x is a word recognized by the context-free grammar}.
      *
      * @param x an array of variables
-     * @param g a context-free grammar
+     * @param g a grammar in chomsky's normal form
      *
      * (code adapted from that of Claude-Guy Quimper)
      * NOTE: The grammar must be in its Chomsky form

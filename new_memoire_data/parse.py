@@ -1,8 +1,10 @@
 
 
 
-rnd_based = set(['maxMarginalStrengthBiasedWheelSelectVal','domWdegRandom'])
-heuristic_based = set(['maxMarginalStrengthLDS', 'maxMarginalStrength', 'maxMarginal', 'maxMarginalLDS'])
+# rnd_based = set(['maxMarginalStrengthBiasedWheelSelectVal','domWdegRandom'])
+rnd_based = set(['domWdegRandom'])
+# heuristic_based = set(['maxMarginalStrengthLDS', 'maxMarginalStrength', 'maxMarginal', 'maxMarginalLDS'])
+heuristic_based = set([])
 
 instances = [
     (1750, 2250, -400, -300),
@@ -110,4 +112,5 @@ def parse_to_terminal(filename):
     print('\n'.join(list(table_body.values())))
     
 parse_to_terminal("new_shortTable.csv")
-parse_to_terminal("new_regular.csv")
+# parse_to_terminal("new_regular.csv")
+# parse_to_terminal("correct_regular_1.csv")
