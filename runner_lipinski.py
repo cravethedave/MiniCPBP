@@ -34,6 +34,16 @@ def cc_heuristic_runner(methods, test_cases, size=20, diff=''):
             # logP
             identifier += f"_logP[{test[7]}-{test[8]}]"
             
+            # cycles
+            identifier += f"_c{test[9]}"
+            
+            # branches
+            identifier += f"_c{test[10]}"
+            
+            # regular
+            if test[11] == 'true':
+                identifier += "_regular"
+            
             name = f"job_{identifier}.sh"
             with open(name, 'w') as f:
                 f.write(file_content)
@@ -72,6 +82,16 @@ def cc_random_runner(test_cases, method='rnd', size=20, diff=''):
             
             # logP
             identifier += f"_logP[{test[7]}-{test[8]}]"
+            
+            # cycles
+            identifier += f"_c{test[9]}"
+            
+            # branches
+            identifier += f"_c{test[10]}"
+            
+            # regular
+            if test[11] == 'true':
+                identifier += "_regular"
             
             identifier += f"_{i}"
             name = f"job_{identifier}.sh"

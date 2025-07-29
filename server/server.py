@@ -1,4 +1,5 @@
 import torch
+import random
 from flask import Flask, request
 from sample_creator import tokenize
 from transformers import GPT2TokenizerFast, GPT2LMHeadModel, DataCollatorWithPadding#, pipeline
@@ -105,11 +106,7 @@ def next_token():
     
     return real_token_prob
 
-@app.route('/token', methods=['POST'])
-def new_token():
-    molecule = request.data.decode("utf-8")
-    # Encode molecule
-    # inputs = tokenizer.encode(molecule, return_tensors="pt").to("cuda:0")
+def get_probs_from_molecule(molecule):
     inputs = tokenizer.encode(molecule, return_tensors="pt")
 
     # Get probabilities for next tokens
@@ -133,6 +130,35 @@ def new_token():
     probs = {k:v/summed_values for k,v in probs.items()}
     probs['_'] = probs.pop('</s>') # replace end token by our padding
     return probs
+
+@app.route('/token', methods=['POST'])
+def new_token():
+    molecule = request.data.decode("utf-8")
+    # Encode molecule
+    # inputs = tokenizer.encode(molecule, return_tensors="pt").to("cuda:0")
+    return get_probs_from_molecule(molecule)
+
+def full_run(n):
+    for _ in range(n):
+        molecule = "<s>"
+        tokens = []
+        for _ in range(40):
+            probs = get_probs_from_molecule(molecule)
+            
+            max_value = max(probs.values())
+            options = list(probs.keys())
+            
+            chosen = random.choice(options)
+            while random.random() >= probs[chosen]/max_value:
+                chosen = random.choice(options)
+            
+            if chosen == '_':
+                break
+            molecule += chosen
+            tokens.append(chosen)
+        print(' '.join('{:2s}'.format(iter) for iter in tokens))
+
+full_run(100)
 
 # raw_probs = fill_mask("<s>CCCC<mask>",top_k=100)
 # raw_probs = {p['token_str']:p['score'] for p in raw_probs}
