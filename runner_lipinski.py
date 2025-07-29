@@ -45,15 +45,15 @@ def cc_heuristic_runner(methods, test_cases, size=20, diff=''):
                 identifier += "_regular"
             
             name = f"job_{identifier}.sh"
-            # with open(name, 'w') as f:
-            #     f.write(file_content)
+            with open(name, 'w') as f:
+                f.write(file_content)
             
-            # subprocess.call(["chmod", "+x", name])
-            # subprocess.Popen([
-            #     "/bin/sh",
-            #     "-c",
-            #     f"sbatch --output=slout_{identifier}.txt --mem={MEM} --time={TIME} {name}"
-            # ])
+            subprocess.call(["chmod", "+x", name])
+            subprocess.Popen([
+                "/bin/sh",
+                "-c",
+                f"sbatch --output=slout_{identifier}.txt --mem={MEM} --time={TIME} {name}"
+            ])
             # time.sleep(0.1) # prevents overloading compute canada
             
     print("Done queueing heuristic jobs.")
