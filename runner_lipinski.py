@@ -38,23 +38,23 @@ def cc_heuristic_runner(methods, test_cases, size=20, diff=''):
             identifier += f"_c{test[9]}"
             
             # branches
-            identifier += f"_c{test[10]}"
+            identifier += f"_b{test[10]}"
             
             # regular
             if test[11] == 'true':
                 identifier += "_regular"
             
             name = f"job_{identifier}.sh"
-            with open(name, 'w') as f:
-                f.write(file_content)
+            # with open(name, 'w') as f:
+            #     f.write(file_content)
             
-            subprocess.call(["chmod", "+x", name])
-            subprocess.Popen([
-                "/bin/sh",
-                "-c",
-                f"sbatch --output=slout_{identifier}.txt --mem={MEM} --time={TIME} {name}"
-            ])
-            time.sleep(0.1) # prevents overloading compute canada
+            # subprocess.call(["chmod", "+x", name])
+            # subprocess.Popen([
+            #     "/bin/sh",
+            #     "-c",
+            #     f"sbatch --output=slout_{identifier}.txt --mem={MEM} --time={TIME} {name}"
+            # ])
+            # time.sleep(0.1) # prevents overloading compute canada
             
     print("Done queueing heuristic jobs.")
 
@@ -193,7 +193,7 @@ for key in arguments.keys():
     new_tests = []
     for test in tests_to_add:
         for value in arguments[key]:
-            new_tests.append(test)
+            new_tests.append(test.copy())
             if value is not str and len(value) == 2:
                 new_tests[-1].append(value[0])
                 new_tests[-1].append(value[1])
@@ -220,7 +220,7 @@ for key in arguments.keys():
     new_tests = []
     for test in tests_to_add:
         for value in arguments[key]:
-            new_tests.append(test)
+            new_tests.append(test.copy())
             if value is not str and len(value) == 2:
                 new_tests[-1].append(value[0])
                 new_tests[-1].append(value[1])
@@ -257,7 +257,7 @@ methods = [
 
 print(methods)
 cc_heuristic_runner(methods, test_cases, size=40)
-cc_random_runner(test_cases, method='domWdegRandom', size=40)
+# cc_random_runner(test_cases, method='domWdegRandom', size=40)
 # cc_random_runner(test_cases, method='maxMarginalStrengthBiasedWheelSelectVal', size=40)
 # cc_random_runner(test_cases, method='dom-random', size=40)
 
