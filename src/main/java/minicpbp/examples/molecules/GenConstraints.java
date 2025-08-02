@@ -1,7 +1,6 @@
 package minicpbp.examples.molecules;
 
 import static minicpbp.cp.Factory.among;
-import static minicpbp.cp.Factory.atmost;
 import static minicpbp.cp.Factory.costRegular;
 import static minicpbp.cp.Factory.element;
 import static minicpbp.cp.Factory.equal;
@@ -16,17 +15,12 @@ import static minicpbp.cp.Factory.table;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Vector;
 
-import minicpbp.engine.constraints.Equal;
 import minicpbp.engine.constraints.ShortTableCT;
 import minicpbp.engine.core.IntVar;
 import minicpbp.engine.core.Solver;
@@ -233,256 +227,6 @@ public class GenConstraints {
         int[][] elementTable = new int[elementVector.size()][5];
         elementTable = elementVector.toArray(elementTable);
         return elementTable;
-    }
-
-    public static void goingForwardTest() {
-        int terminalCount = 3;
-        int STAR = -1;
-
-        String[] baseExamples = new String[]{"aab","abc","acb","bab","bac","bca","cab","cba"};
-        HashMap<Integer,HashMap<Integer,HashMap<Integer,Integer>>> elementMap = new HashMap<>();
-        
-        for (String iter : baseExamples) {
-            char[] c = iter.toCharArray();
-            if (!elementMap.keySet().contains(c[0]-'a')) {
-                elementMap.put(c[0]-'a',new HashMap<>());
-            }
-            if (!elementMap.get(c[0]-'a').keySet().contains(c[1]-'a')) {
-                elementMap.get(c[0]-'a').put(c[1]-'a',new HashMap<>());
-            }
-            if (!elementMap.get(c[0]-'a').get(c[1]-'a').keySet().contains(c[2]-'a')) {
-                elementMap.get(c[0]-'a').get(c[1]-'a').put(c[2]-'a',1);
-            }
-        }
-
-        Vector<int[]> elementVector = new Vector<>();
-        for (int i = 0; i < terminalCount; i++) {
-            if (!elementMap.keySet().contains(i)) {
-                elementVector.add(new int[]{i,STAR,STAR,0});
-                continue;
-            }
-            for (int j = 0; j < terminalCount; j++) {
-                if (!elementMap.get(i).keySet().contains(j)) {
-                    elementVector.add(new int[]{i,j,STAR,0});
-                    continue;
-                }
-                for (int k = 0; k < terminalCount; k++) {
-                    if (!elementMap.get(i).get(j).keySet().contains(k)) {
-                        elementVector.add(new int[]{i,j,k,0});
-                        continue;
-                    }
-                    elementVector.add(new int[]{i,j,k,elementMap.get(i).get(j).get(k)});
-                }
-            }
-        }
-        System.out.println(elementVector.size());
-    }
-
-    public static void goingRndTest(){
-        final int STAR = -1;
-        int n = 4;
-
-        CFG g;
-        try {
-            g = new CFG("data/lingo_rnd_CNF.txt");
-        } catch (IOException e) {
-            return;
-        }
-        Vector<int[]> lingos = new Vector<>();
-        int a = g.tokenEncoder.get("a");
-        int b = g.tokenEncoder.get("b");
-        lingos.add(new int[]{a,a,a,b});
-        lingos.add(new int[]{a,a,b,b});
-        lingos.add(new int[]{a,b,b,b});
-
-        //#region Generating Lingo table
-        int[] startingWord = new int[n];
-        for (int i = 0; i < n; i++) {
-            startingWord[i] = STAR;
-        }
-        Vector<int[]> elementVector = recursiveThing(lingos, startingWord, g.terminalCount(), new Integer[]{0,1,2,3});
-        //#endregion
-    }
-
-    public static Vector<int[]> recursiveThing(Vector<int[]> lingos, int[] currentWord, int terminalCount, Integer[] unvisitedPos) {
-        // Create an array of 0 for the frequencies
-        int n = currentWord.length;
-
-        // Initialize a vector of hashsets that will contain how many different tokens are in each position
-        Vector<HashSet<Integer>> keys = new Vector<>();
-        for (int i = 0; i < n; i++) {
-            keys.add(new HashSet<>());
-        }
-
-        for (int[] lingo : lingos) {
-            // The for loop validates that the current lingo respects previous constraints
-            boolean matchingSequence = true;
-            for (int i = 0; i < n; i++) {
-                // -1 is a wildcard, it accepts all
-                if (currentWord[i] != -1 && lingo[i] != currentWord[i]) {
-                    matchingSequence = false;
-                    break;
-                }
-            }
-            // If the lingo does not respect previous constraints, it cannot contribute to counting
-            if (!matchingSequence) {
-                continue;
-            }
-
-            // Add each token of this lingo to the present keys structure
-            for (int i = 0; i < n; i++) {
-                if (currentWord[i] == -1) {
-                    keys.get(i).add(lingo[i]);
-                }
-            }
-        }
-        
-        // Find what order to visit the remaining positions in
-        Arrays.sort(unvisitedPos, Comparator.comparingInt(i -> keys.get(i).size()));
-
-        // Add the desired elements
-        Vector<int[]> elementVector = new Vector<>();
-        for (int o : unvisitedPos) {
-            for (int t = 0; t < terminalCount; t++) {
-                if (!keys.get(o).contains(t)) { // This token is missing from this position
-                    int[] addedWord = new int[n + 1];
-                    for (int i = 0; i < n; i++) {
-                        addedWord[i] = currentWord[i];
-                    }
-                    addedWord[n] = 0; // Add the weight
-                    addedWord[o] = t;
-                    System.out.println("Weight of 0: " + addedWord[0] + " " + addedWord[1] + " " + addedWord[2] + " " + addedWord[3]);
-                    elementVector.add(addedWord);
-                }
-            }
-            Integer[] positionsLeft = new Integer[unvisitedPos.length - 1];
-            int j = 0;
-            for (int i = 0; i < positionsLeft.length; i++) {
-                if (unvisitedPos[i] == o) {
-                    j += 1;
-                }
-                positionsLeft[i] = unvisitedPos[j];
-                j++;
-            }
-            unvisitedPos = positionsLeft;
-            if (positionsLeft.length == 0) {
-                for (int t : keys.get(o)) {
-                    int[] addedWord = new int[n + 1];
-                    for (int i = 0; i < n; i++) {
-                        addedWord[i] = currentWord[i];
-                    }
-                    addedWord[n] = 0; // Add the weight
-                    addedWord[o] = t;
-                    System.out.println("Weight of ?: " + addedWord[0] + " " + addedWord[1] + " " + addedWord[2] + " " + addedWord[3]);
-                    elementVector.add(addedWord);
-                }
-            } else {
-                for (int t : keys.get(o)) {
-                    int[] changedWord = currentWord.clone();
-                    changedWord[o] = t;
-                    elementVector.addAll(recursiveThing(lingos, changedWord, terminalCount, positionsLeft));
-                }
-            }
-        }
-
-        return elementVector;
-    }
-
-    public static IntVar shortLingoRND(
-        Solver cp,
-        IntVar[] w,
-        CFG g,
-        String filePath,
-        int minValue,
-        int maxValue
-    ) throws FileNotFoundException, IOException {
-        final int STAR = -1;
-
-        HashMap<Integer,HashMap<Integer,HashMap<Integer,HashMap<Integer,Integer>>>> elementMap = new HashMap<>();
-        Vector<int[]> lingos = new Vector<>();
-
-        //#region File reading
-        BufferedReader reader = new BufferedReader(new FileReader(filePath));
-        int n = 0;
-        while (reader.ready()) {
-            // Read, convert to right tokens, associate to weight * 100 rounded
-            String[] line = reader.readLine().split(" ");
-            String[] stringTokens = line[0].split(",");
-            n = stringTokens.length;
-            int weight = Math.round(Float.parseFloat(line[1]) * 100);
-
-            // Verifies that all tokens are in the grammar before crashing
-            for (String t : stringTokens) {
-                if (!g.tokenEncoder.keySet().contains(t)) {
-                    System.out.println("Does not contain " + t);
-                }
-            }
-            int[] tokens = new int[n];
-            for (int i = 0; i < n; i++) {
-                tokens[i] = g.tokenEncoder.get(stringTokens[i]);
-            }
-            lingos.add(tokens);
-
-            if (!elementMap.containsKey(tokens[0])) {
-                elementMap.put(tokens[0], new HashMap<>());
-            }
-            if (!elementMap.get(tokens[0]).containsKey(tokens[1])) {
-                elementMap.get(tokens[0]).put(tokens[1], new HashMap<>());
-            }
-            if (!elementMap.get(tokens[0]).get(tokens[1]).containsKey(tokens[2])) {
-                elementMap.get(tokens[0]).get(tokens[1]).put(tokens[2], new HashMap<>());
-            }
-            if (!elementMap.get(tokens[0]).get(tokens[1]).get(tokens[2]).containsKey(tokens[3])) {
-                elementMap.get(tokens[0]).get(tokens[1]).get(tokens[2]).put(tokens[3], weight);
-            }
-
-        }
-        reader.close();
-        //#endregion
-
-        //#region Generating Lingo table
-        int[] startingWord = new int[n];
-        for (int i = 0; i < n; i++) {
-            startingWord[i] = STAR;
-        }
-        Vector<int[]> elementVector = recursiveThing(lingos, startingWord, g.terminalCount(), new Integer[]{0,1,2,3});
-        //#endregion
-
-        for (int[] iter : elementVector) {
-            HashMap currentPos = elementMap;
-            for (int i = 0; i < n; i++) {
-                if (!currentPos.containsKey(iter[i])) {
-                    break;
-                }
-                if (i == n-1) { // Get the weight
-                    iter[n] = (int)currentPos.get(iter[i]);
-                } else { // If we are not at the end, we go deeper
-                    currentPos = (HashMap)currentPos.get(iter[i]);
-                }
-            }
-        }
-        
-        int[][] elementTable = new int[elementVector.size()][5];
-        elementTable = elementVector.toArray(elementTable);
-
-        System.out.println("Original size: " + Math.pow(g.terminalCount(), 4));
-        System.out.println("Current size: " + elementTable.length);
-        System.out.println(Math.pow(g.terminalCount(), 4) - elementTable.length);
-
-        // Adding the constraints to the model
-        System.out.println("Starting");            
-        IntVar[] logPValues = makeIntVarArray(cp, w.length - 3, -800, 800);
-        for (int i = 0; i < logPValues.length; i++) {
-            cp.post(new ShortTableCT(
-                new IntVar[] {w[i],w[i+1],w[i+2],w[i+3],logPValues[i]},
-                elementTable,
-                STAR
-            ));
-        }
-        System.out.println("Survived");
-        IntVar logPEstimate = makeIntVar(cp, minValue, maxValue);
-        cp.post(sum(logPValues, logPEstimate));
-        return logPEstimate;
     }
 
     public static IntVar shortLingo(
@@ -692,8 +436,6 @@ public class GenConstraints {
         int minValue,
         int maxValue
     ) throws FileNotFoundException, IOException {
-
-
         //#region File reading
         HashMap<String,Integer> weightMap = new HashMap<>();
         BufferedReader reader = new BufferedReader(new FileReader(filePath));            
@@ -741,7 +483,7 @@ public class GenConstraints {
                 }
             }
         }
-        System.out.println("stateMap size " + String.valueOf(stateMap.size()));
+        // System.out.println("stateMap size " + String.valueOf(stateMap.size()));
         //#endregion
 
 

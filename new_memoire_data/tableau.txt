@@ -1,4 +1,0 @@
-value, domWdeg, maxMarginalStrengthLDS, maxMarginalStrengthLDS-noGrammarBP
-solved, 52, 72, 48
-time, 231.16230769230762, 175.31050000000002, 298.2032916666667
-fails, 333.22115384615387, 8.097222222222221, 9.875
