@@ -39,7 +39,7 @@ public class StructuralLipinskiMolecule {
         );
     }
 
-    private static void printSolution(CFG g, IntVar[] w, IntVar[] tokenWeights) {
+    private static void printSolution(CFG g, IntVar[] w, IntVar[] tokenWeights, IntVar logPEstimate) {
         String word = "";
         int sumWeight = 0;
         for (int i = 0; i < w.length; i++) {
@@ -126,7 +126,7 @@ public class StructuralLipinskiMolecule {
                 case "cpbp":
                     cp.setMode(PropaMode.SBP);
                     LDSearch lds = makeLds(cp, maxMarginalStrength(w));
-                    lds.onSolution(() -> {printSolution(g,w,tokenWeights);});
+                    lds.onSolution(() -> {printSolution(g,w,tokenWeights,logPEstimate);});
                     stats = lds.solve(
                         stat -> stat.numberOfSolutions() == SOLUTION_COUNT || 
                         stat.timeElapsed() >= TIME_LIMIT * 1000
@@ -136,7 +136,7 @@ public class StructuralLipinskiMolecule {
                 default:
                     cp.setMode(PropaMode.SP);
                     DFSearch dfs = makeDfs(cp, domWdegRandom(w));                    
-                    dfs.onSolution(() -> {printSolution(g,w,tokenWeights);});
+                    dfs.onSolution(() -> {printSolution(g,w,tokenWeights,logPEstimate);});
                     stats = dfs.solveRestarts(
                         stat -> stat.numberOfSolutions() == SOLUTION_COUNT || 
                         stat.timeElapsed() >= TIME_LIMIT * 1000
