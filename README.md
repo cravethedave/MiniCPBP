@@ -1,5 +1,29 @@
 
 
+# AAAI 2026 #
+
+To run this project and get the results observed in AAAI 2026, first follow the steps below to install maven.
+You can then generate one molecule using the command:
+```
+mvn exec:java -Dexec.mainClass='minicpbp.examples.molecules.StructuralLipinskiMolecule' -Dexec.args="$METHOD $W_MIN $W_MAX $L_MIN $L_MAX $C $B"
+```
+
+All arguments are required.
+
+`$METHOD` has two accepted values: `cp` and `cpbp`. The first runs without belief propagation, the second runs with it.
+
+`$W_MIN` is the lower bound for the desired molecule weight. It must be a positive integer.
+
+`$W_MAX` is the upper bound for the desired molecule weight. It must be a positive integer greater than the lower bound.
+
+`$L_MIN` is the lower bound for the desired logP score. It must be a positive integer.
+
+`$L_MAX` is the upper bound for the desired logP score. It must be a positive integer greater than the lower bound.
+
+`$C` is the number of cycles that the molecule must include. Accepted values are integers in range [-1,6]. -1 disables the constraint, 0 forces the appearance of no cycles and 6 is the highest accepted value.
+
+`$B` is the number of branches that the molecule must include. Accepted values are any positive integer, 0 and -1. -1 disables the constraint, 0 forces the appearance of no branches and there is no upper bound, however setting this too high will result in an unsatisfiable problem.
+
 # README #
 
 * MiniCPBP: Replacing classic propagation by belief propagation in MiniCPv1.0
@@ -117,7 +141,7 @@ The output of build process ends with lines like this, which indicates a success
 
 ## Running MiniCPBP
 
-Let's firts test the built code:
+Let's first test the built code:
 
 ```
 $ java -jar target/minicpbp-1.0.jar

@@ -1548,96 +1548,140 @@ public final class Factory {
      * @param f  a list of accepting states
      * @param c  a 3D array giving integer costs for each combination of variable, state, and domain value (in that order)
      * @param tc the total cost of word x computed as the sum of the corresponding integer costs from array c
+     * @param marginals4cost flag for the computationally expensive option of computing marginals for tc
      * @return a constraint so that {@code x is a word recognized by automaton A and of total cost tc}
      */
-    public static Constraint costRegular(IntVar[] x, int[][] A, int s, List<Integer> f, int[][][] c, IntVar tc) {
+    public static Constraint costRegular(IntVar[] x, int[][] A, int s, List<Integer> f, int[][][] c, IntVar tc, boolean marginals4cost) {
         IntVar[] vars = Arrays.copyOf(x, x.length + 1);
         vars[x.length] = tc;
-        return new CostRegular(x, A, s, f, c, tc, vars);
+        return new CostRegular(x, A, s, f, c, tc, marginals4cost, vars);
+    }
+
+    /**
+     * special case without computing marginals for cost variable
+     */
+    public static Constraint costRegular(IntVar[] x, int[][] A, int s, List<Integer> f, int[][][] c, IntVar tc) {
+        return new CostRegular(x, A, s, f, c, tc, false, x);
     }
 
     /**
      * special case with 0 being the initial state
      */
-    public static Constraint costRegular(IntVar[] x, int[][] A, List<Integer> f, int[][][] c, IntVar tc) {
+    public static Constraint costRegular(IntVar[] x, int[][] A, List<Integer> f, int[][][] c, IntVar tc, boolean marginals4cost) {
         IntVar[] vars = Arrays.copyOf(x, x.length + 1);
         vars[x.length] = tc;
-        return new CostRegular(x, A, 0, f, c, tc, vars);
+        return new CostRegular(x, A, 0, f, c, tc, marginals4cost, vars);
+    }
+    public static Constraint costRegular(IntVar[] x, int[][] A, List<Integer> f, int[][][] c, IntVar tc) {
+        return new CostRegular(x, A, 0, f, c, tc, false, x);
     }
 
     /**
      * special case with 0 being the initial state and all states being accepting
      */
+    public static Constraint costRegular(IntVar[] x, int[][] A, int[][][] c, IntVar tc, boolean marginals4cost) {
+        List<Integer> f = new ArrayList<Integer>();
+        for (int i = 0; i < A.length; i++) {
+            f.add(i);
+        }
+        IntVar[] vars = Arrays.copyOf(x, x.length + 1);
+        vars[x.length] = tc;
+        return new CostRegular(x, A, 0, f, c, tc, marginals4cost, vars);
+    }
     public static Constraint costRegular(IntVar[] x, int[][] A, int[][][] c, IntVar tc) {
         List<Integer> f = new ArrayList<Integer>();
         for (int i = 0; i < A.length; i++) {
             f.add(i);
         }
-        IntVar[] vars = Arrays.copyOf(x, x.length + 1);
-        vars[x.length] = tc;
-        return new CostRegular(x, A, 0, f, c, tc, vars);
+        return new CostRegular(x, A, 0, f, c, tc, false, x);
     }
 
     /**
      * special case with 2D cost matrix: state x domain value
      */
-    public static Constraint costRegular(IntVar[] x, int[][] A, int s, List<Integer> f, int[][] c, IntVar tc) {
+    public static Constraint costRegular(IntVar[] x, int[][] A, int s, List<Integer> f, int[][] c, IntVar tc, boolean marginals4cost) {
         IntVar[] vars = Arrays.copyOf(x, x.length + 1);
         vars[x.length] = tc;
-        return new CostRegular(x, A, s, f, c, tc, vars);
+        return new CostRegular(x, A, s, f, c, tc, marginals4cost, vars);
+    }
+    public static Constraint costRegular(IntVar[] x, int[][] A, int s, List<Integer> f, int[][] c, IntVar tc) {
+        return new CostRegular(x, A, s, f, c, tc, false, x);
     }
 
     /**
      * special case with 0 being the initial state
      */
-    public static Constraint costRegular(IntVar[] x, int[][] A, List<Integer> f, int[][] c, IntVar tc) {
+    public static Constraint costRegular(IntVar[] x, int[][] A, List<Integer> f, int[][] c, IntVar tc, boolean marginals4cost) {
         IntVar[] vars = Arrays.copyOf(x, x.length + 1);
         vars[x.length] = tc;
-        return new CostRegular(x, A, 0, f, c, tc, vars);
+        return new CostRegular(x, A, 0, f, c, tc, marginals4cost, vars);
+    }
+    public static Constraint costRegular(IntVar[] x, int[][] A, List<Integer> f, int[][] c, IntVar tc) {
+        return new CostRegular(x, A, 0, f, c, tc, false, x);
     }
 
     /**
      * special case with 0 being the initial state and all states being accepting
      */
+    public static Constraint costRegular(IntVar[] x, int[][] A, int[][] c, IntVar tc, boolean marginals4cost) {
+        List<Integer> f = new ArrayList<Integer>();
+        for (int i = 0; i < A.length; i++) {
+            f.add(i);
+        }
+        IntVar[] vars = Arrays.copyOf(x, x.length + 1);
+        vars[x.length] = tc;
+        return new CostRegular(x, A, 0, f, c, tc, marginals4cost, vars);
+    }
     public static Constraint costRegular(IntVar[] x, int[][] A, int[][] c, IntVar tc) {
         List<Integer> f = new ArrayList<Integer>();
         for (int i = 0; i < A.length; i++) {
             f.add(i);
         }
-        IntVar[] vars = Arrays.copyOf(x, x.length + 1);
-        vars[x.length] = tc;
-        return new CostRegular(x, A, 0, f, c, tc, vars);
+        return new CostRegular(x, A, 0, f, c, tc, false, x);
     }
 
     /**
      * special case with 1D cost matrix: domain value
      */
-    public static Constraint costRegular(IntVar[] x, int[][] A, int s, List<Integer> f, int[] c, IntVar tc) {
+    public static Constraint costRegular(IntVar[] x, int[][] A, int s, List<Integer> f, int[] c, IntVar tc, boolean marginals4cost) {
         IntVar[] vars = Arrays.copyOf(x, x.length + 1);
         vars[x.length] = tc;
-        return new CostRegular(x, A, s, f, c, tc, vars);
+        return new CostRegular(x, A, s, f, c, tc, marginals4cost, vars);
+    }
+    public static Constraint costRegular(IntVar[] x, int[][] A, int s, List<Integer> f, int[] c, IntVar tc) {
+        return new CostRegular(x, A, s, f, c, tc, false, x);
     }
 
     /**
      * special case with 0 being the initial state
      */
-    public static Constraint costRegular(IntVar[] x, int[][] A, List<Integer> f, int[] c, IntVar tc) {
+    public static Constraint costRegular(IntVar[] x, int[][] A, List<Integer> f, int[] c, IntVar tc, boolean marginals4cost) {
         IntVar[] vars = Arrays.copyOf(x, x.length + 1);
         vars[x.length] = tc;
-        return new CostRegular(x, A, 0, f, c, tc, vars);
+        return new CostRegular(x, A, 0, f, c, tc, marginals4cost, vars);
+    }
+    public static Constraint costRegular(IntVar[] x, int[][] A, List<Integer> f, int[] c, IntVar tc) {
+        return new CostRegular(x, A, 0, f, c, tc, false, x);
     }
 
     /**
      * special case with 0 being the initial state and all states being accepting
      */
-    public static Constraint costRegular(IntVar[] x, int[][] A, int[] c, IntVar tc) {
+    public static Constraint costRegular(IntVar[] x, int[][] A, int[] c, IntVar tc, boolean marginals4cost) {
         List<Integer> f = new ArrayList<Integer>();
         for (int i = 0; i < A.length; i++) {
             f.add(i);
         }
         IntVar[] vars = Arrays.copyOf(x, x.length + 1);
         vars[x.length] = tc;
-        return new CostRegular(x, A, 0, f, c, tc, vars);
+        return new CostRegular(x, A, 0, f, c, tc, marginals4cost, vars);
+    }
+    public static Constraint costRegular(IntVar[] x, int[][] A, int[] c, IntVar tc) {
+        List<Integer> f = new ArrayList<Integer>();
+        for (int i = 0; i < A.length; i++) {
+            f.add(i);
+        }
+        return new CostRegular(x, A, 0, f, c, tc, false, x);
     }
 
     /**
@@ -1646,13 +1690,17 @@ public final class Factory {
      * posted by calling this method.
      *
      * @param x an array of variables
-     * @param g a context-free grammar
+     * @param g a grammar in chomsky's normal form
      * @return a constraint so that {@code x is a word recognized by context-free grammar g}
      *
      * NOTE: The grammar must be in its Chomsky form
      */
     public static Constraint grammar(IntVar[] x, CFG g) {
         return new Grammar(x, g);
+    }
+
+    public static Constraint testing(IntVar[] x, CFG g) {
+        return new IncreasingValue(x, g);
     }
 
     /**
@@ -1665,71 +1713,121 @@ public final class Factory {
      * @param R     a 3D array giving integer rewards: {states} x {actions} x {states} -> Z
      * @param start the initial state
      * @param tr    the total reward of sequence (start,a0,s0,...,an-1,sn-1) computed as the sum of the corresponding integer rewards from array R.
+     * @param marginals4tr flag for the computationally expensive option of computing marginals for tr
      */
     public static Constraint markov(IntVar[] a, IntVar[] s, double[][][] P, int[][][] R, int start, IntVar tr) {
+        assert (a.length == s.length);
+        IntVar[] vars = Arrays.copyOf(a, 2 * a.length);
+        for (int i = 0; i < s.length; i++) {
+            vars[a.length + i] = s[i];
+        }
+        return new Markov(a, s, P, R, start, tr, false, vars);
+    }
+    public static Constraint markov(IntVar[] a, IntVar[] s, double[][][] P, int[][][] R, int start, IntVar tr, boolean marginals4tr) {
         assert (a.length == s.length);
         IntVar[] vars = Arrays.copyOf(a, 2 * a.length + 1);
         for (int i = 0; i < s.length; i++) {
             vars[a.length + i] = s[i];
         }
         vars[2 * a.length] = tr;
-        return new Markov(a, s, P, R, start, tr, vars);
+        return new Markov(a, s, P, R, start, tr, marginals4tr, vars);
     }
 
     /**
-     * Returns an among constraint.
-     * This relation is enforced by the {@link Among} constraint
+     * Returns an among constraint with a variable representing the number of occurrences
+     * This relation is enforced by the {@link AmongVarBC} constraint
      * posted by calling this method.
+     *
+     * Enforces bounds consistency on the occurrence variable o (the default).
+     *
+     * @param x an array of variables whose instantiations belonging to V we count
+     * @param V an array of values whose occurrences in x we count
+     * @param o the variable corresponding to the number of occurrences of values from V in x
+     * @return a constraint so that {@code o.min() <= (x[0] \in V) + (x[1] \in V) + ... + (x[x.length-1] \in V) <= o.max()}
+     */
+    public static Constraint among(IntVar[] x, int[] V, IntVar o) {
+        return among(x, V, o, true);
+    }
+
+    /**
+     * Returns an among constraint with a variable representing the number of occurrences
+     * This relation is enforced by the {@link AmongVarBC} or {@link AmongVar} constraint
+     * posted by calling this method.
+     *
+     * Enforces domain or bounds consistency on the occurrence variable o depending on boolean bc
      *
      * @param x an array of variables whose instantiations belonging to V we count
      * @param V an array of values whose occurrences in x we count
      * @param o the variable corresponding to the number of occurrences of values from V in x
      * @return a constraint so that {@code (x[0] \in V) + (x[1] \in V) + ... + (x[x.length-1] \in V) == o}
      */
-    public static Constraint among(IntVar[] x, int[] V, IntVar o) {
-        Solver cp = x[0].getSolver();
-        IntVar[] vars = Arrays.copyOf(x, 2 * x.length);
-        IntVar[] y = new IntVar[x.length]; // indicator variables: (y[i] == 1) iff (x[i] \in V)
-        for (int i = 0; i < y.length; i++) {
-            y[i] = makeIntVar(cp, 0, 1);
-            y[i].setName("y" + "[" + i + "]");
-            vars[x.length + i] = y[i];
+    public static Constraint among(IntVar[] x, int[] V, IntVar o, boolean bc) {
+        if (bc) {
+            return new AmongVarBC(x,V,o);
         }
-        return new Among(x, V, o, y, vars);
+        else {
+            Solver cp = x[0].getSolver();
+            IntVar[] vars = Arrays.copyOf(x, 2 * x.length);
+            IntVar[] y = new IntVar[x.length]; // indicator variables: (y[i] == 1) iff (x[i] \in V)
+            for (int i = 0; i < y.length; i++) {
+                y[i] = makeIntVar(cp, 0, 1);
+                y[i].setName("y" + "[" + i + "]");
+                vars[x.length + i] = y[i];
+            }
+            return new AmongVar(x, V, o, y, vars);
+        }
     }
 
     /**
-     * special cases with fixed (limit on) nb of occurrences
+     * Returns an among constraint with a fixed (limit on) number of occurrences.
+     * This relation is enforced by the {@link Among} constraint
+     * posted by calling this method.
+     *
+     * @param x an array of variables whose instantiations belonging to V we count
+     * @param V an array of values whose occurrences in x we count
+     * @param minOcc    the minimum number of occurrences of values from V in x
+     * @param maxOcc    the maximum number of occurrences of values from V in x
+     * @return a constraint so that {@code minOcc <= (x[0] \in V) + (x[1] \in V) + ... + (x[x.length-1] \in V) <= maxOcc}.
+     */
+    public static Constraint among(IntVar[] x, int[] V, int minOcc, int maxOcc) {
+        return new Among(x, V, minOcc, maxOcc);
+    }
+
+    /**
+     * special cases
      */
     public static Constraint atleast(IntVar[] x, int[] V, int lb) {
-        return among(x, V, makeIntVar(x[0].getSolver(), lb, Math.max(lb, x.length)));
+        return among(x, V, lb, x.length);
     }
 
     public static Constraint atmost(IntVar[] x, int[] V, int ub) {
-        return among(x, V, makeIntVar(x[0].getSolver(), Math.min(0, ub), ub));
+        return among(x, V, 0, ub);
     }
 
     public static Constraint exactly(IntVar[] x, int[] V, int o) {
-        return among(x, V, makeIntVar(x[0].getSolver(), o, o));
+        return among(x, V, o, o);
     }
 
     /**
      * special cases with a single value in V
      */
     public static Constraint among(IntVar[] x, int v, IntVar o) {
-        return among(x, new int[]{v}, o);
+        return among(x, new int[]{v}, o, true);
+    }
+    public static Constraint among(IntVar[] x, int v, IntVar o, boolean bc) {
+        return among(x, new int[]{v}, o, bc);
     }
 
     public static Constraint atleast(IntVar[] x, int v, int lb) {
-        return among(x, new int[]{v}, makeIntVar(x[0].getSolver(), lb, Math.max(lb, x.length)));
+        return among(x, new int[]{v}, lb, x.length);
     }
 
     public static Constraint atmost(IntVar[] x, int v, int ub) {
-        return among(x, new int[]{v}, makeIntVar(x[0].getSolver(), Math.min(0, ub), ub));
+        return among(x, new int[]{v}, 0, ub);
     }
 
     public static Constraint exactly(IntVar[] x, int v, int o) {
-        return among(x, new int[]{v}, makeIntVar(x[0].getSolver(), o, o));
+        return among(x, new int[]{v}, o, o);
     }
 
     /**

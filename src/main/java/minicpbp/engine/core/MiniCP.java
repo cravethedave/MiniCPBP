@@ -701,7 +701,7 @@ public class MiniCP implements Solver {
 //    	System.out.println("factors: "+factors.toString());
 	int nbIneq = factors.size();
 	int nbEq = m - nbIneq;
-//     	System.out.println("nb eq ; ineq "+nbEq+" ; "+nbIneq);
+    	// System.out.println("nb eq ; ineq "+nbEq+" ; "+nbIneq);
 	// set up the linear modular constraints
  	Constraint L = null;
 	IntVar[] paramVars;

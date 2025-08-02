@@ -1,0 +1,555 @@
+empty_smiles -> atom_valence_1 nonH_bond
+empty_smiles -> starting_aromatic_c_num A39
+empty_smiles -> valence_4 A74
+empty_smiles -> N
+empty_smiles -> valence_4 A31
+empty_smiles -> Z1 A55
+empty_smiles -> F
+empty_smiles -> valence_4_num A40
+empty_smiles -> valence_3 A63
+empty_smiles -> Z1 A67
+empty_smiles -> valence_3 A33
+empty_smiles -> starting_aromatic_c_num A60
+empty_smiles -> valence_2 nonH_bond
+empty_smiles -> Cl
+empty_smiles -> valence_4 triple_bond
+empty_smiles -> Br
+empty_smiles -> Z0 A104
+empty_smiles -> Z1 A56
+empty_smiles -> smiles void
+empty_smiles -> valence_4 A33
+empty_smiles -> valence_3 double_bond
+empty_smiles -> Z1 A77
+empty_smiles -> Z1 A36
+empty_smiles -> C
+empty_smiles -> Z0 A103
+empty_smiles -> starting_aromatic_c_num A35
+empty_smiles -> atom_valence_3 triple_bond
+empty_smiles -> starting_aromatic_c_num A49
+empty_smiles -> starting_aromatic_c_num A64
+empty_smiles -> I
+empty_smiles -> valence_4_num cycle_n_double_bond
+empty_smiles -> Z1 A29
+empty_smiles -> Z0 A101
+empty_smiles -> valence_3 A31
+empty_smiles -> starting_aromatic_c_num A47
+empty_smiles -> Z1 A57
+empty_smiles -> atom_valence_2 double_bond
+empty_smiles -> valence_3_num cycle_n_bond
+empty_smiles -> valence_4 A66
+empty_smiles -> starting_aromatic_c_num A48
+empty_smiles -> valence_2 A82
+empty_smiles -> S
+empty_smiles -> ring_n_segment nonH_bond
+empty_smiles -> valence_4 A42
+empty_smiles -> valence_2 A31
+empty_smiles -> Z2 A92
+empty_smiles -> O
+empty_smiles -> Z1 A38
+Z0 -> c
+Z1 -> [
+Z2 -> S
+A104 -> num A102
+A101 -> num A99
+A102 -> aromatic_atom A100
+A103 -> num A98
+A98 -> aromatic_atom A94
+A99 -> aromatic_atom A95
+A100 -> aromatic_atom A96
+A94 -> aromatic_atom A91
+A95 -> aromatic_atom A93
+A96 -> aromatic_atom A90
+A90 -> Z0 A86
+A91 -> aromatic_atom A88
+A92 -> Z3 A89
+Z3 -> (
+A93 -> aromatic_atom A87
+A86 -> num A84
+A87 -> Z0 A85
+A88 -> Z4 A81
+Z4 -> n
+A89 -> Z5 A83
+Z5 -> =
+A81 -> num A75
+A82 -> slash A72
+A83 -> Z6 A76
+Z6 -> O
+A84 -> Z0 A73
+A85 -> num A78
+A72 -> valence_3 A65
+A73 -> num A62
+A74 -> Z3 A59
+A75 -> Z0 A58
+A76 -> Z7 A61
+Z7 -> )
+A77 -> Z8 A68
+Z8 -> C
+A78 -> Z4 A58
+A55 -> Z8 A52
+A56 -> Z9 A44
+Z9 -> N
+A57 -> Z8 A34
+A58 -> num A30
+A59 -> cycle_n-1_bond A41
+A60 -> aromatic_atom A43
+A61 -> Z3 A46
+A62 -> aromatic_atom A30
+A63 -> Z3 A32
+A64 -> aromatic_atom A37
+A65 -> Z5 A51
+A66 -> Z3 A45
+A67 -> Z9 A50
+A68 -> Z10 A34
+Z10 -> @
+A29 -> Z6 A4
+A30 -> aromatic_atom A7
+A31 -> Z3 A8
+A32 -> cycle_n-1_bond A1
+A33 -> Z3 A9
+A34 -> Z10 A5
+A35 -> full_aromatic_segment A10
+A36 -> Z8 A2
+A37 -> aromatic_os A7
+A38 -> Z9 A3
+A39 -> aromatic_atom A13
+A40 -> Z3 A6
+A41 -> Z7 A11
+A42 -> Z3 A12
+A43 -> full_aromatic_segment A7
+A44 -> hydrogen_3 A3
+A45 -> cycle_n-1_double_bond A1
+A46 -> Z5 A14
+A47 -> full_aromatic_segment A16
+A48 -> aromatic_os A10
+A49 -> full_aromatic_segment A0
+A50 -> hydrogen_1 A3
+A51 -> valence_3 A15
+A52 -> Z10 A2
+A0 -> aromatic_atom aromatic_os_num
+A1 -> Z7 valence_3_num
+A2 -> Z10 Z11
+Z11 -> ]
+A3 -> Z12 Z11
+Z12 -> +
+A4 -> Z13 Z11
+Z13 -> -
+A5 -> hydrogen_1 Z11
+A6 -> cycle_n_bond Z7
+A7 -> aromatic_atom aromatic_atom_num
+A8 -> nonH_bond Z7
+A9 -> double_bond Z7
+A10 -> full_aromatic_segment aromatic_atom_num
+A11 -> Z5 valence_4_num
+A12 -> triple_bond Z7
+A13 -> full_aromatic_segment aromatic_os_num
+A14 -> Z6 Z7
+A15 -> slash valence_2
+A16 -> aromatic_os aromatic_atom_num
+void -> _
+void -> Z14 void
+Z14 -> _
+smiles -> atom_valence_1 nonH_bond
+smiles -> starting_aromatic_c_num A39
+smiles -> valence_4 A74
+smiles -> N
+smiles -> valence_4 A31
+smiles -> Z1 A55
+smiles -> F
+smiles -> valence_4_num A40
+smiles -> valence_3 A63
+smiles -> Z1 A67
+smiles -> valence_3 A33
+smiles -> starting_aromatic_c_num A60
+smiles -> valence_2 nonH_bond
+smiles -> Cl
+smiles -> valence_4 triple_bond
+smiles -> Br
+smiles -> Z0 A104
+smiles -> Z1 A56
+smiles -> valence_4 A33
+smiles -> valence_3 double_bond
+smiles -> Z1 A77
+smiles -> Z1 A36
+smiles -> C
+smiles -> Z0 A103
+smiles -> starting_aromatic_c_num A35
+smiles -> atom_valence_3 triple_bond
+smiles -> starting_aromatic_c_num A49
+smiles -> starting_aromatic_c_num A64
+smiles -> I
+smiles -> valence_4_num cycle_n_double_bond
+smiles -> Z1 A29
+smiles -> Z0 A101
+smiles -> valence_3 A31
+smiles -> starting_aromatic_c_num A47
+smiles -> Z1 A57
+smiles -> atom_valence_2 double_bond
+smiles -> valence_3_num cycle_n_bond
+smiles -> valence_4 A66
+smiles -> starting_aromatic_c_num A48
+smiles -> valence_2 A82
+smiles -> S
+smiles -> ring_n_segment nonH_bond
+smiles -> valence_4 A42
+smiles -> valence_2 A31
+smiles -> Z2 A92
+smiles -> O
+smiles -> Z1 A38
+atom_valence_1 -> Cl
+atom_valence_1 -> Br
+atom_valence_1 -> Z1 A56
+atom_valence_1 -> I
+atom_valence_1 -> F
+atom_valence_1 -> Z1 A29
+atom_valence_2 -> S
+atom_valence_2 -> O
+atom_valence_3 -> Z1 A77
+atom_valence_3 -> N
+atom_valence_3 -> Z1 A57
+atom_valence_3 -> Z1 A67
+atom_valence_4 -> Z1 A55
+atom_valence_4 -> C
+atom_valence_4 -> Z1 A36
+atom_valence_4 -> Z1 A38
+hydrogen_1 -> H
+hydrogen_3 -> H3
+nonH_bond -> valence_4 A74
+nonH_bond -> starting_aromatic_c_num A39
+nonH_bond -> N
+nonH_bond -> valence_4 A31
+nonH_bond -> Z1 A55
+nonH_bond -> F
+nonH_bond -> valence_4_num A40
+nonH_bond -> valence_3 A63
+nonH_bond -> Z1 A67
+nonH_bond -> valence_3 A33
+nonH_bond -> starting_aromatic_c_num A60
+nonH_bond -> valence_2 nonH_bond
+nonH_bond -> Cl
+nonH_bond -> valence_4 triple_bond
+nonH_bond -> Br
+nonH_bond -> Z0 A104
+nonH_bond -> Z1 A56
+nonH_bond -> valence_4 A33
+nonH_bond -> valence_3 double_bond
+nonH_bond -> Z1 A77
+nonH_bond -> Z1 A36
+nonH_bond -> C
+nonH_bond -> Z0 A103
+nonH_bond -> starting_aromatic_c_num A35
+nonH_bond -> starting_aromatic_c_num A64
+nonH_bond -> starting_aromatic_c_num A49
+nonH_bond -> I
+nonH_bond -> valence_4_num cycle_n_double_bond
+nonH_bond -> Z1 A29
+nonH_bond -> Z0 A101
+nonH_bond -> valence_3 A31
+nonH_bond -> starting_aromatic_c_num A47
+nonH_bond -> Z1 A57
+nonH_bond -> valence_4 A66
+nonH_bond -> valence_3_num cycle_n_bond
+nonH_bond -> S
+nonH_bond -> starting_aromatic_c_num A48
+nonH_bond -> valence_2 A82
+nonH_bond -> ring_n_segment nonH_bond
+nonH_bond -> valence_4 A42
+nonH_bond -> valence_2 A31
+nonH_bond -> Z2 A92
+nonH_bond -> O
+nonH_bond -> Z1 A38
+slash -> \
+slash -> /
+valence_1 -> N
+valence_1 -> valence_4 A31
+valence_1 -> Z1 A55
+valence_1 -> F
+valence_1 -> valence_4_num A40
+valence_1 -> Z1 A67
+valence_1 -> valence_3 A33
+valence_1 -> Cl
+valence_1 -> Br
+valence_1 -> Z1 A56
+valence_1 -> valence_4 A33
+valence_1 -> Z1 A77
+valence_1 -> Z1 A36
+valence_1 -> C
+valence_1 -> I
+valence_1 -> Z1 A29
+valence_1 -> valence_3 A31
+valence_1 -> Z1 A57
+valence_1 -> S
+valence_1 -> valence_4 A42
+valence_1 -> valence_2 A31
+valence_1 -> Z2 A92
+valence_1 -> O
+valence_1 -> Z1 A38
+valence_2 -> Z1 A77
+valence_2 -> N
+valence_2 -> C
+valence_2 -> valence_4 A31
+valence_2 -> Z1 A36
+valence_2 -> Z1 A57
+valence_2 -> S
+valence_2 -> Z1 A55
+valence_2 -> valence_4 A33
+valence_2 -> valence_4_num A40
+valence_2 -> Z2 A92
+valence_2 -> O
+valence_2 -> Z1 A67
+valence_2 -> valence_3 A31
+valence_2 -> Z1 A38
+valence_3 -> Z1 A77
+valence_3 -> N
+valence_3 -> C
+valence_3 -> valence_4 A31
+valence_3 -> Z1 A36
+valence_3 -> Z1 A57
+valence_3 -> Z1 A55
+valence_3 -> Z1 A67
+valence_3 -> Z1 A38
+valence_4 -> Z1 A55
+valence_4 -> C
+valence_4 -> Z1 A36
+valence_4 -> Z1 A38
+double_bond -> Z5 valence_2
+double_bond -> Z5 A17
+double_bond -> Z5 A18
+A17 -> valence_4 double_bond
+A18 -> valence_3 nonH_bond
+triple_bond -> Z15 A19
+triple_bond -> Z15 valence_3
+Z15 -> #
+A19 -> valence_4 nonH_bond
+cycle_n_bond -> valence_3 cycle_5_double_bond
+cycle_n_bond -> valence_3 cycle_2_double_bond
+cycle_n_bond -> ring_n_segment cycle_4_bond
+cycle_n_bond -> valence_3 cycle_6_double_bond
+cycle_n_bond -> valence_2 cycle_5_bond
+cycle_n_bond -> ring_n_segment cycle_5_bond
+cycle_n_bond -> ring_n_segment cycle_6_bond
+cycle_n_bond -> valence_2 cycle_2_bond
+cycle_n_bond -> ring_n_segment cycle_3_bond
+cycle_n_bond -> valence_3 cycle_3_double_bond
+cycle_n_bond -> valence_2 cycle_3_bond
+cycle_n_bond -> valence_2 valence_2_num
+cycle_n_bond -> valence_3 cycle_4_double_bond
+cycle_n_bond -> valence_3 A20
+cycle_n_bond -> ring_n_segment cycle_2_bond
+cycle_n_bond -> valence_2 cycle_6_bond
+cycle_n_bond -> ring_n_segment valence_2_num
+cycle_n_bond -> valence_2 cycle_4_bond
+A20 -> Z5 valence_3_num
+cycle_n_double_bond -> valence_3 cycle_5_double_bond
+cycle_n_double_bond -> valence_3 cycle_2_double_bond
+cycle_n_double_bond -> ring_n_segment cycle_4_bond
+cycle_n_double_bond -> valence_3 cycle_6_double_bond
+cycle_n_double_bond -> valence_2 cycle_5_bond
+cycle_n_double_bond -> ring_n_segment cycle_5_bond
+cycle_n_double_bond -> ring_n_segment cycle_6_bond
+cycle_n_double_bond -> valence_2 cycle_2_bond
+cycle_n_double_bond -> ring_n_segment cycle_3_bond
+cycle_n_double_bond -> valence_3 cycle_3_double_bond
+cycle_n_double_bond -> valence_2 cycle_3_bond
+cycle_n_double_bond -> valence_2 valence_2_num
+cycle_n_double_bond -> valence_3 cycle_4_double_bond
+cycle_n_double_bond -> valence_3 A20
+cycle_n_double_bond -> ring_n_segment cycle_2_bond
+cycle_n_double_bond -> valence_2 cycle_6_bond
+cycle_n_double_bond -> ring_n_segment valence_2_num
+cycle_n_double_bond -> valence_2 cycle_4_bond
+cycle_n-1_bond -> valence_3 cycle_5_double_bond
+cycle_n-1_bond -> ring_n_segment cycle_4_bond
+cycle_n-1_bond -> valence_2 cycle_5_bond
+cycle_n-1_bond -> ring_n_segment cycle_5_bond
+cycle_n-1_bond -> valence_2 cycle_3_bond
+cycle_n-1_bond -> ring_n_segment cycle_3_bond
+cycle_n-1_bond -> valence_3 cycle_3_double_bond
+cycle_n-1_bond -> valence_2 cycle_2_bond
+cycle_n-1_bond -> valence_2 valence_2_num
+cycle_n-1_bond -> valence_3 cycle_4_double_bond
+cycle_n-1_bond -> valence_3 A20
+cycle_n-1_bond -> ring_n_segment cycle_2_bond
+cycle_n-1_bond -> ring_n_segment valence_2_num
+cycle_n-1_bond -> valence_3 cycle_2_double_bond
+cycle_n-1_bond -> valence_2 cycle_4_bond
+cycle_n-1_double_bond -> valence_3 cycle_5_double_bond
+cycle_n-1_double_bond -> ring_n_segment cycle_4_bond
+cycle_n-1_double_bond -> valence_2 cycle_5_bond
+cycle_n-1_double_bond -> ring_n_segment cycle_5_bond
+cycle_n-1_double_bond -> valence_2 cycle_3_bond
+cycle_n-1_double_bond -> ring_n_segment cycle_3_bond
+cycle_n-1_double_bond -> valence_3 cycle_3_double_bond
+cycle_n-1_double_bond -> valence_2 cycle_2_bond
+cycle_n-1_double_bond -> valence_2 valence_2_num
+cycle_n-1_double_bond -> valence_3 cycle_4_double_bond
+cycle_n-1_double_bond -> valence_3 A20
+cycle_n-1_double_bond -> ring_n_segment cycle_2_bond
+cycle_n-1_double_bond -> ring_n_segment valence_2_num
+cycle_n-1_double_bond -> valence_3 cycle_2_double_bond
+cycle_n-1_double_bond -> valence_2 cycle_4_bond
+cycle_7_bond -> valence_3 cycle_5_double_bond
+cycle_7_bond -> ring_n_segment cycle_4_bond
+cycle_7_bond -> valence_3 cycle_6_double_bond
+cycle_7_bond -> valence_2 cycle_5_bond
+cycle_7_bond -> ring_n_segment cycle_5_bond
+cycle_7_bond -> ring_n_segment cycle_6_bond
+cycle_7_bond -> valence_2 cycle_3_bond
+cycle_7_bond -> ring_n_segment cycle_3_bond
+cycle_7_bond -> valence_3 cycle_3_double_bond
+cycle_7_bond -> valence_2 cycle_2_bond
+cycle_7_bond -> valence_2 valence_2_num
+cycle_7_bond -> ring_n_segment valence_2_num
+cycle_7_bond -> valence_3 cycle_4_double_bond
+cycle_7_bond -> valence_3 A20
+cycle_7_bond -> ring_n_segment cycle_2_bond
+cycle_7_bond -> valence_2 cycle_6_bond
+cycle_7_bond -> valence_3 cycle_2_double_bond
+cycle_7_bond -> valence_2 cycle_4_bond
+cycle_6_bond -> valence_3 cycle_5_double_bond
+cycle_6_bond -> ring_n_segment cycle_4_bond
+cycle_6_bond -> valence_2 cycle_5_bond
+cycle_6_bond -> ring_n_segment cycle_5_bond
+cycle_6_bond -> valence_2 cycle_2_bond
+cycle_6_bond -> ring_n_segment cycle_3_bond
+cycle_6_bond -> valence_3 cycle_3_double_bond
+cycle_6_bond -> valence_2 cycle_3_bond
+cycle_6_bond -> valence_2 valence_2_num
+cycle_6_bond -> valence_3 cycle_4_double_bond
+cycle_6_bond -> valence_3 A20
+cycle_6_bond -> ring_n_segment cycle_2_bond
+cycle_6_bond -> ring_n_segment valence_2_num
+cycle_6_bond -> valence_3 cycle_2_double_bond
+cycle_6_bond -> valence_2 cycle_4_bond
+cycle_5_bond -> valence_3 cycle_2_double_bond
+cycle_5_bond -> ring_n_segment cycle_4_bond
+cycle_5_bond -> valence_2 cycle_3_bond
+cycle_5_bond -> valence_2 cycle_2_bond
+cycle_5_bond -> ring_n_segment cycle_3_bond
+cycle_5_bond -> valence_3 cycle_3_double_bond
+cycle_5_bond -> valence_2 valence_2_num
+cycle_5_bond -> valence_3 cycle_4_double_bond
+cycle_5_bond -> valence_3 A20
+cycle_5_bond -> ring_n_segment cycle_2_bond
+cycle_5_bond -> ring_n_segment valence_2_num
+cycle_5_bond -> valence_2 cycle_4_bond
+cycle_4_bond -> valence_3 cycle_2_double_bond
+cycle_4_bond -> valence_2 cycle_3_bond
+cycle_4_bond -> valence_2 cycle_2_bond
+cycle_4_bond -> ring_n_segment cycle_3_bond
+cycle_4_bond -> valence_3 cycle_3_double_bond
+cycle_4_bond -> valence_2 valence_2_num
+cycle_4_bond -> valence_3 A20
+cycle_4_bond -> ring_n_segment cycle_2_bond
+cycle_4_bond -> ring_n_segment valence_2_num
+cycle_3_bond -> valence_3 A20
+cycle_3_bond -> valence_2 cycle_2_bond
+cycle_3_bond -> valence_2 valence_2_num
+cycle_3_bond -> ring_n_segment cycle_2_bond
+cycle_3_bond -> ring_n_segment valence_2_num
+cycle_3_bond -> valence_3 cycle_2_double_bond
+cycle_7_double_bond -> Z5 A24
+cycle_7_double_bond -> Z5 A23
+cycle_7_double_bond -> Z5 A25
+cycle_7_double_bond -> Z5 A26
+cycle_7_double_bond -> Z5 A21
+cycle_7_double_bond -> Z5 A22
+A21 -> valence_3 cycle_6_bond
+A22 -> valence_3 cycle_5_bond
+A23 -> valence_3 valence_2_num
+A24 -> valence_3 cycle_2_bond
+A25 -> valence_3 cycle_4_bond
+A26 -> valence_3 cycle_3_bond
+cycle_6_double_bond -> Z5 A24
+cycle_6_double_bond -> Z5 A23
+cycle_6_double_bond -> Z5 A25
+cycle_6_double_bond -> Z5 A26
+cycle_6_double_bond -> Z5 A22
+cycle_5_double_bond -> Z5 A24
+cycle_5_double_bond -> Z5 A25
+cycle_5_double_bond -> Z5 A26
+cycle_5_double_bond -> Z5 A23
+cycle_4_double_bond -> Z5 A24
+cycle_4_double_bond -> Z5 A26
+cycle_4_double_bond -> Z5 A23
+cycle_3_double_bond -> Z5 A24
+cycle_3_double_bond -> Z5 A23
+ring_n_segment -> valence_4 A74
+ring_n_segment -> valence_4 A66
+ring_n_segment -> valence_3 A63
+cycle_2_bond -> valence_2 valence_2_num
+cycle_2_bond -> ring_n_segment valence_2_num
+cycle_2_bond -> valence_3 A20
+cycle_2_double_bond -> Z5 A23
+valence_2_num -> valence_4_num A33
+valence_2_num -> atom_valence_3 num
+valence_2_num -> atom_valence_4 num
+valence_2_num -> atom_valence_2 num
+valence_2_num -> valence_4_num A31
+valence_2_num -> valence_3_num A31
+valence_2_num -> Z2 A97
+A97 -> num A92
+valence_3_num -> valence_4_num A31
+valence_3_num -> atom_valence_3 num
+valence_3_num -> atom_valence_4 num
+valence_4_num -> atom_valence_4 num
+num -> 6
+num -> %11
+num -> 4
+num -> %17
+num -> 3
+num -> 1
+num -> %16
+num -> %14
+num -> 2
+num -> %12
+num -> 8
+num -> %10
+num -> 9
+num -> 5
+num -> 7
+num -> %13
+num -> %19
+num -> %15
+num -> %18
+starting_aromatic_c_num -> Z0 num
+aromatic_atom -> n
+aromatic_atom -> c
+aromatic_atom -> Z0 A31
+aromatic_os -> o
+aromatic_os -> Z1 A53
+aromatic_os -> s
+aromatic_os -> Z4 A31
+aromatic_os -> Z0 A69
+A69 -> num A40
+A53 -> Z4 A5
+aromatic_atom_num -> Z4 num
+aromatic_atom_num -> Z0 num
+aromatic_atom_num -> Z0 A27
+A27 -> num nonH_bond
+aromatic_os_num -> Z4 A27
+aromatic_os_num -> Z17 num
+aromatic_os_num -> Z16 num
+Z16 -> s
+Z17 -> o
+double_aromatic_ring -> Z0 A104
+double_aromatic_ring -> Z0 A101
+double_aromatic_ring -> Z0 A103
+aromatic_ring_6 -> starting_aromatic_c_num A35
+aromatic_ring_6 -> starting_aromatic_c_num A60
+aromatic_ring_5 -> starting_aromatic_c_num A39
+aromatic_ring_5 -> starting_aromatic_c_num A48
+aromatic_ring_5 -> starting_aromatic_c_num A64
+aromatic_ring_5 -> starting_aromatic_c_num A49
+aromatic_ring_5 -> starting_aromatic_c_num A47
+full_aromatic_segment -> Z0 A79
+full_aromatic_segment -> Z0 A80
+full_aromatic_segment -> aromatic_atom aromatic_atom
+A79 -> Z3 A70
+A80 -> num A71
+A70 -> cycle_n_bond A54
+A71 -> Z0 A40
+A54 -> Z7 A28
+A28 -> Z0 num
+side_aliphatic_ring -> Z0 A69
+side_aliphatic_ring_segment -> Z0 A79
+side_aliphatic_ring_segment -> Z0 A80
