@@ -11,8 +11,6 @@ import minicpbp.util.CFG;
 import static minicpbp.cp.BranchingScheme.*;
 import static minicpbp.cp.Factory.*;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Collections;
 
 public class StructuralLipinskiMolecule {
