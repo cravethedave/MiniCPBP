@@ -158,7 +158,7 @@ def full_run(n):
             tokens.append(chosen)
         print(' '.join('{:2s}'.format(iter) for iter in tokens))
 
-full_run(100)
+# full_run(100)
 
 # raw_probs = fill_mask("<s>CCCC<mask>",top_k=100)
 # raw_probs = {p['token_str']:p['score'] for p in raw_probs}

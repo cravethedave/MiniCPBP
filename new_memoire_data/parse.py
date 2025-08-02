@@ -2,7 +2,7 @@
 
 
 rnd_based = set(['domWdegRandom', 'maxMarginalStrengthBiasedWheelSelectVal'])
-heuristic_based = set(['maxMarginalStrengthLDS', 'maxMarginalStrength', 'maxMarginal', 'maxMarginalLDS'])
+heuristic_based = set(['maxMarginalStrengthLDS', 'maxMarginalStrength', 'maxMarginal', 'maxMarginalLDS', 'maxMarginalStrengthLDS-noGrammarBP'])
     
 def get_median(data: list):
     middle = len(data) // 2
@@ -85,6 +85,6 @@ def generic_parse_to_terminal(filename):
     for k,v in sorted(table_body.items(),key=lambda x: x[0]):
         print(v)
 
-generic_parse_to_terminal("new_cp_data.csv")
+generic_parse_to_terminal("combined_model_grammar_bp.csv")
 # parse_to_terminal("new_regular.csv")
 # parse_to_terminal("correct_regular_1.csv")

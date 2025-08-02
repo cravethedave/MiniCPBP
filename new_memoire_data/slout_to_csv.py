@@ -29,6 +29,7 @@ for file in filtered:
     molecule.strip("'")
     file.append(weight)
     file.append(logp)
+    file[1] = molecule.strip('\"')
     file[2] = file[2].split(': ')[-1]
     file[3] = file[3].split(': ')[-1]
     file[4] = file[4].split(': ')[-1]

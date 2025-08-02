@@ -73,14 +73,14 @@ public class TestGenOracle {
         //     args[4]
         // );
 
-        // setWeightGenerationModel_NNCPBP(
-        //     "data/moleculeCNF_v7.txt",
-        //     Integer.valueOf(args[0]),
-        //     args[1],
-        //     Integer.valueOf(args[2]),
-        //     Integer.valueOf(args[3]),
-        //     1.0
-        // );
+        setWeightGenerationModel_NNCPBP(
+            "data/moleculeCNF_v7.txt",
+            Integer.valueOf(args[0]),
+            args[1],
+            Integer.valueOf(args[2]),
+            Integer.valueOf(args[3]),
+            1.0
+        );
 
         // setWeightGenerationModel_CPBP(
         //     "data/moleculeCNF_v7.txt",
@@ -91,15 +91,15 @@ public class TestGenOracle {
         //     1.0
         // );
 
-        setWeightGenerationModel_CPBPBackTrack(
-            "data/moleculeCNF_v7.txt",
-            Integer.valueOf(args[0]),
-            args[1],
-            Integer.valueOf(args[2]),
-            Integer.valueOf(args[3]),
-            Integer.valueOf(args[4]),
-            Integer.valueOf(args[5])
-        );
+        // setWeightGenerationModel_CPBPBackTrack(
+        //     "data/moleculeCNF_v7.txt",
+        //     Integer.valueOf(args[0]),
+        //     args[1],
+        //     Integer.valueOf(args[2]),
+        //     Integer.valueOf(args[3]),
+        //     Integer.valueOf(args[4]),
+        //     Integer.valueOf(args[5])
+        // );
     }
 
     /**
@@ -565,17 +565,17 @@ public class TestGenOracle {
             //#endregion
             
             GenConstraints.grammarConstraint(cp,w,g);
-            GenConstraints.cycleCountingConstraint(cp,w,g,1,9);
-            GenConstraints.cycleParityConstraint(cp,w,g,1,9);
+            GenConstraints.cycleCountingConstraint(cp,w,g,1,8);
+            GenConstraints.cycleParityConstraint(cp,w,g,1,8);
             // GenConstraints.moleculeWeightConstraint(cp,w,tokenWeights,weightTarget,g);
-            
-            int[] aromatic_ids = new int[] {
-                g.tokenEncoder.get("c"),
-                g.tokenEncoder.get("o"),
-                g.tokenEncoder.get("n"),
-                g.tokenEncoder.get("s")
-            };
-            cp.post(atleast(w, aromatic_ids, 1));
+            // GenConstraints.limitCycleConstraint(cp, w, g, 3);
+            // int[] aromatic_ids = new int[] {
+            //     g.tokenEncoder.get("c"),
+            //     g.tokenEncoder.get("o"),
+            //     g.tokenEncoder.get("n"),
+            //     g.tokenEncoder.get("s")
+            // };
+            // cp.post(atleast(w, aromatic_ids, 1));
 
             int realLength = wordLength;
             Double logSumProbs = 0.0;
