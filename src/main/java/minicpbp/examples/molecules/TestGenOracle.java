@@ -4,7 +4,6 @@ import minicpbp.engine.core.Constraint;
 import minicpbp.engine.core.IntVar;
 import minicpbp.engine.core.Solver;
 import minicpbp.engine.core.Solver.PropaMode;
-import minicpbp.search.DFSearch;
 import minicpbp.search.LDSearch;
 import minicpbp.search.SearchStatistics;
 import minicpbp.util.CFG;
@@ -14,13 +13,11 @@ import static minicpbp.cp.Factory.*;
 import static minicpbp.cp.BranchingScheme.*;
 
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Vector;
-import java.util.concurrent.CompletableFuture;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -184,7 +181,6 @@ public class TestGenOracle {
 
             //#region Solving
             String moleculeSoFar = "<s>";
-            Double logSumProbs = 0.0;
             for (int i = 0; i < WORD_LENGTH; i++) {
                 // Makes the request
                 HashMap<Integer, Double> flattenedNLPScores = getModelProbabilities(g, moleculeSoFar);
@@ -258,11 +254,7 @@ public class TestGenOracle {
             //#endregion
             
             //#region Solving
-            int realLength = WORD_LENGTH;
-            Double logSumProbs = 0.0;
-
             String moleculeSoFar = "<s>";
-            String perplexityResults = "";
             String input = "<s>";
 
             for (int i = 0; i < WORD_LENGTH; i++) {
@@ -275,7 +267,6 @@ public class TestGenOracle {
                 }
                 // Fills the rest with padding
                 if (moleculeSoFar.endsWith("_")) {
-                    realLength = i;
                     for (int j = i; j < WORD_LENGTH; j++) {
                         moleculeSoFar += "_";
                         w[i].assign(g.tokenEncoder.get("_"));
@@ -436,14 +427,12 @@ public class TestGenOracle {
             //#endregion
             
             //#region Solving
-            int realLength = WORD_LENGTH;
             double[] chosenOdds = new double[WORD_LENGTH];
             String moleculeSoFar = "";
             // Generate the molecule
             for (int i = 0; i < WORD_LENGTH; i++) {
                 // Pads the remainder of the molecule
                 if (moleculeSoFar.endsWith("_")) {
-                    realLength = i;
                     for (int j = i; j < WORD_LENGTH; j++) {
                         moleculeSoFar += "_";
                         w[i].assign(g.tokenEncoder.get("_"));
@@ -474,7 +463,6 @@ public class TestGenOracle {
     }
     
     private static void cpbp_back() {
-        long startTime = System.currentTimeMillis()/1000;
         try {
             //#region Base initialization
             BaseModel.initialization();
