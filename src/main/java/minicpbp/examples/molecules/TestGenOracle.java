@@ -407,7 +407,7 @@ public class TestGenOracle {
             //#endregion
 
             long runTime = System.currentTimeMillis() - startTime;
-            System.out.println(moleculeSoFar + "," + String.valueOf(runTime/1000.0) + "," + String.valueOf(getMoleculePerplexity(moleculeSoFar)));
+            System.out.println(moleculeSoFar + ", time(s): " + String.valueOf(runTime/1000.0) + ", PPL: " + String.valueOf(getMoleculePerplexity(moleculeSoFar)));
         } catch (Exception e) {
             System.out.println(e);
         }
