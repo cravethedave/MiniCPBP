@@ -33,7 +33,7 @@ def queue_jobs():
     
     print("Done queueing jobs.")
 
-with open('big_data_exclude/tokenized_coverage.txt', 'r') as f:
+with open('big_data_exclude/molecules_to_cover.txt', 'r') as f:
     lines = f.readlines()
 
 n = len(lines)
