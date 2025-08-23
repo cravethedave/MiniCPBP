@@ -34,10 +34,70 @@ import java.net.http.HttpResponse.BodyHandlers;
 
 public class TestMoleculeBatch {
     public static void main(String[] args) {
-        bulkMolVal("data/moleculeCNF_v7.txt", "big_data/ZINC250k.txt");
+        bulkTokenValidate("data/moleculeCNF_v7.5.txt", args[0]);
     }
 
-    private static void bulkMolVal(String grammarPath, String moleculePath) {
+    private static void bulkTokenValidate(String grammarPath, String moleculePath) {
+        Vector<String[]> molecules = new Vector<>();
+        try {
+            File moleculeFile = new File(moleculePath);
+            Scanner reader = new Scanner(moleculeFile);
+            while (reader.hasNextLine()) {
+                molecules.add(reader.nextLine().split(","));
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        }
+
+        // CFG
+        CFG g = null;
+        try {
+            g = new CFG(grammarPath);
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        } catch (IOException e) {
+            System.out.println("IOException");
+        }
+
+        System.out.println("[INFO] Done setup");
+
+        int recognized = 0;
+        for (int m = 0; m < molecules.size(); m++) {
+            // Solver creation
+            String[] tokens = molecules.get(m);
+            int wordLength = tokens.length;
+            Solver cp = makeSolver(false);
+            IntVar[] w = makeIntVarArray(cp, wordLength, 0, g.terminalCount()-1);
+            for (int i = 0; i < wordLength; i++) {
+                w[i].setName("w_" + i);
+            }
+
+            // Constraint setting
+            GenConstraints.grammarConstraint(cp, w, g);
+            // GenConstraints.cycleParityConstraint(cp,w,g,1,6);
+            // GenConstraints.cycleCountingConstraint(cp, w, g, 1, 6);
+
+            try {
+                for (int i = 0; i < tokens.length; i++) {
+                    int tId = g.tokenEncoder.get(tokens[i]);
+                    w[i].assign(tId);
+                }
+                cp.fixPoint();
+            } catch (InconsistencyException e) {
+                // Invalid molecule for our grammar
+                System.out.println("Failed #" + String.valueOf(m) + ": " + String.join("",tokens));
+                continue;
+            }
+
+            recognized++;
+            System.out.println("Succeeded #" + String.valueOf(m) + ": " + String.join("",tokens));
+        }
+        
+        System.out.println("[INFO] Recognized " + recognized + " out of " + molecules.size() + ". " + (float)recognized/molecules.size() * 100 + "% success rate.");
+    }
+
+    private static void bulkStringMolVal(String grammarPath, String moleculePath) {
         Vector<Vector<String>> molecules = new Vector<>();
         try {
             File moleculeFile = new File(moleculePath);

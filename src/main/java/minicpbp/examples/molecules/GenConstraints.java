@@ -33,7 +33,7 @@ import minicpbp.engine.core.Solver;
 import minicpbp.util.CFG;
 
 public class GenConstraints {
-    public static void grammarConstraint(Solver cp, IntVar[] w, CFG g) throws FileNotFoundException, IOException {
+    public static void grammarConstraint(Solver cp, IntVar[] w, CFG g) {
         cp.post(grammar(w,g));
     }
 
