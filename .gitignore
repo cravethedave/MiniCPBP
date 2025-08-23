@@ -12,4 +12,5 @@ userguide/userguideenv/
 dependency-reduced-pom.xml
 output
 results*
-./IJCAI\ data/
+IJCAI\ data/
+big_data_exclude/
