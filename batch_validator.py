@@ -33,21 +33,22 @@ def queue_jobs():
     
     print("Done queueing jobs.")
 
-with open('big_data_exclude/molecules_to_cover.txt', 'r') as f:
-    lines = f.readlines()
+def split_molecules():
+    with open('big_data_exclude/molecules_to_cover.txt', 'r') as f:
+        lines = f.readlines()
 
-n = len(lines)
-instance_size = n // NUM_JOBS
-increase_after = NUM_JOBS - (n % NUM_JOBS)
+    n = len(lines)
+    instance_size = n // NUM_JOBS
+    increase_after = NUM_JOBS - (n % NUM_JOBS)
 
-written = 0
-sizes = []
-for i in range(NUM_JOBS):
-    # Make file
-    with open(f"{INSTANCES_FOLDER}/molecules_{i}.txt", 'w') as f:
-        f.write('\n'.join(lines[written : written + instance_size]))
-    written += instance_size
-    if i == increase_after - 1:
-        instance_size += 1
+    written = 0
+    for i in range(NUM_JOBS):
+        # Make file
+        with open(f"{INSTANCES_FOLDER}/molecules_{i}.txt", 'w') as f:
+            f.write(''.join(lines[written : written + instance_size]))
+        written += instance_size
+        if i == increase_after - 1:
+            instance_size += 1
 
+split_molecules()
 queue_jobs()

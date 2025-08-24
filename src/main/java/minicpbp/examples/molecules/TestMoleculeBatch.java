@@ -34,7 +34,7 @@ import java.net.http.HttpResponse.BodyHandlers;
 
 public class TestMoleculeBatch {
     public static void main(String[] args) {
-        bulkTokenValidate("data/moleculeCNF_v7.5.txt", args[0]);
+        bulkTokenValidate("data/moleculeCNF_v7.txt", args[0]);
     }
 
     private static void bulkTokenValidate(String grammarPath, String moleculePath) {
@@ -63,6 +63,7 @@ public class TestMoleculeBatch {
         System.out.println("[INFO] Done setup");
 
         int recognized = 0;
+        int n = molecules.size();
         for (int m = 0; m < molecules.size(); m++) {
             // Solver creation
             String[] tokens = molecules.get(m);
@@ -77,6 +78,19 @@ public class TestMoleculeBatch {
             GenConstraints.grammarConstraint(cp, w, g);
             // GenConstraints.cycleParityConstraint(cp,w,g,1,6);
             // GenConstraints.cycleCountingConstraint(cp, w, g, 1, 6);
+
+            // Check molecule is all valid
+            boolean isValid = true;
+            for (int i = 0; i < tokens.length; i++) {
+                if (!g.tokenEncoder.keySet().contains(tokens[i])) {
+                    isValid = false;
+                }
+            }
+            if (!isValid) {
+                n--;
+                System.out.println("Skipped #" + String.valueOf(m) + ": " + String.join("",tokens));
+                continue;
+            }
 
             try {
                 for (int i = 0; i < tokens.length; i++) {
@@ -94,7 +108,7 @@ public class TestMoleculeBatch {
             System.out.println("Succeeded #" + String.valueOf(m) + ": " + String.join("",tokens));
         }
         
-        System.out.println("[INFO] Recognized " + recognized + " out of " + molecules.size() + ". " + (float)recognized/molecules.size() * 100 + "% success rate.");
+        System.out.println("[INFO] " + recognized + "/" + n + "/" + molecules.size() + ". " + (float)recognized/molecules.size() * 100 + "% success rate.");
     }
 
     private static void bulkStringMolVal(String grammarPath, String moleculePath) {

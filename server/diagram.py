@@ -30,9 +30,12 @@ print(f"failed {failed} out of {failed + len(data)}")
 ax = plt.subplot()
 
 ax.set_yticks(range(len(names)), names)
-FONT_SIZE = 30
+# ax.yaxis.set_label_position('right')
+FONT_SIZE = 40
 plt.yticks(fontsize=FONT_SIZE)
+# plt.ylabel("Perplexity", fontsize=FONT_SIZE)
 plt.xticks(fontsize=FONT_SIZE)
+plt.xlabel("Token index in molecule", fontsize=FONT_SIZE)
 
 data = np.ma.masked_equal(data, 0)
 # data = np.array(data)
@@ -41,6 +44,7 @@ im = ax.imshow(data,alpha=1,cmap=mpl.colormaps['YlGn'])
 divider = make_axes_locatable(ax)
 cax = divider.append_axes("right", size="3%", pad=0.05)
 cax.tick_params(labelsize=FONT_SIZE)
-ax.figure.colorbar(im, cax=cax)
+# ax.figure.colorbar(im, cax=cax)
+ax.figure.colorbar(im, cax=cax).set_label("Perplexity", fontsize=FONT_SIZE)
 
 plt.show()
