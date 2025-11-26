@@ -3,6 +3,17 @@
 # IJCAI 2025 #
 
 To run this project and get the results observed in IJCAI 2025, first follow the steps below to install maven.
+
+You should then install the python requirements using:
+```
+pip install -r server/requirements.txt
+```
+
+Once those are installed, start the server using:
+```
+flask --app server/server.py run
+```
+
 You can then generate one molecule using the command:
 ```
 mvn exec:java -Dexec.mainClass='minicpbp.examples.molecules.TestGenOracle' -Dexec.args="$METHOD $ORACLE_WEIGHT"

@@ -94,6 +94,6 @@ def create():
     with open("big_data/small_ZINC.txt", 'w') as f:
         f.writelines(lines)
 
-create()
+# create()
 
 # print(fix("c1ccc2c(c1)CC[C@H]([C@H]1CCCc3cccnc31)N2"))
