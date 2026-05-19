@@ -2,6 +2,8 @@
 
 # AAAI 2026 #
 
+The article related to this code is available at the following link: https://ojs.aaai.org/index.php/AAAI/article/view/38446
+
 To run this project and get the results observed in AAAI 2026, first follow the steps below to install maven.
 You can then generate one molecule using the command:
 ```
